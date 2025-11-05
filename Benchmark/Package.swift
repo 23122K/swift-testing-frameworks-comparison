@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "swift-test-benchmark",
+  name: "Benchmark",
   platforms: [
     .macOS(.v15)
   ],
@@ -15,7 +15,7 @@ let package = Package(
   ],
   targets: [
     .executableTarget(
-      name: "swift-test-benchmark",
+      name: "Benchmark",
       dependencies: [
         .product(name: "ArgumentParser", package: "swift-argument-parser"),
         .product(name: "Subprocess", package: "swift-subprocess"),
