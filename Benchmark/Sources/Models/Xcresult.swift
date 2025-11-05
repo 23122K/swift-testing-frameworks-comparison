@@ -1,12 +1,20 @@
 import Foundation
 
-
-
 /// A type representing root structure of tests.
 public struct Xcresult: Sendable, Codable, Hashable {
-  let devices: [Device]
-  let testNodes: [TestNode]
-  let testPlanConfigurations: [TestPlanConfigurations]
+  public let devices: [Device]
+  public let testNodes: [TestNode]
+  public let testPlanConfigurations: [TestPlanConfigurations]
+  
+  public init(
+    devices: [Device],
+    testNodes: [TestNode],
+    testPlanConfigurations: [TestPlanConfigurations]
+  ) {
+    self.devices = devices
+    self.testNodes = testNodes
+    self.testPlanConfigurations = testPlanConfigurations
+  }
 }
 
 extension Xcresult {
@@ -71,7 +79,7 @@ extension Xcresult {
     decoder: JSONDecoder = JSONDecoder()
   ) throws {
     guard let data = FileManager.default.contents(atPath: url.path())
-    else { throw Failure(code: 4, errorDescription: "Empty data")}
+    else { throw NSError(domain: "BenchmarkDomain", code: 4) }
     let _self = try decoder.decode(Self.self, from: data)
     
     self.devices = _self.devices
@@ -86,13 +94,44 @@ extension Xcresult.TestNode {
       keyedBy: Xcresult.TestNode.CodingKeys.self
     )
     
-    self.name = try container.decode(String.self, forKey: Xcresult.TestNode.CodingKeys.name)
-    self.duration = try container.decodeIfPresent(String.self, forKey: Xcresult.TestNode.CodingKeys.duration)
-    self.durationInSeconds = try container.decodeIfPresent(Double.self, forKey: Xcresult.TestNode.CodingKeys.durationInSeconds)
-    self.nodeIdentifier = try container.decodeIfPresent(String.self, forKey: Xcresult.TestNode.CodingKeys.nodeIdentifier)
-    self.nodeType = try container.decode(String.self, forKey: Xcresult.TestNode.CodingKeys.nodeType)
-    self.nodeIdentifierURL = try container.decodeIfPresent(String.self, forKey: Xcresult.TestNode.CodingKeys.nodeIdentifierURL)
-    self.result = try container.decodeIfPresent(String.self, forKey: Xcresult.TestNode.CodingKeys.result)
-    self.children = try container.decodeIfPresent([Xcresult.TestNode].self, forKey: Xcresult.TestNode.CodingKeys.children) ?? []
+    self.name = try container.decode(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.name
+    )
+    
+    self.duration = try container.decodeIfPresent(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.duration
+    )
+    
+    self.durationInSeconds = try container.decodeIfPresent(
+      Double.self,
+      forKey: Xcresult.TestNode.CodingKeys.durationInSeconds
+    )
+    
+    self.nodeIdentifier = try container.decodeIfPresent(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.nodeIdentifier
+    )
+    
+    self.nodeType = try container.decode(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.nodeType
+    )
+    
+    self.nodeIdentifierURL = try container.decodeIfPresent(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.nodeIdentifierURL
+    )
+    
+    self.result = try container.decodeIfPresent(
+      String.self,
+      forKey: Xcresult.TestNode.CodingKeys.result
+    )
+    
+    self.children = try container.decodeIfPresent(
+      [Xcresult.TestNode].self,
+      forKey: Xcresult.TestNode.CodingKeys.children
+    ) ?? []
   }
 }
