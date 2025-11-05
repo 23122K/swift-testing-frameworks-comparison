@@ -19,8 +19,19 @@ let package = Package(
       dependencies: [
         .product(name: "ArgumentParser", package: "swift-argument-parser"),
         .product(name: "Subprocess", package: "swift-subprocess"),
+        "Models",
+        "Storage"
+      ]
+    ),
+    .target(
+      name: "Models",
+      dependencies: [
         .product(name: "XMLCoder", package: "XMLCoder"),
       ]
+    ),
+    .target(
+      name: "Storage"
     )
-  ]
+  ],
+  swiftLanguageModes: [.v6]
 )

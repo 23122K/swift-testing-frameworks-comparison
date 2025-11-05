@@ -1,5 +1,5 @@
 import Foundation
-@preconcurrency import XMLCoder
+@_exported public import XMLCoder
 
 public struct Xunit: Sendable, Codable, Hashable {
   public let testSuites: [TestSuite]

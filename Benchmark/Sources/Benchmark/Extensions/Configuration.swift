@@ -73,7 +73,7 @@ extension Configuration {
    xcodebuild \
    -scheme "bitchat (iOS)" \
    -destination 'platform=iOS Simulator,id=E5DACE41-AD65-473E-8FB1-65A523FD133E' \
-   -resultBundlePath "/var/folders/pq/db_rwqy93bxcrth_82j0xt_00000gn/T/TestingBenchmarkRaport/0.xcresult" \
+   -resultBundlePath "/var/folders/pq/db_rwqy93bxcrth_82j0xt_00000gn/T/TestingBenchmarkReport/0.xcresult" \
    clean test
    
    */

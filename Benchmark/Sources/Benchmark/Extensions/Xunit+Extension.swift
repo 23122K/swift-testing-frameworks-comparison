@@ -1,5 +1,6 @@
 import Foundation
-@preconcurrency import XMLCoder
+import Models
+import Storage
 
 protocol Comperable {
   func tests() -> [String: Double]
@@ -10,11 +11,12 @@ extension Xunit {
   public init(
     at url: URL,
     decoder: XMLDecoder = XMLDecoder.xunit,
-    data: (URL) throws -> Data = { url in try FileManagerClient.shared.contents(url) }
+    data: (URL) throws -> Data = { url in try Storage.live.contents(url) }
   ) throws {
     let data = try data(url)
-    let _self = try decoder.decode(Self.self, from: data)
-    self.testSuites = _self.testSuites
+    let decoded = try decoder.decode(Self.self, from: data)
+    
+    self.init(testSuites: decoded.testSuites)
   }
 }
 

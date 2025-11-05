@@ -1,4 +1,4 @@
-public enum Raport: Sendable, Codable {
+public enum Report: Sendable, Codable {
   case system(System)
   case swift(Swift)
   case hardware(Hardware)
@@ -6,7 +6,7 @@ public enum Raport: Sendable, Codable {
   case xcodebuild(XcodeBuild)
 }
 
-extension Raport {
+extension Report {
   public struct Summary: Sendable {
     public let system: System?
     public let swift: Swift?
@@ -30,10 +30,10 @@ extension Raport {
   }
 }
 
-extension Raport.Summary: CustomStringConvertible {
+extension Report.Summary: CustomStringConvertible {
   public var description: String {
     """
-    Raport summary
+    Report summary
     
     system: \(String(describing: self.system))
     swift: \(String(describing: self.swift))
@@ -44,7 +44,7 @@ extension Raport.Summary: CustomStringConvertible {
   }
 }
 
-extension Raport {
+extension Report {
   public enum Failure: Error {
     case stdout(String?)
   }
