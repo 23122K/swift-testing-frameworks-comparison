@@ -1,4 +1,5 @@
 import ArgumentParser
+import Dependencies
 import Subprocess
 import Storage
 import Foundation
@@ -7,7 +8,14 @@ struct TestCommand: AsyncParsableCommand {
   @Option(help: "Schema name to be tested")
   var schema: String = "bitchat (iOS)"
   
+  var storage: Storage {
+    @Dependency(\.storage) var storage
+    return storage
+  }
+  
   mutating func run() async throws {
+    @Dependency(\.storage) var storage
+    
     // Get simulator with `Benchmark` name, on failure create such a simulator.
     let simulatorID: String
     do {
@@ -17,7 +25,7 @@ struct TestCommand: AsyncParsableCommand {
     }
     
     // Path where .xcresult file should be stored
-    let resultBundlePath = Self.storage
+    let resultBundlePath = self.storage
       .directory()
       .appending(path: "\(UUID()).xcresult")
     
@@ -81,7 +89,6 @@ struct TestCommand: AsyncParsableCommand {
 
 // MARK: - Command Configuration
 extension TestCommand {
-  static let storage = Storage.live
   static let cconfiguration = CommandConfiguration(
     commandName: "test"
   )

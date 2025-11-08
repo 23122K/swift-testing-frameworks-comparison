@@ -11,7 +11,7 @@ extension Xunit {
   public init(
     at url: URL,
     decoder: XMLDecoder = XMLDecoder.xunit,
-    data: (URL) throws -> Data = { url in try Storage.live.contents(url) }
+    data: (URL) throws -> Data = { url in try Storage.liveValue.contents(url) }
   ) throws {
     let data = try data(url)
     let decoded = try decoder.decode(Self.self, from: data)

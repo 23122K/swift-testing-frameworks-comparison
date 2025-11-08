@@ -22,9 +22,13 @@ extension Storage {
     name: String,
     decoder: JSONDecoder = JSONDecoder(),
     as type: T.Type = T.self
-  ) throws -> T? {
-    guard let data = try self._decode(name)
-    else { return nil }
+  ) throws -> T {
+    guard let data = try self._decode(name) else {
+      throw Failure.noFileContentAtPath(
+        self.directory()
+          .appending(path: name)
+      )
+    }
     return try decoder.decode(type, from: data)
   }
 }

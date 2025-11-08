@@ -1,4 +1,5 @@
 import ArgumentParser
+import Dependencies
 import Subprocess
 import Models
 import Storage
@@ -42,6 +43,8 @@ struct ReportCommand: AsyncParsableCommand {
   }
   
   func generate() async throws {
+    @Dependency(\.storage) var storage
+    
     try await withThrowingTaskGroup(of: Report.self) { group in
       group.addTask {
         try await Subprocess.run(
@@ -96,41 +99,42 @@ struct ReportCommand: AsyncParsableCommand {
       for try await raport in group {
         switch raport {
           case let .battery(summary):
-            try Self.storage.write(summary, name: "battery.json")
+            try storage.write(summary, name: "battery.json")
             
           case let .swift(summary):
-            try Self.storage.write(summary, name: "swift.json")
+            try storage.write(summary, name: "swift.json")
             
           case let .hardware(summary):
-            try Self.storage.write(summary, name: "hardware.json")
+            try storage.write(summary, name: "hardware.json")
             
           case let .system(summary):
-            try Self.storage.write(summary, name: "system.json")
+            try storage.write(summary, name: "system.json")
             
           case let .xcodebuild(summary):
-            try Self.storage.write(summary, name: "xcodebuild.json")
+            try storage.write(summary, name: "xcodebuild.json")
         }
       }
     }
   }
   
   func summary() throws {
+    @Dependency(\.storage) var storage
+    
     let summary = try String(
       describing: Report.Summary(
-        system: Self.storage.decode(name: "system.json"),
-        swift: Self.storage.decode(name: "swift.json"),
-        hardware: Self.storage.decode(name: "hardware.json"),
-        battery: Self.storage.decode(name: "battery.json"),
-        xcodebuild: Self.storage.decode(name: "xcodebuild.json")
+        system: storage.decode(name: "system.json"),
+        swift: storage.decode(name: "swift.json"),
+        hardware: storage.decode(name: "hardware.json"),
+        battery: storage.decode(name: "battery.json"),
+        xcodebuild: storage.decode(name: "xcodebuild.json")
       )
     )
     print(summary)
   }
 }
 
-// MARK: - Command Configuration
 extension ReportCommand {
-  static let storage = Storage.live
+  // MARK: - Command Configuration
   static let configuration = CommandConfiguration(
     commandName: "report"
   )

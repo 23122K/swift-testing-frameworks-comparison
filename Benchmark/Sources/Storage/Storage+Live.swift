@@ -1,8 +1,9 @@
+import Dependencies
 import Foundation
 import Synchronization
 
-extension Storage {
-  public static let live: Storage = {
+extension Storage: DependencyKey {
+  public static let liveValue: Storage = {
     let mutex = Mutex<FileManager>(FileManager.default)
     let directory = mutex.withLock { fileManager in
       fileManager.temporaryDirectory.appending(path: "com.23122K.TestBenchmark")
