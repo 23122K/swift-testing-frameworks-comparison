@@ -13,9 +13,19 @@ public struct ResultsCommand: AsyncParsableCommand {
   var isVerbose: Bool = false
   
   @Flag(
-    name: .customLong("delete")
+    name: .customLong("delete"),
+    help: "Removes all content"
   )
   var shouldDeleteCapturedContent: Bool = false
+  
+  @Flag(
+    name: [
+      .customShort("p"),
+      .customLong("path")
+    ],
+    help: "Path where results are stored"
+  )
+  var shouldShowPath: Bool = false
   
   var strage: Storage {
     @Injected(\.storage) var storage
@@ -31,6 +41,10 @@ public struct ResultsCommand: AsyncParsableCommand {
     if self.shouldDeleteCapturedContent {
       try await self.deleteAllCapturedContent()
       print("All content removed succesfully")
+    }
+    
+    if self.shouldShowPath {
+      print(self.strage.directory())
     }
   }
   
