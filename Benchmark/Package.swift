@@ -36,13 +36,15 @@ let package = Package(
       name: "Storage",
       dependencies: [
         .product(name: "Factory", package: "Factory")
-      ]
+      ],
+      path: "Sources/Dependencies/Storage"
     ),
     .target(
       name: "Defaults",
       dependencies: [
         .product(name: "Factory", package: "Factory")
-      ]
+      ],
+      path: "Sources/Dependencies/Defaults"
     )
   ],
   swiftLanguageModes: [.v6]

@@ -64,15 +64,4 @@ extension MainCommand {
     case batteryLevelToLow
     case lowBatteryModeEnabled
   }
-  
-  // MARK: - Command Configuration
-  static let configuration = CommandConfiguration(
-    commandName: "benchmark",
-    subcommands: [
-      ReportCommand.self,
-      XCTestCommand.self,
-      ResultsCommand.self,
-    ],
-    defaultSubcommand: XCTestCommand.self
-  )
 }

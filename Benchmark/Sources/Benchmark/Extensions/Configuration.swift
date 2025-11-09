@@ -120,53 +120,6 @@ extension Configuration {
       }
     )
   }
-  
-  static func testUsingSwiftTest(
-    path: String,
-    filter tests: String? = nil,
-    isParallel: Bool = false,
-    isXctestSupported: Bool = true,
-    isSwiftTestingSupported: Bool = true,
-    xunit output: String?
-  ) -> Configuration {
-    Configuration(
-      executable: "swift",
-      arguments: {
-        Arguments.ArrayLiteralElement("test")
-      
-        if let tests {
-          Arguments.ArrayLiteralElement("--filter")
-          Arguments.ArrayLiteralElement(tests)
-        }
-        
-        if isParallel {
-          Arguments.ArrayLiteralElement("--parallel")
-        } else {
-          Arguments.ArrayLiteralElement("--no-parallel")
-        }
-        
-        if isXctestSupported {
-          Arguments.ArrayLiteralElement("--enable-xctest")
-        } else {
-          Arguments.ArrayLiteralElement("--disable-xctest")
-        }
-        
-        if isSwiftTestingSupported {
-          Arguments.ArrayLiteralElement("--enable-swift-testing")
-        } else {
-          Arguments.ArrayLiteralElement("--disable-swift-testing")
-        }
-        
-        if let output {
-          Arguments.ArrayLiteralElement("--xunit-output")
-          Arguments.ArrayLiteralElement(output)
-        }
-        
-        Arguments.ArrayLiteralElement("--package-path")
-        Arguments.ArrayLiteralElement(path)
-      }
-    )
-  }
 }
 
 extension Subprocess.Configuration {
