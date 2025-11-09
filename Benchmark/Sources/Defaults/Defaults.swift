@@ -1,10 +1,20 @@
-import Foundation
+import Factory
 import Dependencies
 
-public struct Defaults: Sendable {
-  var _set: @Sendable (any Sendable, Key) -> Void
-  var _get: @Sendable (Key, Any.Type) throws -> any Sendable
-  var _delete: @Sendable (Key) -> Void
+public final class Defaults: Sendable {
+  let _set: @Sendable (any Sendable, Key) -> Void
+  let _get: @Sendable (Key, Any.Type) throws -> any Sendable
+  let _delete: @Sendable (Key) -> Void
+  
+  init(
+    _set: @Sendable @escaping (any Sendable, Key) -> Void,
+    _get: @Sendable @escaping (Key, Any) throws -> any Sendable,
+    _delete: @Sendable @escaping (Key) -> Void
+  ) {
+    self._set = _set
+    self._get = _get
+    self._delete = _delete
+  }
 }
 
 extension Defaults {
