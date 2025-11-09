@@ -12,15 +12,16 @@ let package = Package(
     .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
     .package(url: "https://github.com/swiftlang/swift-subprocess.git", exact: "0.1.0"),
     .package(url: "https://github.com/CoreOffice/XMLCoder.git", exact: "0.17.1"),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies.git", from: "1.10.0")
+    .package(url: "https://github.com/hmlongco/Factory.git", from: "2.5.3")
   ],
   targets: [
     .executableTarget(
       name: "Benchmark",
       dependencies: [
         .product(name: "ArgumentParser", package: "swift-argument-parser"),
-        .product(name: "Dependencies", package: "swift-dependencies"),
+        .product(name: "Factory", package: "Factory"),
         .product(name: "Subprocess", package: "swift-subprocess"),
+        "Defaults",
         "Models",
         "Storage"
       ]
@@ -34,13 +35,13 @@ let package = Package(
     .target(
       name: "Storage",
       dependencies: [
-        .product(name: "Dependencies", package: "swift-dependencies")
+        .product(name: "Factory", package: "Factory")
       ]
     ),
     .target(
       name: "Defaults",
       dependencies: [
-        .product(name: "Dependencies", package: "swift-dependencies")
+        .product(name: "Factory", package: "Factory")
       ]
     )
   ],

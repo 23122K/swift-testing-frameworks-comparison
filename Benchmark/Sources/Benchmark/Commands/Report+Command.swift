@@ -1,5 +1,5 @@
 import ArgumentParser
-import Dependencies
+import Factory
 import Subprocess
 import Models
 import Storage
@@ -43,7 +43,7 @@ struct ReportCommand: AsyncParsableCommand {
   }
   
   func generate() async throws {
-    @Dependency(\.storage) var storage
+    @Injected(\.storage) var storage
     
     try await withThrowingTaskGroup(of: Report.self) { group in
       group.addTask {
@@ -118,7 +118,7 @@ struct ReportCommand: AsyncParsableCommand {
   }
   
   func summary() throws {
-    @Dependency(\.storage) var storage
+    @Injected(\.storage) var storage
     
     let summary = try String(
       describing: Report.Summary(

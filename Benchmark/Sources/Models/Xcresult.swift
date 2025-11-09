@@ -47,14 +47,14 @@ extension Xcresult {
   }
   
   public struct TestNode: Sendable, Codable, Hashable {
-    let name: String // "swift-loggable-xctests",
-    let duration: String? // "0,035s",
-    let durationInSeconds: Double? // 0.03503894805908203,
-    let nodeIdentifier: String? // "LogMacroXCTests/test_asy
-    let nodeType: String // "Test Plan",
-    let nodeIdentifierURL: String?
-    let result: String? // "Failed"
-    let children: [TestNode]
+    public let name: String // "swift-loggable-xctests",
+    public let duration: String? // "0,035s",
+    public let durationInSeconds: Double? // 0.03503894805908203,
+    public let nodeIdentifier: String? // "LogMacroXCTests/test_asy
+    public let nodeType: String // "Test Plan",
+    public let nodeIdentifierURL: String?
+    public let result: String? // "Failed"
+    public let children: [TestNode]
     
     var totalDurationInSeconds: Double {
       if let durationInSeconds {

@@ -1,9 +1,10 @@
-import Dependencies
+import Factory
 import Foundation
 import Synchronization
 
-extension Storage: DependencyKey {
-  public static let liveValue: Storage = {
+extension Storage: SharedContainer {
+  @TaskLocal
+  public static var shared: Storage = {
     let mutex = Mutex<FileManager>(FileManager.default)
     let directory = mutex.withLock { fileManager in
       fileManager.temporaryDirectory.appending(path: "com.23122K.TestBenchmark")
@@ -49,7 +50,24 @@ extension Storage: DependencyKey {
       },
       directory: {
         directory
+      },
+      delete: { url in
+        try mutex.withLock { fileManager in
+          try fileManager.removeItem(at: url)
+        }
       }
     )
   }()
+}
+
+extension Storage: ManagedContainer {
+  public var manager: ContainerManager {
+    ContainerManager()
+  }
+}
+
+extension SharedContainer {
+  public var storage: Factory<Storage> {
+    self { Storage.shared }
+  }
 }

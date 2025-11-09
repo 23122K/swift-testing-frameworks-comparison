@@ -1,11 +1,26 @@
 import Foundation
 import Synchronization
 
-public struct Storage: Sendable {
-  var _write: @Sendable (any Encodable, String, JSONEncoder) throws -> Bool
-  var _decode: @Sendable (String) throws -> Data?
-  public var contents: @Sendable (URL) throws -> Data
-  public var directory: @Sendable () -> URL
+public final class Storage: Sendable {
+  let _write: @Sendable (any Encodable, String, JSONEncoder) throws -> Bool
+  let _decode: @Sendable (String) throws -> Data?
+  public let contents: @Sendable (URL) throws -> Data
+  public let directory: @Sendable () -> URL
+  public let delete: @Sendable (URL) throws -> Void
+  
+  public init(
+    _write: @Sendable @escaping (any Encodable, String, JSONEncoder) throws -> Bool,
+    _decode: @Sendable @escaping (String) throws -> Data?,
+    contents: @Sendable @escaping (URL) throws -> Data,
+    directory: @Sendable @escaping () -> URL,
+    delete: @Sendable @escaping (URL) throws -> Void
+  ) {
+    self._write = _write
+    self._decode = _decode
+    self.contents = contents
+    self.directory = directory
+    self.delete = delete
+  }
 }
 
 extension Storage {
