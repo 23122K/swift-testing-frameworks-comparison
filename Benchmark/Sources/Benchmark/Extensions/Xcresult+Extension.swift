@@ -20,18 +20,26 @@ extension Xcresult {
 }
 
 extension Xcresult {
-  var testsCount: Int {
-    Self._sumTestCount(self.testNodes)
+  var summary: TestsSummary {
+    TestsSummary(
+      testPlan: self.testNodes.first(
+        where: { node in node.name == "Test Plan" }
+      )?.name ?? "Test plan name missing",
+      tests: Self._extract(self.testNodes)
+    )
   }
   
-  private static func _sumTestCount(_ nodes: [TestNode]) -> Int {
-    if nodes.isEmpty { return 0 }
-    var tests = 0
+  private static func _extract(_ nodes: [TestNode]) -> [TestsSummary.Test] {
+    if nodes.isEmpty { return [] }
+    var tests: [TestsSummary.Test] = []
+    
     for node in nodes {
       if node.nodeType == "Test Case" {
-        tests += 1
+        tests.append(
+          TestsSummary.Test(name: node.name, duration: node.durationInSeconds ?? 0.0)
+        )
       } else {
-        tests += _sumTestCount(node.children)
+        tests.append(contentsOf: _extract(node.children))
       }
     }
     return tests
