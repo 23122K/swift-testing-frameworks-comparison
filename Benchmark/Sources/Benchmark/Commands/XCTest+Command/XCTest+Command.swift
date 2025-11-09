@@ -103,7 +103,13 @@ struct XCTestCommand: AsyncParsableCommand {
 //      )
 //    }
     
-    print("Finished running \(xcresult.testsCount) tests.")
+    print("Finished running \(xcresult.summary.testPlan) with \(xcresult.summary.tests.count) tests.")
+    print("Took, \(xcresult.summary.totalTestsDuration) seconds")
+    print("Details:")
+    for test in xcresult.summary.tests {
+      print("Test name: \(test.name)", terminator: "")
+      print("Duration: \(test.duration)")
+    }
   }
   
   private func checkSimulator() async throws -> (id: String, status: String) {

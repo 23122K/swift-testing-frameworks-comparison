@@ -1,18 +1,37 @@
 import Models
 
-struct TestResultsSummary {
-  let framework: Framework
-  var tests: Test
+public struct TestsSummary: Sendable, Codable {
+  public let testPlan: String
+  public let tests: [Test]
   
+  public var totalTestsDuration: Double {
+    self.tests.reduce(into: 0.0) {
+      $0 += $1.duration
+    }
+  }
 }
 
-extension TestResultsSummary {
-  struct Test {
+extension TestsSummary {
+  public enum Framework: Sendable, Codable {
+    case xctest
+    case testing
+  }
+  
+  public struct Test: Sendable, Codable {
     let name: String
     let duration: Double
   }
-  
-  enum Framework {
+}
+
+extension Report {
+  public struct TestSummary {
+    public let testPlan: String
+    public let framework: Framework
+  }
+}
+
+extension Report {
+  public enum Framework: Sendable, Codable {
     case xctest
     case testing
   }
