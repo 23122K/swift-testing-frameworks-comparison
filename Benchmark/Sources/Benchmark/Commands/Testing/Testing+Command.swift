@@ -3,40 +3,96 @@ import Subprocess
 import Storage
 import Factory
 import Foundation
+import Models
 
 public struct TestingCommand: AsyncParsableCommand {
   @Argument
-  var packagePath: String
+  var packagePath: String = "."
   
   @Argument
-  var targets: [String] = []
+  var targets: [String] = ["LoggableMacroXCTests"]
   
   @Option
-  var iterations: Int = 1
+  var iterations: Int = 2
   
   public init() {}
   
   public mutating func run() async throws {
     var xunitPaths: [URL] = []
     for iteration in 0 ..< self.iterations {
-      let xunitPath = self.xunitPath(iteration: iteration)
+      print("Start of iteration no. \(iteration + 1)")
+      let output = self.xunitOutput(iteration: iteration)
       
+      print("Cleaning SPM")
       try await self.cleanSPM()
+      try await Task.sleep(nanoseconds: 500_000_000)
+      
+      print("Building package")
+      _ = try await Subprocess.run(
+        Configuration(
+          executable: "swift",
+          arguments: {
+            "build"
+//            "--package-path"; self.packagePath
+            "--build-tests"
+          }
+        ),
+        output: .standardOutput,
+        error: .string(limit: 128*128)
+      )
+      
+      try await Task.sleep(nanoseconds: 500_000_000)
+      print("Testing")
       try await self.test(
         path: self.packagePath,
         filter: targets.joined(separator: "|"),
-        isParallel: true,
-        isXctestSupported: true,
+        isParallel: false,
+        isXctestSupported: false,
         isSwiftTestingSupported: true,
-        xunit: xunitPath.path()
+        xunit: output.path(),
+        shouldSkipBuild: true
       )
-      xunitPaths.append(xunitPath)
+      
+      print("*")
+      // When --xunit-output <Output> flag is passed, two files are created, one specified
+      // and second containing postfix swift-testing.
+//      try self.storage.delete(output)
+      print("*")
+      xunitPaths.append(
+        self.xunitOutput(
+          iteration: iteration,
+          hasPostfix: false
+        )
+      )
+      
+      print("End of iteration no. \(iteration + 1)")
+    }
+    
+    for xunitPathOutput in xunitPaths {
+      print(xunitPathOutput.absoluteString)
+      let data = try self.storage.contents(xunitPathOutput)
+      let xunit = try XMLDecoder.xunit.decode(Xunit.self, from: data)
+      
+      print(xunit)
+      print(xunit.summary.tests.count)
+      print(xunit.summary.totalTestsDuration)
+      for test in xunit.summary.tests {
+        print(test.name, terminator: "")
+        print(test.duration)
+      }
     }
   }
   
-  private func xunitPath(iteration: Int) -> URL {
+  private func xunitOutput(
+    iteration: Int,
+    hasPostfix: Bool = false
+  ) -> URL {
     self.storage.directory()
-      .appending(path: "testing-iteration-\(iteration)")
+      .appending(
+        path: hasPostfix 
+          ? "iteration-\(iteration)-swift-testing"
+          : "iteration-\(iteration)"
+      )
       .appendingPathExtension("xml")
   }
 }

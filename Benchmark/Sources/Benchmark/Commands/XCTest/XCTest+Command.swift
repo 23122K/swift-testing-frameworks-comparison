@@ -7,27 +7,16 @@ import Foundation
 import Models
 
 struct XCTestCommand: AsyncParsableCommand {
-  @Flag(
-    name: .customShort("d")
-  )
-  var verbose: Bool = false // TODO: Flags starting with "v" are omited
-  
-  @Argument(
-    help: "The name fo the Schema containing xctest-benchmark.xctestplan"
-  )
+  @Argument(help: "The name fo the Schema containing test plans")
   var schema: String
   
   @Argument
-  var platform: String
+  var platform: String = "macOS"
   
-  @Argument(
-    help: "Overrides default test plan name."
-  )
-  var testPlan: String = "xctest-benchmark"
+  @Argument(help: "Overrides default test plan name.")
+  var testPlan: String = "swift-loggable-xctests"
   
-  @Option(
-    help: "Tests iterations, before each run clean build is done"
-  )
+  @Option(help: "Tests iterations, before each run clean build is done")
   var iterations: Int = 10
   
   var storage: Storage {
@@ -56,17 +45,30 @@ struct XCTestCommand: AsyncParsableCommand {
     
 
     var resultBundlePaths: [URL] = []
-    for iteration in 0..<self.iterations {
+    for iteration in 0 ..< self.iterations {
       let resultBundlePath = self.resultBundlePath(for: iteration)
+      let derrivedDataPath = self.derrivedDataPath(for: iteration)
+      
       _ = try await Subprocess.run(
-        Configuration.xcodebuild(
+        Configuration.test(
           self.schema,
           testPlan: self.testPlan,
           platform: self.platform,
-          simulatorID: "00008103-001961CA029A001E",
-          resultBundlePath: resultBundlePath.path()
-        )
-      ) { _, _, _, _ in }
+          resultBundlePath: resultBundlePath.path(),
+          derrivedDataPath: derrivedDataPath.path()
+        ),
+      ) { execution, _, outputIO, errorIO in
+        print(execution.processIdentifier.debugDescription)
+        
+        for try await line in outputIO.lines() {
+          print(line)
+        }
+        
+        for try await line in errorIO.lines() {
+          print(line)
+        }
+      }
+      
       resultBundlePaths.append(resultBundlePath)
     }
 
@@ -117,8 +119,14 @@ struct XCTestCommand: AsyncParsableCommand {
   private func resultBundlePath(for iteration: Int) -> URL {
     self.storage
       .directory()
-      .appending(path: "xctest-iteration-\(iteration)")
+      .appending(path: "\(UUID().uuidString)-\(iteration)")
       .appendingPathExtension("xcresult")
+  }
+  
+  private func derrivedDataPath(for iteration: Int) -> URL {
+    self.storage
+      .directory()
+      .appending(path: "derrived-data-benchmark")
   }
   
   @discardableResult

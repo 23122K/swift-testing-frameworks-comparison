@@ -37,14 +37,14 @@ let package = Package(
       dependencies: [
         .product(name: "Factory", package: "Factory")
       ],
-      path: "Sources/Dependencies/Storage"
+      path: "Sources/Clients/Storage"
     ),
     .target(
       name: "Defaults",
       dependencies: [
         .product(name: "Factory", package: "Factory")
       ],
-      path: "Sources/Dependencies/Defaults"
+      path: "Sources/Clients/Defaults"
     )
   ],
   swiftLanguageModes: [.v6]
