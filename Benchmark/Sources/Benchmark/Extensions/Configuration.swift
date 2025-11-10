@@ -78,31 +78,7 @@ extension Configuration {
    
    */
 //   xcodebuild
-//  -scheme bitchat_iOS -destination 'platform=iOS Simulator,id=E5DACE41-AD65-473E-8FB1-65A523FD133E' -  clean test
-  static func xcodebuild(
-    _ scheme: String,
-    testPlan: String? = nil,
-    platform: String,
-    simulatorID id: String,
-    resultBundlePath path: String
-  ) -> Configuration {
-    Configuration(
-      executable: "xcodebuild",
-      arguments: {
-        "-scheme"; scheme
-        "-destination"; "platform=macOS,arch=arm64,name=My Mac"
-        if let testPlan {
-          "-testPlan"; testPlan
-        }
-        "-resultBundlePath"
-        path
-        "-skipPackagePluginValidation"
-        "-skipMacroValidation"
-        "clean"
-        "test"
-      }
-    )
-  }
+//  -scheme bitchat_iOS -destination 'platform=iOS Simulator,id=E5DACE41-AD65-473E-8FB1-65A523FD133E' -  clean tes
   
   static func convertXcresultToJson(
     at url: URL

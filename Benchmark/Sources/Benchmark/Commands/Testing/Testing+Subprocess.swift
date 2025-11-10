@@ -2,10 +2,15 @@ import Subprocess
 
 extension TestingCommand {
   func cleanSPM() async throws {
-    _ = try await Subprocess.run(
+    let result = try await Subprocess.run(
       Configuration.cleanSPM,
-      output: .discarded
+      output: .standardOutput,
+      error: .string(limit: 256*256)
     )
+    
+    print("Clean SPM")
+    print(result.standardError ?? "Missing!")
+    print(result.terminationStatus.debugDescription)
   }
   
   func test(
@@ -14,19 +19,27 @@ extension TestingCommand {
     isParallel: Bool,
     isXctestSupported: Bool,
     isSwiftTestingSupported: Bool,
-    xunit output: String?
+    xunit output: String?,
+    shouldSkipBuild: Bool = false
   ) async throws {
-    _ = try await Subprocess.run(
+    let result = try await Subprocess.run(
       Configuration.test(
         path: path,
         filter: tests,
         isParallel: isParallel,
         isXctestSupported: isXctestSupported,
         isSwiftTestingSupported: isSwiftTestingSupported,
-        xunit: output
+        xunit: output,
+        shouldSkipBuild: shouldSkipBuild
       ),
-      output: .discarded
+      output: .standardOutput,
+      error: .string(limit: 256*256)
     )
+    
+    print("Test command summary")
+    print(result.terminationStatus.isSuccess.description)
+    print(result.terminationStatus.debugDescription)
+    print(result.standardError ?? "Error is missing")
   }
 }
 
@@ -45,7 +58,8 @@ extension Configuration {
     isParallel: Bool,
     isXctestSupported: Bool,
     isSwiftTestingSupported: Bool,
-    xunit output: String?
+    xunit output: String?,
+    shouldSkipBuild: Bool
   ) -> Configuration {
     Configuration(
       executable: "swift",
@@ -76,6 +90,10 @@ extension Configuration {
         
         if let output {
           "--xunit-output"; output
+        }
+        
+        if shouldSkipBuild {
+          "--skip-build"
         }
         
         "--package-path"; path

@@ -5,7 +5,7 @@ extension MainCommand {
     commandName: "benchmark",
     subcommands: [
       ReportCommand.self,
-      TestingCommand.self,
+//      TestingCommand.self,
       XCTestCommand.self,
       ResultsCommand.self,
     ]
