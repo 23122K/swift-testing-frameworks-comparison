@@ -7,7 +7,7 @@ public final class Defaults: Sendable {
   
   init(
     _set: @Sendable @escaping (any Sendable, Key) -> Void,
-    _get: @Sendable @escaping (Key, Any) throws -> any Sendable,
+    _get: @Sendable @escaping (Key, Any.Type) throws -> any Sendable,
     _delete: @Sendable @escaping (Key) -> Void
   ) {
     self._set = _set
@@ -21,8 +21,12 @@ extension Defaults {
     self._set(value, key)
   }
   
-  public func get<T: Sendable>(forKey key: Key) throws -> T {
-    try self._get(key, T.self) as! T
+  public func bool(forKey key: Key) throws -> Bool {
+    try self._get(key, Bool.self) as? Bool ?? false
+  }
+  
+  public func get<T: Sendable>(forKey key: Key) throws -> T? {
+    try self._get(key, T.self) as? T
   }
   
   public func delete(forKey key: Key) {

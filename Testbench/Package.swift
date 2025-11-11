@@ -22,6 +22,7 @@ let package = Package(
         .product(name: "Factory", package: "Factory"),
         .product(name: "Subprocess", package: "swift-subprocess"),
         "Defaults",
+        "Date",
         "Models",
         "Storage"
       ]
@@ -45,6 +46,13 @@ let package = Package(
         .product(name: "Factory", package: "Factory")
       ],
       path: "Sources/Clients/Defaults"
+    ),
+    .target(
+      name: "Date",
+      dependencies: [
+        .product(name: "Factory", package: "Factory")
+      ],
+      path: "Sources/Clients/Date"
     )
   ],
   swiftLanguageModes: [.v6]

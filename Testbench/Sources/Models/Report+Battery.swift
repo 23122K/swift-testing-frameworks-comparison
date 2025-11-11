@@ -18,3 +18,14 @@ extension Report {
     }
   }
 }
+
+extension Report.Battery: CustomStringConvertible {
+  public var description: String {
+    """
+    batteryPercentage: \(self.batteryPercentage)
+    isCharging: \(self.isCharging)
+    isLowPowerModeOnBatteryEnabled: \(self.isLowPowerModeOnBatteryEnabled)
+    isLowPowerModeOnAcEnabled: \(self.isLowPowerModeOnAcEnabled)
+    """
+  }
+}

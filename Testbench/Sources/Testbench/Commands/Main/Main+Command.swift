@@ -1,8 +1,11 @@
 import ArgumentParser
 import Factory
+import Foundation
 import Subprocess
+import Defaults
 import Storage
 import Models
+import Date
 
 @main
 struct MainCommand: AsyncParsableCommand {
@@ -13,17 +16,15 @@ struct MainCommand: AsyncParsableCommand {
     ]
   )
   var isVerbose: Bool = false
-  
-  var storage: Storage {
-    @Injected(\.storage) var storage
-    return storage
-  }
-  
+
   mutating func run() async throws {
-    print("Welcome")
-//    if self.isVerbose {
-//      print(isVerbose)
-//    }
+    if let date: Date = try self.defaults.get(forKey: .lastTestbenchUsage) {
+      let authorName: String? = try self.defaults .get(forKey: .authorName)
+      print("Welcome \(authorName ?? ""), last usage: \(date.formatted(date: .numeric, time: .standard))")
+    } else {
+      print("Welcome!")
+    }
+
 //    await ReportCommand.main {
 ////      if self.isVerbose {
 ////        "--print"
@@ -63,9 +64,18 @@ struct MainCommand: AsyncParsableCommand {
 }
 
 extension MainCommand {
-  // MARK: - Failure
-  enum Failure: Error {
-    case batteryLevelToLow
-    case lowBatteryModeEnabled
+  fileprivate var storage: Storage {
+    @Injected(\.storage) var storage
+    return storage
+  }
+  
+  fileprivate var defaults: Defaults {
+    @Injected(\.defaults) var defaults
+    return defaults
+  }
+  
+  fileprivate var now: Date {
+    @Injected(\.date) var date
+    return date.now()
   }
 }

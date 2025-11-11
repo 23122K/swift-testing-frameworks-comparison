@@ -12,3 +12,12 @@ extension Report {
     }
   }
 }
+
+extension Report.Swift: CustomStringConvertible {
+  public var description: String {
+    """
+    version: \(self.version)
+    target: \(self.target)
+    """
+  }
+}

@@ -72,14 +72,6 @@ public struct TestingCommand: AsyncParsableCommand {
       print(xunitPathOutput.absoluteString)
       let data = try self.storage.contents(xunitPathOutput)
       let xunit = try XMLDecoder.xunit.decode(Xunit.self, from: data)
-      
-      print(xunit)
-      print(xunit.summary.tests.count)
-      print(xunit.summary.totalTestsDuration)
-      for test in xunit.summary.tests {
-        print(test.name, terminator: "")
-        print(test.duration)
-      }
     }
   }
   
