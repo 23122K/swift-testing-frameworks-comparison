@@ -1,5 +1,4 @@
 import Factory
-import Dependencies
 
 public final class Defaults: Sendable {
   let _set: @Sendable (any Sendable, Key) -> Void

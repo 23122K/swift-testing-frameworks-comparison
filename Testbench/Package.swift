@@ -4,19 +4,19 @@
 import PackageDescription
 
 let package = Package(
-  name: "Benchmark",
+  name: "Testbench",
   platforms: [
     .macOS(.v15)
   ],
   dependencies: [
+    .package(url: "https://github.com/swiftlang/swift-subprocess.git", from: "0.2.1"),
     .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
-    .package(url: "https://github.com/swiftlang/swift-subprocess.git", exact: "0.1.0"),
     .package(url: "https://github.com/CoreOffice/XMLCoder.git", exact: "0.17.1"),
-    .package(url: "https://github.com/hmlongco/Factory.git", from: "2.5.3")
+    .package(url: "https://github.com/hmlongco/Factory.git", from: "2.5.3"),
   ],
   targets: [
     .executableTarget(
-      name: "Benchmark",
+      name: "Testbench",
       dependencies: [
         .product(name: "ArgumentParser", package: "swift-argument-parser"),
         .product(name: "Factory", package: "Factory"),

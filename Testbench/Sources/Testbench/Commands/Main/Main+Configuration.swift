@@ -2,10 +2,10 @@ import ArgumentParser
 
 extension MainCommand {
   public static let configuration = CommandConfiguration(
-    commandName: "benchmark",
+    commandName: "testbench",
     subcommands: [
       ReportCommand.self,
-//      TestingCommand.self,
+      TestingCommand.self,
       XCTestCommand.self,
       ResultsCommand.self,
     ]
