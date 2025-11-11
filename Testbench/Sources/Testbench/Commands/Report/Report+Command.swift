@@ -1,4 +1,7 @@
 import ArgumentParser
+import Defaults
+import Date
+import Foundation
 import Factory
 import Subprocess
 import Models
@@ -7,12 +10,21 @@ import Storage
 struct ReportCommand: AsyncParsableCommand {
   @Flag(
     name: [
-      .customShort("p"),
-      .customLong("print")
+      .customShort("v"),
+      .customLong("verbose")
     ],
     help: "Prints captured summary report to the consolse"
   )
-  var shouldPrintSummary: Bool = false
+  var isVerbose: Bool = false
+  
+  @Flag(
+    name: [
+      .customShort("s"),
+      .customLong("summary")
+    ],
+    help: "Shows report summary if exists"
+  )
+  var shoudShowSummary: Bool = false
   
   @Flag(
     name: [
@@ -33,18 +45,20 @@ struct ReportCommand: AsyncParsableCommand {
   var shouldGenerateReport: Bool = false
   
   mutating func run() async throws {
+    self.defaults.set(self.now, forKey: .lastTestbenchUsage)
+    
     if self.shouldGenerateReport {
       try await self.generate()
+      try print(self.summary())
+      self.defaults.set(true, forKey: .isReportGenerated)
     }
     
-    if self.shouldPrintSummary {
-      try self.summary()
+    if self.shoudShowSummary {
+      try print(self.summary())
     }
   }
   
-  func generate() async throws {
-    @Injected(\.storage) var storage
-    
+  private func generate() async throws {
     try await withThrowingTaskGroup(of: Report.self) { group in
       group.addTask {
         try await Subprocess.run(
@@ -62,7 +76,7 @@ struct ReportCommand: AsyncParsableCommand {
           output: .string(limit: 128*128)
         )
         .standardOutput
-        .map(Report.XcodeBuild.init(stdout:))
+        .map(Report.Xcodebuild.init(stdout:))
         .map { Report.xcodebuild($0) }!
       }
       
@@ -99,43 +113,48 @@ struct ReportCommand: AsyncParsableCommand {
       for try await raport in group {
         switch raport {
           case let .battery(summary):
-            try storage.write(summary, name: "battery.json")
+            try self.storage.write(summary, name: "battery.json")
             
           case let .swift(summary):
-            try storage.write(summary, name: "swift.json")
+            try self.storage.write(summary, name: "swift.json")
             
           case let .hardware(summary):
-            try storage.write(summary, name: "hardware.json")
+            try self.storage.write(summary, name: "hardware.json")
             
           case let .system(summary):
-            try storage.write(summary, name: "system.json")
+            try self.storage.write(summary, name: "system.json")
             
           case let .xcodebuild(summary):
-            try storage.write(summary, name: "xcodebuild.json")
+            try self.storage.write(summary, name: "xcodebuild.json")
         }
       }
     }
   }
   
-  func summary() throws {
-    @Injected(\.storage) var storage
-    
-    let summary = try String(
-      describing: Report.Summary(
-        system: storage.decode(name: "system.json"),
-        swift: storage.decode(name: "swift.json"),
-        hardware: storage.decode(name: "hardware.json"),
-        battery: storage.decode(name: "battery.json"),
-        xcodebuild: storage.decode(name: "xcodebuild.json")
-      )
+  private func summary() throws -> Report.Summary {
+    try Report.Summary(
+      system: self.storage.decode(name: "system.json"),
+      swift: self.storage.decode(name: "swift.json"),
+      hardware: self.storage.decode(name: "hardware.json"),
+      battery: self.storage.decode(name: "battery.json"),
+      xcodebuild: self.storage.decode(name: "xcodebuild.json")
     )
-    print(summary)
   }
 }
 
 extension ReportCommand {
-  // MARK: - Command Configuration
-  static let configuration = CommandConfiguration(
-    commandName: "report"
-  )
+  fileprivate var storage: Storage {
+    @Injected(\.storage) var storage
+    return storage
+  }
+  
+  fileprivate var defaults: Defaults {
+    @Injected(\.defaults) var defaults
+    return defaults
+  }
+  
+  fileprivate var now: Date {
+    @Injected(\.date) var date
+    return date.now()
+  }
 }

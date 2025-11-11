@@ -18,32 +18,34 @@ public struct Xcresult: Sendable, Codable, Hashable {
 }
 
 extension Xcresult {
-  static func testsDurationInSeconds(_ nodes: [TestNode]) -> [String: Double] {
-    if nodes.isEmpty { return [:] }
-    var result: [String: Double] = [:]
-    for node in nodes {
-      if let durationInSeconds = node.durationInSeconds {
-        result[node.name] = durationInSeconds
-      } else {
-        result.merge(
-          Self.testsDurationInSeconds(node.children),
-          uniquingKeysWith: { $1 }
-        )
-      }
-    }
-    return result
-  }
-}
-
-extension Xcresult {
   public struct Device: Sendable, Codable, Hashable {
-    let architecture: String // "arm64",
-    let deviceId: String // "00008103-001961CA029A001E",
-    let deviceName: String //"My Mac",
-    let modelName: String // "MacBook Pro",
-    let osBuildNumber: String // "25A362",
-    let osVersion: String //"26.0.1",
-    let platform: String // "macOS"
+    /// Device architecture e.g. arm64
+    public let architecture: String
+    
+    public let deviceId: String // "00008103-001961CA029A001E",
+    public let deviceName: String //"My Mac",
+    public let modelName: String // "MacBook Pro",
+    public let osBuildNumber: String // "25A362",
+    public let osVersion: String //"26.0.1",
+    public let platform: String // "macOS"
+    
+    public init(
+      architecture: String,
+      deviceId: String,
+      deviceName: String,
+      modelName: String,
+      osBuildNumber: String,
+      osVersion: String,
+      platform: String
+    ) {
+      self.architecture = architecture
+      self.deviceId = deviceId
+      self.deviceName = deviceName
+      self.modelName = modelName
+      self.osBuildNumber = osBuildNumber
+      self.osVersion = osVersion
+      self.platform = platform
+    }
   }
   
   public struct TestNode: Sendable, Codable, Hashable {
@@ -56,35 +58,38 @@ extension Xcresult {
     public let result: String? // "Failed"
     public let children: [TestNode]
     
-    var totalDurationInSeconds: Double {
-      if let durationInSeconds {
-        return durationInSeconds
-      } else {
-        return self.children.reduce(into: 0.0) { result, test in
-          result += test.totalDurationInSeconds
-        }
-      }
+    public init(
+      name: String,
+      duration: String?,
+      durationInSeconds: Double?,
+      nodeIdentifier: String?,
+      nodeType: String,
+      nodeIdentifierURL: String?,
+      result: String?,
+      children: [TestNode]
+    ) {
+      self.name = name
+      self.duration = duration
+      self.durationInSeconds = durationInSeconds
+      self.nodeIdentifier = nodeIdentifier
+      self.nodeType = nodeType
+      self.nodeIdentifierURL = nodeIdentifierURL
+      self.result = result
+      self.children = children
     }
   }
   
   public struct TestPlanConfigurations: Sendable, Codable, Hashable {
-    let configurationId: String
-    let configurationName: String
-  }
-}
-
-extension Xcresult {
-  public init(
-    url: URL,
-    decoder: JSONDecoder = JSONDecoder()
-  ) throws {
-    guard let data = FileManager.default.contents(atPath: url.path())
-    else { throw NSError(domain: "BenchmarkDomain", code: 4) }
-    let _self = try decoder.decode(Self.self, from: data)
+    public let configurationId: String
+    public let configurationName: String
     
-    self.devices = _self.devices
-    self.testNodes = _self.testNodes
-    self.testPlanConfigurations = _self.testPlanConfigurations
+    public init(
+      configurationId: String,
+      configurationName: String
+    ) {
+      self.configurationId = configurationId
+      self.configurationName = configurationName
+    }
   }
 }
 

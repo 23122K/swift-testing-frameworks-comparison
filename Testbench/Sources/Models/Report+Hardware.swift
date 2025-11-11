@@ -28,3 +28,17 @@ extension Report {
     }
   }
 }
+
+extension Report.Hardware: CustomStringConvertible {
+  public var description: String {
+    """
+    modelName: \(self.modelName)
+    modelIdentifier:\(self.modelIdentifier)
+    modelNumber: \(self.modelNumber)
+    chip: \(self.chip)
+    totalNumberOfCores: \(self.totalNumberOfCores)
+    memory: \(self.memory)
+    systemFirmwareVersion: \(self.systemFirmwareVersion)
+    """
+  }
+}

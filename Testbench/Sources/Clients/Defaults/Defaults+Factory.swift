@@ -15,7 +15,7 @@ extension Defaults: SharedContainer {
         UserDefaults.standard.set(value, forKey: key.rawValue)
       },
       _get: { key, type in
-        try UserDefaults.standard._value(forKey: key, as: type as! Any.Type)
+        try UserDefaults.standard._value(forKey: key, as: type)
       },
       _delete: { key in
         UserDefaults.standard.removeObject(forKey: key.rawValue)

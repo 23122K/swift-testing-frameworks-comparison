@@ -14,22 +14,18 @@ struct XCTestCommand: AsyncParsableCommand {
   var platform: String = "macOS"
   
   @Argument(help: "Overrides default test plan name.")
-  var testPlan: String = "swift-loggable-xctests"
+  var testPlan: String = "swift-loggable-tests"
   
   @Option(help: "Tests iterations, before each run clean build is done")
   var iterations: Int = 10
-  
-  var storage: Storage {
-    @Injected(\.storage) var storage
-    return storage
-  }
-  
-  var defaults: Defaults {
-    @Injected(\.defaults) var defaults
-    return defaults
-  }
 
   mutating func run() async throws {
+    guard try self.defaults.bool(forKey: .isReportGenerated) else {
+      print("Report not generated, generation raport now...")
+      print("Please run testbench report --generate to continue")
+      return
+    }
+  
 //    let simulatorID: String
 //    do {
 //      if self.verbose {
@@ -72,15 +68,19 @@ struct XCTestCommand: AsyncParsableCommand {
       resultBundlePaths.append(resultBundlePath)
     }
 
+    let convertedXcresultDirectory = self.storage.directory()
+      .appendingPathComponent("\(self.schema)-\(self.testPlan)-results")
+    
     var xcresults: [Xcresult] = []
     for resultBundlePath in resultBundlePaths {
       let xcresult = try await self.convertXcresultToJson(resultBundlePath)
+      
       xcresults.append(xcresult)
     }
     
     for xcresult in xcresults {
       print("Total test duration: ", terminator: "")
-      print(xcresult.summary.totalTestsDuration)
+//      print(xcresult.summary.totalTestsDuration)
     }
   }
   
@@ -126,7 +126,7 @@ struct XCTestCommand: AsyncParsableCommand {
   private func derrivedDataPath(for iteration: Int) -> URL {
     self.storage
       .directory()
-      .appending(path: "derrived-data-benchmark")
+      .appending(path: "DerrivedData")
   }
   
   @discardableResult
@@ -148,5 +148,17 @@ struct XCTestCommand: AsyncParsableCommand {
     
     try self.storage.write(xcresult, name: name)
     return xcresult
+  }
+}
+
+extension XCTestCommand {
+  fileprivate var storage: Storage {
+    @Injected(\.storage) var storage
+    return storage
+  }
+  
+  fileprivate var defaults: Defaults {
+    @Injected(\.defaults) var defaults
+    return defaults
   }
 }

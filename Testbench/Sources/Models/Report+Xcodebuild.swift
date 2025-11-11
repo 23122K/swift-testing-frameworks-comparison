@@ -1,5 +1,5 @@
 extension Report {
-  public struct XcodeBuild: Sendable, Codable {
+  public struct Xcodebuild: Sendable, Codable {
     public let version: String
     public let buildVersion: String
     
@@ -10,5 +10,14 @@ extension Report {
       self.version = version
       self.buildVersion = buildVersion
     }
+  }
+}
+
+extension Report.Xcodebuild: CustomStringConvertible {
+  public var description: String {
+    """
+    version: \(self.version)
+    buildVersion: \(self.buildVersion)
+    """
   }
 }

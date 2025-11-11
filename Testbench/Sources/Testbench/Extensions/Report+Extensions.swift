@@ -76,7 +76,7 @@ extension Report.System {
   }
 }
 
-extension Report.XcodeBuild {
+extension Report.Xcodebuild {
   public init(stdout: String?) throws {
      guard
       let stdout,
