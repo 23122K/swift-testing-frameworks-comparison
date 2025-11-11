@@ -20,6 +20,7 @@ struct MainCommand: AsyncParsableCommand {
   }
   
   mutating func run() async throws {
+    print("Welcome")
 //    if self.isVerbose {
 //      print(isVerbose)
 //    }
