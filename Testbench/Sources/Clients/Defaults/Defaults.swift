@@ -20,7 +20,7 @@ extension Defaults {
   public func set<T: Sendable>(_ value: T, forKey key: Key) {
     self._set(value, key)
   }
-  
+
   public func bool(forKey key: Key) throws -> Bool {
     try self._get(key, Bool.self) as? Bool ?? false
   }

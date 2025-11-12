@@ -19,9 +19,9 @@ extension Report {
 extension Report.System: CustomStringConvertible {
   public var description: String {
     """
-    productName: \(self.productName)
-    productVersion: \(self.productVersion)
-    buildVersion: \(self.buildVersion)
+    Product name: \(self.productName)
+    Product version: \(self.productVersion)
+    Build version: \(self.buildVersion)
     """
   }
 }

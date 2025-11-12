@@ -22,10 +22,10 @@ extension Report {
 extension Report.Battery: CustomStringConvertible {
   public var description: String {
     """
-    batteryPercentage: \(self.batteryPercentage)
-    isCharging: \(self.isCharging)
-    isLowPowerModeOnBatteryEnabled: \(self.isLowPowerModeOnBatteryEnabled)
-    isLowPowerModeOnAcEnabled: \(self.isLowPowerModeOnAcEnabled)
+    Battery percentage: \(self.batteryPercentage)
+    Charging: \(self.isCharging)
+    Low power mode (Battery): \(self.isLowPowerModeOnBatteryEnabled)
+    Low power mode (AC): \(self.isLowPowerModeOnAcEnabled)
     """
   }
 }

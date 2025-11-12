@@ -16,8 +16,8 @@ extension Report {
 extension Report.Xcodebuild: CustomStringConvertible {
   public var description: String {
     """
-    version: \(self.version)
-    buildVersion: \(self.buildVersion)
+    Version: \(self.version)
+    Build version: \(self.buildVersion)
     """
   }
 }

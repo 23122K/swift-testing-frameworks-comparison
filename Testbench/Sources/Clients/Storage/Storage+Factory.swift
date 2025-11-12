@@ -48,6 +48,19 @@ extension Storage: SharedContainer {
           return data
         }
       },
+      contentsOfDirectory: { url in
+        try mutex.withLock { fileManager in
+          try fileManager.contentsOfDirectory(
+            atPath: url.path()
+          )
+        }
+      },
+      currentPathDirectry: {
+        mutex.withLock { fileManager in
+          URL(string: fileManager.currentDirectoryPath) ??
+          URL.currentDirectory()
+        }
+      },
       directory: {
         directory
       },

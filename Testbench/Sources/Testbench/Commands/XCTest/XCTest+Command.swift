@@ -119,6 +119,7 @@ struct XCTestCommand: AsyncParsableCommand {
   private func resultBundlePath(for iteration: Int) -> URL {
     self.storage
       .directory()
+      .appending(path: "Xcresults")
       .appending(path: "\(UUID().uuidString)-\(iteration)")
       .appendingPathExtension("xcresult")
   }
