@@ -3,5 +3,6 @@ extension Defaults {
     case authorName
     case lastTestbenchUsage
     case isReportGenerated
+    case repositoryURL
   }
 }

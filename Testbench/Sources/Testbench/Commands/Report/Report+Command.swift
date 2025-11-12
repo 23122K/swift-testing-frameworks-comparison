@@ -34,7 +34,7 @@ struct ReportCommand: AsyncParsableCommand {
     help: """
       Generates report consisting of infomation regarding:
         - Hardware
-        - Battert (if applicable)
+        - Battery (if applicable)
         - System
         - Swift 
         - Xcodebuild

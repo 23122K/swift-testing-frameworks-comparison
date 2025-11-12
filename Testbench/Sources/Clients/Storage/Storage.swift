@@ -5,6 +5,8 @@ public final class Storage: Sendable {
   let _write: @Sendable (any Encodable, String, JSONEncoder) throws -> Bool
   let _decode: @Sendable (String) throws -> Data?
   public let contents: @Sendable (URL) throws -> Data
+  public let contentsOfDirectory: @Sendable (URL) throws -> [String]
+  public let currentPathDirectry: @Sendable () -> URL
   public let directory: @Sendable () -> URL
   public let delete: @Sendable (URL) throws -> Void
   
@@ -12,12 +14,16 @@ public final class Storage: Sendable {
     _write: @Sendable @escaping (any Encodable, String, JSONEncoder) throws -> Bool,
     _decode: @Sendable @escaping (String) throws -> Data?,
     contents: @Sendable @escaping (URL) throws -> Data,
+    contentsOfDirectory: @Sendable @escaping (URL) throws -> [String],
+    currentPathDirectry: @Sendable @escaping () -> URL,
     directory: @Sendable @escaping () -> URL,
     delete: @Sendable @escaping (URL) throws -> Void
   ) {
     self._write = _write
     self._decode = _decode
     self.contents = contents
+    self.contentsOfDirectory = contentsOfDirectory
+    self.currentPathDirectry = currentPathDirectry
     self.directory = directory
     self.delete = delete
   }
