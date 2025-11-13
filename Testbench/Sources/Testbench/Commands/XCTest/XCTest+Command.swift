@@ -6,81 +6,149 @@ import Storage
 import Foundation
 import Models
 
+public enum TestFramework: String {
+  case xctest
+  case testing
+}
+
+public struct TestCase {
+  public let identifier: String
+  public let duration: Double
+}
+
+public protocol TestResult {
+  var framework: TestFramework { get }
+  var testCases: [TestCase] { get }
+}
+
+extension TestResult {
+  public var description: String {
+    """
+    Framework: \(self.framework.rawValue)
+    Test cases:
+    \(self._testCasesDescription)
+    """
+  }
+  
+  private var _testCasesDescription: String {
+    self.testCases.map {
+      "\tIdentifier: \($0.identifier), duration: \($0.duration)"
+    }.joined(separator: "\n")
+  }
+}
+
+extension TestResult {
+  public var testCount: Int {
+    self.testCases.count
+  }
+  
+  public var totalTestDuration: Double {
+    self.testCases.reduce(into: 0.0) {
+      $0 += $1.duration
+    }
+  }
+}
+
+enum XcodebuildFramwork {
+  case xctest
+  case testing
+}
+
+struct XcodebuildTestResult: TestResult {
+  let framework: TestFramework
+  var testCases: [TestCase]
+  
+  public init(
+    framework: TestFramework,
+    testCases: [TestCase] = []
+  ) {
+    self.framework = framework
+    self.testCases = testCases
+  }
+}
+
+
 struct XCTestCommand: AsyncParsableCommand {
-  @Argument(help: "The name fo the Schema containing test plans")
+  @Flag(
+    name: [
+      .customShort("v"),
+      .customLong("verbose")
+    ],
+    help: "Show verbose logging output"
+  )
+  var isVerbose: Bool = false
+  
+  @Argument(help: "Schema containing test plans for both XCTest and Testing")
   var schema: String
   
   @Argument
-  var platform: String = "macOS"
+  var destination: String = "macOS"
   
-  @Argument(help: "Overrides default test plan name.")
-  var testPlan: String = "swift-loggable-tests"
+  @Option(help: "Test plan containing only tests in XCTest")
+  var xctestPlan: String = "testbench-xctest"
+  
+  @Option(help: "Test plan containing only tests in Testing")
+  var testingPlan: String = "testbench-testing"
   
   @Option(help: "Tests iterations, before each run clean build is done")
-  var iterations: Int = 10
+  var iterations: Int = 1 // FIXME: Bump to ten
 
   mutating func run() async throws {
-    guard try self.defaults.bool(forKey: .isReportGenerated) else {
-      print("Report not generated, generation raport now...")
-      print("Please run testbench report --generate to continue")
-      return
-    }
-  
-//    let simulatorID: String
-//    do {
-//      if self.verbose {
-//        print("Checking for simulator existance")
-//      }
-//      (simulatorID, _) = try await self.checkSimulator()
-//    } catch Failure.simulatorNotFound {
-//      if self.verbose {
-//        print("Simulator not found, crating new simulator...")
-//      }
-//      simulatorID = try await self.createSimulator()
-//    }
+    try await self.checkIfCanStartBenchmark()
+    let derrivedDataPath = self.storage
+      .directory()
+      .appending(path: "DerrivedData")
     
-
-    var resultBundlePaths: [URL] = []
-    for iteration in 0 ..< self.iterations {
-      let resultBundlePath = self.resultBundlePath(for: iteration)
-      let derrivedDataPath = self.derrivedDataPath(for: iteration)
-      
-      _ = try await Subprocess.run(
-        Configuration.test(
-          self.schema,
-          testPlan: self.testPlan,
-          platform: self.platform,
-          resultBundlePath: resultBundlePath.path(),
-          derrivedDataPath: derrivedDataPath.path()
-        ),
-      ) { execution, _, outputIO, errorIO in
-        print(execution.processIdentifier.debugDescription)
-        
-        for try await line in outputIO.lines() {
-          print(line)
+    var testResults = [
+      self.xctestPlan: XcodebuildTestResult(framework: .xctest),
+      self.testingPlan: XcodebuildTestResult(framework: .testing)
+    ]
+    
+    var testRegexes = [
+      self.xctestPlan: AnyRegex.xctestSuccess,
+      self.testingPlan: AnyRegex.testingTestCaseSuccess
+    ]
+    
+    for testPlan in [self.xctestPlan, self.testingPlan] {
+      for _ in 0 ..< self.iterations {
+        _ = try await Subprocess.run(
+          Configuration.test(
+            self.schema,
+            testPlan: testPlan,
+            platform: self.destination, // FIXME: pmaciag -
+            resultBundlePath: nil,
+            derrivedDataPath: derrivedDataPath.path()
+          )
+        ) { _, _, outputIo, errorIo in
+          for try await output in outputIo.lines() {
+            if self.isVerbose {
+              print(output)
+            }
+            
+            guard
+              let regex = testRegexes[testPlan],
+              let testCase = output.match(
+                using: regex,
+                ignore: testPlan == self.testingPlan ? .testingTestRun : nil
+              ).testCase()
+            else { continue }
+            testResults[testPlan]?.testCases.append(testCase)
+          }
+          
+          for try await error in errorIo.lines() {
+            print("Error: \(error)")
+          }
         }
         
-        for try await line in errorIO.lines() {
-          print(line)
-        }
+        // Clean derrived data after test itration
+        try self.storage.delete(derrivedDataPath)
       }
-      
-      resultBundlePaths.append(resultBundlePath)
-    }
-
-    let convertedXcresultDirectory = self.storage.directory()
-      .appendingPathComponent("\(self.schema)-\(self.testPlan)-results")
-    
-    var xcresults: [Xcresult] = []
-    for resultBundlePath in resultBundlePaths {
-      let xcresult = try await self.convertXcresultToJson(resultBundlePath)
-      
-      xcresults.append(xcresult)
     }
     
-    for xcresult in xcresults {
-      print("Total test duration: ", terminator: "")
-//      print(xcresult.summary.totalTestsDuration)
+    for (key, value) in testResults {
+      print("Running test plan: \(key)")
+      print("Finished running \(value.testCount) in \(value.totalTestDuration)")
+      print(value.description)
     }
   }
   
@@ -95,6 +163,20 @@ struct XCTestCommand: AsyncParsableCommand {
     else { throw Failure.simulatorNotFound }
     
     return (String(id), String(status))
+  }
+  
+  private func checkIfCanStartBenchmark() async throws {
+    guard try self.defaults.bool(forKey: .isReportGenerated) else {
+      print("Report not generated, generation raport now...")
+      print("Please run testbench report --generate to continue")
+      return
+    }
+    
+    guard let _: String = try self.defaults.get(forKey: .repositoryURL) else {
+      print("Path not set, set path to swift-testing-frameworks-comparison before continguing")
+      print("Please run testbench --set-path <PATH> to continue")
+      return
+    }
   }
   
   private func createSimulator(
@@ -116,18 +198,15 @@ struct XCTestCommand: AsyncParsableCommand {
     return simulatorID
   }
   
-  private func resultBundlePath(for iteration: Int) -> URL {
+  private func resultBundlePath(
+    for iteration: Int,
+    testPlan: String
+  ) -> URL {
     self.storage
       .directory()
-      .appending(path: "Xcresults")
+      .appending(path: testPlan.capitalized)
       .appending(path: "\(UUID().uuidString)-\(iteration)")
       .appendingPathExtension("xcresult")
-  }
-  
-  private func derrivedDataPath(for iteration: Int) -> URL {
-    self.storage
-      .directory()
-      .appending(path: "DerrivedData")
   }
   
   @discardableResult
@@ -161,5 +240,20 @@ extension XCTestCommand {
   fileprivate var defaults: Defaults {
     @Injected(\.defaults) var defaults
     return defaults
+  }
+}
+
+extension BidirectionalCollection where Self.SubSequence == Substring {
+  func match(
+    using regex: AnyRegex,
+    ignore regexes: AnyRegex?...
+  ) -> Regex<AnyRegex.RegexOutput>.Match? {
+    for regex in regexes.compactMap(\.self) {
+      guard self.firstMatch(of: regex) == nil
+      else { return nil }
+      continue
+    }
+    
+    return self.firstMatch(of: regex)
   }
 }

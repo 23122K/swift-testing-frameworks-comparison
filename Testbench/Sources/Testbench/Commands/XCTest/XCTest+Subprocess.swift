@@ -40,9 +40,9 @@ extension Configuration {
         
         "-skipPackagePluginValidation"
         "-skipMacroValidation"
-        "clean"
+//        "clean"
         "test"
-        "-quiet"
+//        "-quiet"
       }
     )
   }

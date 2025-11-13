@@ -53,7 +53,13 @@ let package = Package(
         .product(name: "Factory", package: "Factory")
       ],
       path: "Sources/Clients/Date"
-    )
+    ),
+    .testTarget(
+      name: "TestbenchTests",
+      dependencies: [
+        "Testbench"
+      ]
+    ),
   ],
   swiftLanguageModes: [.v6]
 )

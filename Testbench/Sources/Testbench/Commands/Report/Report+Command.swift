@@ -13,7 +13,7 @@ struct ReportCommand: AsyncParsableCommand {
       .customShort("v"),
       .customLong("verbose")
     ],
-    help: "Prints captured summary report to the consolse"
+    help: "Show verbose logging output"
   )
   var isVerbose: Bool = false
   
@@ -22,7 +22,7 @@ struct ReportCommand: AsyncParsableCommand {
       .customShort("s"),
       .customLong("summary")
     ],
-    help: "Shows report summary if exists"
+    help: "Show report summary"
   )
   var shoudShowSummary: Bool = false
   
@@ -32,14 +32,14 @@ struct ReportCommand: AsyncParsableCommand {
       .customLong("generate")
     ],
     help: """
-      Generates report consisting of infomation regarding:
+      Generate report.
+      
+      Report summary consists of:
         - Hardware
         - Battery (if applicable)
         - System
         - Swift 
         - Xcodebuild
-      
-      Overrides original report when run again.
       """
   )
   var shouldGenerateReport: Bool = false
