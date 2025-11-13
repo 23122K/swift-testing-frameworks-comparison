@@ -8,7 +8,8 @@ public struct ResultsCommand: AsyncParsableCommand {
     name: [
       .customShort("v"),
       .customLong("verbose")
-    ]
+    ],
+    help: "Show verbose logging output"
   )
   var isVerbose: Bool = false
   
@@ -20,8 +21,7 @@ public struct ResultsCommand: AsyncParsableCommand {
   
   @Flag(
     name: [
-      .customShort("p"),
-      .customLong("path")
+      .customLong("show-path")
     ],
     help: "Path where results are stored"
   )
@@ -42,9 +42,9 @@ public struct ResultsCommand: AsyncParsableCommand {
       try await self.deleteAllCapturedContent()
       print("All content removed succesfully")
     }
-    
+   
     if self.shouldShowPath {
-      print(self.strage.directory())
+      print(self.strage.directory().path())
     }
   }
   

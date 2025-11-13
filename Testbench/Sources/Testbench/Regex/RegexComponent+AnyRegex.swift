@@ -74,6 +74,15 @@ extension RegexComponent where Self == AnyRegex {
     AnyRegex(/Xcode\s([0-9.]+)/)
   }
   
+  /// Captures test name and its duration from stdout of xctest.
+  static var xctest: Self {
+    AnyRegex(/\[(.+)\].+passed.+\((.+)\sseconds\)/)
+  }
+  
+  static var testing: Self {
+    AnyRegex(/Test\s(.+)\spassed\safter\s([\d.]+)/)
+  }
+  
   static var xcodeBuildVersion: Self {
     AnyRegex(/Build\sversion\s(\w+)/)
   }
