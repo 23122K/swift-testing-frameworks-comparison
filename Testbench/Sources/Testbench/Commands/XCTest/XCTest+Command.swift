@@ -104,7 +104,7 @@ struct XCTestCommand: AsyncParsableCommand {
       self.testingPlan: XcodebuildTestResult(framework: .testing)
     ]
     
-    var testRegexes = [
+    let testRegexes = [
       self.xctestPlan: AnyRegex.xctestSuccess,
       self.testingPlan: AnyRegex.testingTestCaseSuccess
     ]
@@ -117,13 +117,18 @@ struct XCTestCommand: AsyncParsableCommand {
             testPlan: testPlan,
             platform: self.destination, // FIXME: pmaciag -
             resultBundlePath: nil,
-            derrivedDataPath: derrivedDataPath.path()
+            derrivedDataPath: derrivedDataPath.path(),
+            isParallelTestingEnabled: false,
+            maximumConcurrentTestDeviceDestinations: 1,
+            maximumConcurrentTestSimulatorDestinations: 1,
+            parallelTestingWorkerCount: 1, // Even with parallel testing disabled this cant be 0
+            maximumParallelTestingWorkers: 1 // Same case, can be 0
           )
         ) { _, _, outputIo, errorIo in
           for try await output in outputIo.lines() {
-            if self.isVerbose {
+//            if self.isVerbose {
               print(output)
-            }
+//            }
             
             guard
               let regex = testRegexes[testPlan],
@@ -146,9 +151,7 @@ struct XCTestCommand: AsyncParsableCommand {
     }
     
     for (key, value) in testResults {
-      print("Running test plan: \(key)")
-      print("Finished running \(value.testCount) in \(value.totalTestDuration)")
-      print(value.description)
+      print("Finished running \(key) with \(value.testCount) tests in \(value.totalTestDuration)")
     }
   }
   
@@ -257,3 +260,25 @@ extension BidirectionalCollection where Self.SubSequence == Substring {
     return self.firstMatch(of: regex)
   }
 }
+
+// MARK: - XCtest
+// First run: Executed 65 tests, with 0 failures (0 unexpected) in 0.840 (0.856) seconds
+// Second run: Executed 65 tests, with 0 failures (0 unexpected) in 0.799 (0.815) seconds
+
+// MARK: - Testing
+// First run: Test run with 65 tests in 5 suites passed after 0.630 seconds.
+// Second run: Test run with 65 tests in 5 suites passed after 0.780 seconds.
+
+
+
+//xcodebuild \
+//-scheme swift-loggable \
+//-destination 'platform=macOS,name=My Mac' \
+//-testPlan testbench-testing \
+//-maximum-concurrent-test-device-destinations 1 \
+//-maximum-concurrent-test-simulator-destinations 1 \
+//-parallel-testing-enabled NO \
+//-parallel-testing-worker-count 0 \
+//-maximum-parallel-testing-workers 0 \
+//test
+
