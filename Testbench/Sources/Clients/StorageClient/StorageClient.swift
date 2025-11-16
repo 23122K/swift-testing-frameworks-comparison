@@ -1,7 +1,7 @@
 import Foundation
 import Synchronization
 
-public final class Storage: Sendable {
+public final class StorageClient: Sendable {
   let _write: @Sendable (any Encodable, String, JSONEncoder) throws -> Bool
   let _decode: @Sendable (String) throws -> Data?
   public let contents: @Sendable (URL) throws -> Data
@@ -29,7 +29,7 @@ public final class Storage: Sendable {
   }
 }
 
-extension Storage {
+extension StorageClient {
   @discardableResult
   public func write(
     _ content: some Encodable,
@@ -54,7 +54,7 @@ extension Storage {
   }
 }
 
-extension Storage {
+extension StorageClient {
   public enum Failure: Sendable, Error {
     case noFileContentAtPath(URL)
   }

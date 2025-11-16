@@ -1,7 +1,7 @@
 import ArgumentParser
 import Factory
-import Storage
-import Defaults
+import StorageClient
+import DefaultsClient
 
 public struct ResultsCommand: AsyncParsableCommand {
   @Flag(
@@ -27,12 +27,12 @@ public struct ResultsCommand: AsyncParsableCommand {
   )
   var shouldShowPath: Bool = false
   
-  var strage: Storage {
+  var strage: StorageClient {
     @Injected(\.storage) var storage
     return storage
   }
   
-  var defaults: Defaults {
+  var defaults: DefaultsClient {
     @Injected(\.defaults) var defaults
     return defaults
   }
@@ -58,7 +58,7 @@ public struct ResultsCommand: AsyncParsableCommand {
     if self.isVerbose {
       print("Deleteing UserDefaults")
     }
-    for key in Defaults.Key.allCases {
+    for key in DefaultsClient.Key.allCases {
       self.defaults.delete(forKey: key)
     }
   }

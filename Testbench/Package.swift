@@ -11,7 +11,6 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/swiftlang/swift-subprocess.git", from: "0.2.1"),
     .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.6.1"),
-    .package(url: "https://github.com/CoreOffice/XMLCoder.git", exact: "0.17.1"),
     .package(url: "https://github.com/hmlongco/Factory.git", from: "2.5.3"),
   ],
   targets: [
@@ -21,38 +20,35 @@ let package = Package(
         .product(name: "ArgumentParser", package: "swift-argument-parser"),
         .product(name: "Factory", package: "Factory"),
         .product(name: "Subprocess", package: "swift-subprocess"),
-        "Defaults",
-        "Date",
+        "DefaultsClient",
+        "DateClient",
+        "StorageClient",
         "Models",
-        "Storage"
       ]
     ),
     .target(
       name: "Models",
-      dependencies: [
-        .product(name: "XMLCoder", package: "XMLCoder"),
-      ]
     ),
     .target(
-      name: "Storage",
+      name: "StorageClient",
       dependencies: [
         .product(name: "Factory", package: "Factory")
       ],
-      path: "Sources/Clients/Storage"
+      path: "Sources/Clients/StorageClient"
     ),
     .target(
-      name: "Defaults",
+      name: "DefaultsClient",
       dependencies: [
         .product(name: "Factory", package: "Factory")
       ],
-      path: "Sources/Clients/Defaults"
+      path: "Sources/Clients/DefaultsClient"
     ),
     .target(
-      name: "Date",
+      name: "DateClient",
       dependencies: [
         .product(name: "Factory", package: "Factory")
       ],
-      path: "Sources/Clients/Date"
+      path: "Sources/Clients/DateClient"
     ),
     .testTarget(
       name: "TestbenchTests",

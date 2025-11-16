@@ -1,6 +1,6 @@
 import Factory
 
-public final class Defaults: Sendable {
+public final class DefaultsClient: Sendable {
   let _set: @Sendable (any Sendable, Key) -> Void
   let _get: @Sendable (Key, Any.Type) throws -> any Sendable
   let _delete: @Sendable (Key) -> Void
@@ -16,7 +16,7 @@ public final class Defaults: Sendable {
   }
 }
 
-extension Defaults {
+extension DefaultsClient {
   public func set<T: Sendable>(_ value: T, forKey key: Key) {
     self._set(value, key)
   }

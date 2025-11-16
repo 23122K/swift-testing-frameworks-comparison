@@ -1,7 +1,7 @@
 import ArgumentParser
 
-extension XCTestCommand {
+extension XcodebuildCommand {
   static let configuration = CommandConfiguration(
-    commandName: "xctest"
+    commandName: "xcodebuild"
   )
 }
