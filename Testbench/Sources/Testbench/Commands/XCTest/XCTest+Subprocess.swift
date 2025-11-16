@@ -18,7 +18,12 @@ extension Configuration {
     testPlan: String?,
     platform: String,
     resultBundlePath: String?,
-    derrivedDataPath: String?
+    derrivedDataPath: String?,
+    isParallelTestingEnabled: Bool,
+    maximumConcurrentTestDeviceDestinations: Int,
+    maximumConcurrentTestSimulatorDestinations: Int,
+    parallelTestingWorkerCount: Int,
+    maximumParallelTestingWorkers: Int
   ) -> Configuration {
     Configuration(
       executable: "xcodebuild",
@@ -40,6 +45,11 @@ extension Configuration {
         
         "-skipPackagePluginValidation"
         "-skipMacroValidation"
+        "-maximum-concurrent-test-device-destinations"; "\(maximumConcurrentTestDeviceDestinations)"
+        "-maximum-concurrent-test-simulator-destinations"; "\(maximumConcurrentTestSimulatorDestinations)"
+        "-parallel-testing-enabled"; isParallelTestingEnabled ? "YES" : "NO"
+        "-parallel-testing-worker-count"; "\(parallelTestingWorkerCount)"
+        "-maximum-parallel-testing-workers"; "\(maximumParallelTestingWorkers)"
 //        "clean"
         "test"
 //        "-quiet"
