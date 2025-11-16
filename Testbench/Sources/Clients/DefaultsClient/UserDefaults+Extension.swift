@@ -2,8 +2,8 @@ import Foundation
 
 extension UserDefaults {
   func _value(
-    forKey key: Defaults.Key, as type: Any.Type
-  ) throws(Defaults.Failure) -> any Sendable {
+    forKey key: DefaultsClient.Key, as type: Any.Type
+  ) throws(DefaultsClient.Failure) -> any Sendable {
     switch type {
       case
         let type where type == Bool.self,
@@ -21,7 +21,7 @@ extension UserDefaults {
         return self.object(forKey: key.rawValue) as? Date
         
       default:
-        throw Defaults.Failure.typeNotSupported(type)
+        throw DefaultsClient.Failure.typeNotSupported(type)
     }
   }
 }

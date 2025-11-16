@@ -1,4 +1,4 @@
-extension Defaults {
+extension DefaultsClient {
   public enum Key: String, CaseIterable, Sendable {
     case authorName
     case lastTestbenchUsage

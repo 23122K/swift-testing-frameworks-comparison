@@ -2,21 +2,15 @@ import ArgumentParser
 import Factory
 import Foundation
 import Subprocess
-import Defaults
-import Storage
+import DefaultsClient
+import StorageClient
 import Models
-import Date
+import DateClient
 
 @main
 struct MainCommand: AsyncParsableCommand {
-  @Flag(
-    name: [
-      .customShort("v"),
-      .customLong("verbose")
-    ],
-    help: "Show verbose logging output"
-  )
-  var isVerbose: Bool = false
+  @OptionGroup
+  var common: CommonOptions
   
   @Flag(
     name: [
@@ -39,12 +33,12 @@ struct MainCommand: AsyncParsableCommand {
   var path: String? = nil
   
   mutating func run() async throws {
-    if self.isVerbose, let date: Date = try self.defaults.get(forKey: .lastTestbenchUsage) {
+    if self.common.isVerbose, let date: Date = try self.defaults.get(forKey: .lastTestbenchUsage) {
       print("Last usage: \(date.formatted(date: .numeric, time: .standard))")
     }
     
     if
-      (self.isVerbose || self.shouldShowPath),
+      (self.common.isVerbose || self.shouldShowPath),
       let repositoryPath: String = try self.defaults.get(forKey: .repositoryURL)
     {
       print("Repository path: \(repositoryPath)")
@@ -67,12 +61,12 @@ struct MainCommand: AsyncParsableCommand {
 }
 
 extension MainCommand {
-  fileprivate var storage: Storage {
+  fileprivate var storage: StorageClient {
     @Injected(\.storage) var storage
     return storage
   }
   
-  fileprivate var defaults: Defaults {
+  fileprivate var defaults: DefaultsClient {
     @Injected(\.defaults) var defaults
     return defaults
   }

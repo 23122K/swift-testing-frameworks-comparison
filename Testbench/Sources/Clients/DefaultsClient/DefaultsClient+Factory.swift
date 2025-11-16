@@ -1,16 +1,16 @@
 import Factory
 import Foundation
 
-extension Defaults: ManagedContainer {
+extension DefaultsClient: ManagedContainer {
   public var manager: ContainerManager {
     ContainerManager()
   }
 }
 
-extension Defaults: SharedContainer {
+extension DefaultsClient: SharedContainer {
   @TaskLocal
-  public static var shared: Defaults = {
-    Defaults(
+  public static var shared: DefaultsClient = {
+    DefaultsClient(
       _set: { value, key in
         UserDefaults.standard.set(value, forKey: key.rawValue)
       },
@@ -25,7 +25,7 @@ extension Defaults: SharedContainer {
 }
 
 extension SharedContainer {
-  public var defaults: Factory<Defaults> {
-    self { Defaults.shared }
+  public var defaults: Factory<DefaultsClient> {
+    self { DefaultsClient.shared }
   }
 }

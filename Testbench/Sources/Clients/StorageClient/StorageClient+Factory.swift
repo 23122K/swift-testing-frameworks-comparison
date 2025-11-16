@@ -2,15 +2,15 @@ import Factory
 import Foundation
 import Synchronization
 
-extension Storage: SharedContainer {
+extension StorageClient: SharedContainer {
   @TaskLocal
-  public static var shared: Storage = {
+  public static var shared: StorageClient = {
     let mutex = Mutex<FileManager>(FileManager.default)
     let directory = mutex.withLock { fileManager in
       fileManager.temporaryDirectory.appending(path: "com.23122K.TestBenchmark")
     }
     
-    return Storage(
+    return StorageClient(
       _write: { content, path, encoder in
         try mutex.withLock { fileManager in
           var directoryExists: ObjCBool = false
@@ -73,14 +73,14 @@ extension Storage: SharedContainer {
   }()
 }
 
-extension Storage: ManagedContainer {
+extension StorageClient: ManagedContainer {
   public var manager: ContainerManager {
     ContainerManager()
   }
 }
 
 extension SharedContainer {
-  public var storage: Factory<Storage> {
-    self { Storage.shared }
+  public var storage: Factory<StorageClient> {
+    self { StorageClient.shared }
   }
 }

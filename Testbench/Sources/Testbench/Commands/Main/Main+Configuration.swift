@@ -5,8 +5,7 @@ extension MainCommand {
     commandName: "testbench",
     subcommands: [
       ReportCommand.self,
-      TestingCommand.self,
-      XCTestCommand.self,
+      XcodebuildCommand.self,
       ResultsCommand.self,
     ]
   )

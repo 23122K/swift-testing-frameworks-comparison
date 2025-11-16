@@ -1,11 +1,11 @@
 import ArgumentParser
-import Defaults
-import Date
+import DefaultsClient
+import DateClient
 import Foundation
 import Factory
 import Subprocess
 import Models
-import Storage
+import StorageClient
 
 struct ReportCommand: AsyncParsableCommand {
   @Flag(
@@ -143,12 +143,12 @@ struct ReportCommand: AsyncParsableCommand {
 }
 
 extension ReportCommand {
-  fileprivate var storage: Storage {
+  fileprivate var storage: StorageClient {
     @Injected(\.storage) var storage
     return storage
   }
   
-  fileprivate var defaults: Defaults {
+  fileprivate var defaults: DefaultsClient {
     @Injected(\.defaults) var defaults
     return defaults
   }
