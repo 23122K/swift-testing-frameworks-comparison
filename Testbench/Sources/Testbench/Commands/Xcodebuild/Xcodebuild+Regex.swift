@@ -1,6 +1,14 @@
 import Foundation
 
 extension RegexComponent where Self == AnyRegex {
+  static var xctestTestSuitStarted: Self {
+    AnyRegex(/Test\s(s|S)uite.+started/)
+  }
+  
+  static var xctestSucceeded: Self {
+    AnyRegex(/TEST EXECUTE SUCCEEDED/)
+  }
+  
   /// Captures test name and its duration from stdout of xctest.
   static var xctestTestCaseSuccess: Self {
     AnyRegex(/\[(.+)\].+passed.+\((.+)\sseconds\)/)

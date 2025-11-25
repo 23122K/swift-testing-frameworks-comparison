@@ -4,13 +4,18 @@ extension Configuration {
   ///
   /// ```bash
   /// xcodebuild \
-  /// -scheme swift-loggable \
+  /// -scheme Testbench \
   /// -destination "platform=macOS,arch=arm64,name=My Mac" \
-  /// -testPlan swift-loggable-xctests \
-  /// -resultBundlePath ./test_me_1.xcresult \
+  /// -testPlan testbench-xctest \
   /// -derivedDataPath ./DerrivedData/ \
-  /// clean \
-  /// test \
+  /// -skipPackagePluginValidation \
+  /// -skipMacroValidation \
+  /// -maximum-concurrent-test-device-destinations 1 \
+  /// -maximum-concurrent-test-simulator-destinations 1 \
+  /// -parallel-testing-enabled NO \
+  /// -parallel-testing-worker-count 1 \
+  /// -maximum-parallel-testing-workers 1 \
+  /// test
   /// ```
   ///
   static func test(
@@ -51,7 +56,7 @@ extension Configuration {
         "-parallel-testing-worker-count"; "\(parallelTestingWorkerCount)"
         "-maximum-parallel-testing-workers"; "\(maximumParallelTestingWorkers)"
 //        "clean"
-        "test"
+        "test-without-building"
 //        "-quiet"
       }
     )

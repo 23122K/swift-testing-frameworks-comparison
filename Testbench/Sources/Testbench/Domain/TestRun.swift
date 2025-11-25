@@ -1,4 +1,4 @@
-public struct TestRun<XCTestOptions: Sendable, TestingOptions: Sendable> {
+public struct TestRun<XCTestOptions: Sendable, TestingOptions: Sendable>: Sendable {
   public let framework: TestFramework<XCTestOptions, TestingOptions>
   public var testCases: [TestCase]
   
@@ -10,6 +10,9 @@ public struct TestRun<XCTestOptions: Sendable, TestingOptions: Sendable> {
     self.testCases = testCases
   }
 }
+
+extension TestRun: Equatable where XCTestOptions: Equatable, TestingOptions: Equatable {}
+extension TestRun: Hashable where XCTestOptions: Hashable, TestingOptions: Hashable {}
 
 extension TestRun {
   public var description: String {

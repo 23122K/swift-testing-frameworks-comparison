@@ -1,10 +1,10 @@
 import Foundation
 
 public enum TestFramework<
-  XctestOptions: Sendable,
+  XCTestOptions: Sendable,
   TestingOptions: Sendable
 >: Sendable {
-  case xctest(XctestOptions)
+  case xctest(XCTestOptions)
   case swiftTesting(TestingOptions)
 }
 
@@ -39,5 +39,5 @@ extension TestFramework: CustomDebugStringConvertible {
   }
 }
 
-extension TestFramework: Equatable where XctestOptions: Equatable, TestingOptions: Equatable {}
-extension TestFramework: Hashable where XctestOptions: Hashable, TestingOptions: Hashable {}
+extension TestFramework: Equatable where XCTestOptions: Equatable, TestingOptions: Equatable {}
+extension TestFramework: Hashable where XCTestOptions: Hashable, TestingOptions: Hashable {}
