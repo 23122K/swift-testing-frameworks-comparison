@@ -8,7 +8,7 @@ struct XcodebuildRegexTests {
     var count = 0
     for line in String.mockSuccessTestingOutputFromTestPlan.split(whereSeparator: \.isNewline) {
       let line = String(line)
-      if let _ = line.match(using: .testingTestCaseSuccess, ignore: .testingTestRun) {
+      if let _ = line.match(using: .testingTestCaseSuccess, ignore: [.testingTestRun]) {
         count += 1
       }
     }

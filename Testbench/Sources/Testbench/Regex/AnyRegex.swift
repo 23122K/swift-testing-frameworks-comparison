@@ -1,6 +1,7 @@
 import Foundation
 
-public struct AnyRegex: RegexComponent {
+// FIXME: Check whether erasing Sendable value upholds its sendability.
+public struct AnyRegex: RegexComponent, @unchecked Sendable {
   public let regex: Regex<AnyRegexOutput>
   
   public init<RegexOutput: Sendable>(_ regex: Regex<RegexOutput>) {

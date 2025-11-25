@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "A287F8FB-4D11-4ED7-97B0-58568F2EA9A1",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SwiftTestingTests",
+        "name" : "SwiftTestingTests"
+      }
+    }
+  ],
+  "version" : 1
+}

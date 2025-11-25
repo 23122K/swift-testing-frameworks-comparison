@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "2769D99F-C10E-41A3-A793-515BE9FBC728",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TestbenchTests",
+        "name" : "TestbenchTests"
+      }
+    }
+  ],
+  "version" : 1
+}

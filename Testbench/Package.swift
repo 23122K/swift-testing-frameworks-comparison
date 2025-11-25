@@ -56,6 +56,8 @@ let package = Package(
         "Testbench"
       ]
     ),
+    .testTarget(name: "SwiftTestingTests"),
+    .testTarget(name: "XCTestTests"),
   ],
   swiftLanguageModes: [.v6]
 )

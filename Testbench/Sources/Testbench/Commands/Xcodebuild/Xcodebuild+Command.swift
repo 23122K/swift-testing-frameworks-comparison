@@ -6,18 +6,35 @@ import StorageClient
 import Foundation
 import Models
 
-struct XCTestOptions: @unchecked Sendable {
+struct XCTestOptions: Sendable, Encodable {
   let testPlan: String
   let regex: AnyRegex
+  
+  func encode(to encoder: any Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(self.testPlan)
+  }
 }
 
-struct TestingOptions: @unchecked Sendable {
+struct TestingOptions: Sendable {
   let testPlan: String
   let regex: AnyRegex
   let ignoreRegexes: [AnyRegex]
+  
+  func encode(to encoder: any Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(self.testPlan)
+  }
+}
+
+struct TestSummary: Sendable, Codable {
+  let testPlan: String
+  let framework: String
+  let testCases: [TestCase]
 }
 
 typealias XcodebuildTestRun = TestRun<XCTestOptions, TestingOptions>
+
 extension XcodebuildTestRun {
   var testPlan: String {
     switch self.framework {
@@ -27,6 +44,14 @@ extension XcodebuildTestRun {
       case let .swiftTesting(options):
         options.testPlan
     }
+  }
+  
+  var summary: TestSummary {
+    TestSummary(
+      testPlan: self.testPlan,
+      framework: self.framework.description,
+      testCases: self.testCases
+    )
   }
 }
 
@@ -40,10 +65,10 @@ struct XcodebuildCommand: AsyncParsableCommand {
   @Argument
   var destination: String = "macOS"
   
-  @Option(help: "Test plan containing only tests in XCTest")
+  @Option(help: "XCTest test plan name")
   var xctestPlan: String = "testbench-xctest"
   
-  @Option(help: "Test plan containing only tests in Testing")
+  @Option(help: "Swift Testing test plan name")
   var testingPlan: String = "testbench-testing"
   
   @Option(help: "Tests iterations, before each run clean build is done")
@@ -56,39 +81,38 @@ struct XcodebuildCommand: AsyncParsableCommand {
       .directory()
       .appending(path: "DerrivedData")
     
-    var runs = [
-      XcodebuildTestRun(
-        framework: .xctest(
-          XCTestOptions(
-            testPlan: self.xctestPlan,
-            regex: .xctestTestCaseSuccess
-          )
-        )
-      ),
-      XcodebuildTestRun(
-        framework: .swiftTesting(
-          TestingOptions(
-            testPlan: self.testingPlan,
-            regex: .testingTestCaseSuccess,
-            ignoreRegexes: [
-              .testingTestRun,
-              .testingTestSuite
-            ]
-          )
+    let frameworks: [TestFramework<XCTestOptions, TestingOptions>] = [
+//      .swiftTesting(
+//        TestingOptions(
+//          testPlan: self.testingPlan,
+//          regex: .testingTestCaseSuccess,
+//          ignoreRegexes: [
+//            .testingTestRun,
+//            .testingTestSuite
+//          ]
+//        )
+//      ),
+      .xctest(
+        XCTestOptions(
+          testPlan: self.xctestPlan,
+          regex: .xctestTestCaseSuccess
         )
       )
     ]
     
-    for run in 0 ..< runs.count {
+    for framework in frameworks {
       for i in 0 ..< self.iterations {
+        var run = XcodebuildTestRun(framework: framework)
         if self.common.isVerbose {
-          print("Test plan: \(runs[run].testPlan), iteration: \(i + 1)")
+          print("Framework: \(framework.description), iteration: \(i + 1)")
         }
-        _ = try await Subprocess.run(
+        
+        var start: DispatchTime?
+        let runResult  = try await Subprocess.run(
           Configuration.test(
             self.schema,
             testPlan: {
-              switch runs[run].framework {
+              switch framework {
                 case let .swiftTesting(options):
                   options.testPlan
                   
@@ -102,36 +126,60 @@ struct XcodebuildCommand: AsyncParsableCommand {
             isParallelTestingEnabled: false,
             maximumConcurrentTestDeviceDestinations: 1,
             maximumConcurrentTestSimulatorDestinations: 1,
-            parallelTestingWorkerCount: 1, // Even with parallel testing disabled this cant be 0
+            parallelTestingWorkerCount: 2, // Even with parallel testing disabled this cant be 0
             maximumParallelTestingWorkers: 1 // Same case, can be 0
           )
-        ) { _, _, outputIo, errorIo in
+        ) { execution, _, outputIo, errorIo in
           for try await output in outputIo.lines() {
+            if let _ = output.match(using: .xctestTestSuitStarted), start == nil {
+              start = .now()
+              print("Test started ***")
+            }
+            
             if self.common.isVerbose {
               print(output)
+              if let start {
+                let duration = start.distance(to: .now())
+                print("Duration \(duration.seconds)")
+              }
             }
             
-            let testCase: TestCase?
-            switch runs[run].framework {
-              case let .xctest(options):
-                testCase = output.match(using: options.regex).testCase()
-                
-              case let .swiftTesting(options):
-                testCase = output.match(using: options.regex, ignore: options.ignoreRegexes).testCase()
-            }
+//            let testCase: TestCase?
+//            switch framework {
+//            case let .xctest(options):
+//              testCase = output.match(using: options.regex).testCase()
+//              
+//            case let .swiftTesting(options):
+//              testCase = output.match(using: options.regex, ignore: options.ignoreRegexes).testCase()
+//            }
+//            
+//            if let testCase {
+//              run.testCases.append(testCase)
+//            }
             
-            if let testCase {
-              runs[run].testCases.append(testCase)
-            }
-          }
-          
-          for try await error in errorIo.lines() {
-            print("Error: \(error)")
+//            for try await error in errorIo.lines() {
+//              print("Error: \(error)")
+//            }
+            
           }
         }
         
+        if runResult.terminationStatus == .exited(0), let start {
+          let duration = start.distance(to: .now())
+          print("Duration \(duration.seconds)")
+        } else {
+          print("Test finished without capturing start event")
+        }
+        
+        print("Finished!")
+        
         // Clean derrived data after test itration
-        try self.storage.delete(derrivedDataPath)
+        do {
+//          try self.storage.delete(derrivedDataPath)
+          try self.storage.write(run.summary, name: "\(run.testPlan)-iteration-\(i+1).json")
+        } catch {
+          print(error)
+        }
       }
     }
   }
@@ -207,5 +255,26 @@ extension BidirectionalCollection where Self.SubSequence == Substring {
     }
     
     return self.firstMatch(of: regex)
+  }
+}
+
+extension DispatchTimeInterval {
+  var seconds: Double {
+    switch self {
+    case let .seconds(value):
+      return Double(value)
+      
+    case let .milliseconds(value):
+      return Double(value) / 1_000
+      
+    case let .microseconds(value):
+      return Double(value) / 1_000_000
+      
+    case let .nanoseconds(value):
+      return Double(value) / 1_000_000_000
+    
+    default:
+      return 0.0
+    }
   }
 }
