@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "7F1F08DD-823C-4632-80BF-78E9D4C788F0",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "XCTestTests",
+        "name" : "XCTestTests"
+      }
+    }
+  ],
+  "version" : 1
+}

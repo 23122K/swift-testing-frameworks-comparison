@@ -1,8 +1,8 @@
 extension Report {
   public struct System: Sendable, Codable {
-    public let productName: String // macOS
-    public let productVersion: String // 26.0.1
-    public let buildVersion: String // 25A362
+    public let productName: String
+    public let productVersion: String
+    public let buildVersion: String
     
     public init(
       productName: String,
