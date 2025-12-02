@@ -1,4 +1,19 @@
+import Foundation
 import Subprocess
+
+extension Process {
+  class func getXcodeToolchainPath() -> Process {
+    let process = Process()
+    process.executableURL = xcodeSelectExecutableURL
+    process.arguments = [
+      "--print-path"
+    ]
+    return process
+  }
+  
+  private static let xcodeSelectExecutableURL = URL(filePath: "usr/bin/xcode-select")
+}
+
 
 extension Configuration {
   ///
@@ -55,8 +70,8 @@ extension Configuration {
         "-parallel-testing-enabled"; isParallelTestingEnabled ? "YES" : "NO"
         "-parallel-testing-worker-count"; "\(parallelTestingWorkerCount)"
         "-maximum-parallel-testing-workers"; "\(maximumParallelTestingWorkers)"
-//        "clean"
-        "test-without-building"
+        "clean"
+        "test"
 //        "-quiet"
       }
     )

@@ -111,3 +111,9 @@ extension Subprocess.Configuration {
     )
   }
 }
+
+func arguments<T>(
+  @ResultBuilder<T> _ elements: () -> [T]
+) -> [T] {
+  elements()
+}
