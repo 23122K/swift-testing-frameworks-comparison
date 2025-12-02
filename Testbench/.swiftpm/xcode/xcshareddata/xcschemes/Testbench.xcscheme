@@ -48,14 +48,14 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Tests/testbench-xctest.xctestplan"
+            reference = "container:.swiftpm/testbench-testing.xctestplan"
             default = "YES">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:.swiftpm/testbench-testing.xctestplan">
+            reference = "container:.swiftpm/testbench.xctestplan">
          </TestPlanReference>
          <TestPlanReference
-            reference = "container:.swiftpm/testbench.xctestplan">
+            reference = "container:.swiftpm/testbench-xctest.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>

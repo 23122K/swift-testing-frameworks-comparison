@@ -5,6 +5,10 @@ extension RegexComponent where Self == AnyRegex {
     AnyRegex(/Test\s(s|S)uite.+started/)
   }
   
+  static var xctestTestSuitPassed: Self {
+    AnyRegex(/Test\sSuite\s'All\stests'\spassed\sat/)
+  }
+  
   static var xctestSucceeded: Self {
     AnyRegex(/TEST EXECUTE SUCCEEDED/)
   }
@@ -14,6 +18,10 @@ extension RegexComponent where Self == AnyRegex {
     AnyRegex(/\[(.+)\].+passed.+\((.+)\sseconds\)/)
   }
   
+  static var testingTestRunStarted: Self {
+    AnyRegex(/.+Test\srun\sstarted.+/)
+  }
+  
   /// Captures test run information for Testing framework.
   ///
   /// Output takes format `Test run with 1 test in 1 suite passed after 0.028 seconds.`
@@ -21,7 +29,7 @@ extension RegexComponent where Self == AnyRegex {
   /// - First, number of test - `Int`
   /// - Second, number of suites - `Int`
   /// - Third, duration of the tests within suite - `Double`
-  static var testingTestRun: Self {
+  static var testingTestRunPassed: Self {
     AnyRegex(/Test\srun\swith\s([\d]+).+([\d]).+passed\safter\s([\d.]+)\sseconds/)
   }
   

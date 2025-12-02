@@ -1,7 +1,7 @@
 {
   "configurations" : [
     {
-      "id" : "2769D99F-C10E-41A3-A793-515BE9FBC728",
+      "id" : "B1CBA9CB-461D-495C-8DC3-D9692BBAFA31",
       "name" : "Configuration 1",
       "options" : {
 
@@ -12,13 +12,7 @@
 
   },
   "testTargets" : [
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "TestbenchTests",
-        "name" : "TestbenchTests"
-      }
-    }
+
   ],
   "version" : 1
 }

@@ -1,13 +1,12 @@
-/// `system_profiler SPHardwareDataType`
 extension Report {
   public struct Hardware: Sendable, Codable {
     public let modelName: String
-    public let modelIdentifier: String // MacBookPro17,1
-    public let modelNumber: String // Z11B0002QZE/A
-    public let chip: String //Apple M1
-    public let totalNumberOfCores: String // 8 (4 performance and 4 efficiency)
-    public let memory: String //16 GB
-    public let systemFirmwareVersion: String // 13822.1.2
+    public let modelIdentifier: String
+    public let modelNumber: String
+    public let chip: String
+    public let totalNumberOfCores: String
+    public let memory: String
+    public let systemFirmwareVersion: String
     
     public init(
       modelName: String,
