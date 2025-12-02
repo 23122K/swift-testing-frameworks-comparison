@@ -4,5 +4,6 @@ extension DefaultsClient {
     case lastTestbenchUsage
     case isReportGenerated
     case repositoryURL
+    case xcodeToolchainURL
   }
 }

@@ -76,22 +76,21 @@ struct XcodebuildCommand: AsyncParsableCommand {
 
   mutating func run() async throws {
     try await self.checkIfCanStartBenchmark()
-    
     let derrivedDataPath = self.storage
       .directory()
       .appending(path: "DerrivedData")
     
     let frameworks: [TestFramework<XCTestOptions, TestingOptions>] = [
-//      .swiftTesting(
-//        TestingOptions(
-//          testPlan: self.testingPlan,
-//          regex: .testingTestCaseSuccess,
-//          ignoreRegexes: [
-//            .testingTestRun,
-//            .testingTestSuite
-//          ]
-//        )
-//      ),
+      .swiftTesting(
+        TestingOptions(
+          testPlan: self.testingPlan,
+          regex: .testingTestCaseSuccess,
+          ignoreRegexes: [
+            .testingTestRun,
+            .testingTestSuite
+          ]
+        )
+      ),
       .xctest(
         XCTestOptions(
           testPlan: self.xctestPlan,
@@ -107,43 +106,58 @@ struct XcodebuildCommand: AsyncParsableCommand {
           print("Framework: \(framework.description), iteration: \(i + 1)")
         }
         
-        var start: DispatchTime?
-        let runResult  = try await Subprocess.run(
-          Configuration.test(
-            self.schema,
-            testPlan: {
-              switch framework {
-                case let .swiftTesting(options):
-                  options.testPlan
-                  
-                case let .xctest(options):
-                  options.testPlan
-              }
-            }(),
-            platform: self.destination, // FIXME: pmaciag -
-            resultBundlePath: nil,
-            derrivedDataPath: derrivedDataPath.path(),
-            isParallelTestingEnabled: false,
-            maximumConcurrentTestDeviceDestinations: 1,
-            maximumConcurrentTestSimulatorDestinations: 1,
-            parallelTestingWorkerCount: 2, // Even with parallel testing disabled this cant be 0
-            maximumParallelTestingWorkers: 1 // Same case, can be 0
-          )
-        ) { execution, _, outputIo, errorIo in
-          for try await output in outputIo.lines() {
-            if let _ = output.match(using: .xctestTestSuitStarted), start == nil {
-              start = .now()
-              print("Test started ***")
-            }
+        try await self.invokeXcodebuild(
+          scheme: self.schema,
+          testPlan: run.testPlan
+        ) { line in
+          let testCase: TestCase?
+          switch framework {
+          case let .xctest(options):
+            testCase = line.match(using: options.regex).testCase()
             
-            if self.common.isVerbose {
-              print(output)
-              if let start {
-                let duration = start.distance(to: .now())
-                print("Duration \(duration.seconds)")
-              }
-            }
-            
+          case let .swiftTesting(options):
+            testCase = line.match(using: options.regex, ignore: options.ignoreRegexes).testCase()
+          }
+          
+          if let testCase {
+            run.testCases.append(testCase)
+          }
+        }
+        
+        print(run.totalTestDuration)
+        
+//        let runResult = try await Subprocess.run(
+//          Configuration.test(
+//            self.schema,
+//            testPlan: {
+//              switch framework {
+//                case let .swiftTesting(options):
+//                  options.testPlan
+//                  
+//                case let .xctest(options):
+//                  options.testPlan
+//              }
+//            }(),
+//            platform: self.destination, // FIXME: pmaciag -
+//            resultBundlePath: nil,
+//            derrivedDataPath: derrivedDataPath.path(),
+//            isParallelTestingEnabled: false,
+//            maximumConcurrentTestDeviceDestinations: 1,
+//            maximumConcurrentTestSimulatorDestinations: 1,
+//            parallelTestingWorkerCount: 1,
+//            maximumParallelTestingWorkers: 1
+//          )
+//        ) { exec, outputIo in
+//          for try await buffer in outputIo {
+//            let rawSpan = buffer.bytes
+//            var array: [UInt8] = []
+//            for index in 0..<rawSpan.byteCount {
+//                array.append(rawSpan.unsafeLoad(fromByteOffset: index, as: UInt8.self))
+//            }
+//            
+//            let output = String(decodingBytes: array, as2: Unicode.UTF8.self)
+//            print(output)
+//            
 //            let testCase: TestCase?
 //            switch framework {
 //            case let .xctest(options):
@@ -156,32 +170,85 @@ struct XcodebuildCommand: AsyncParsableCommand {
 //            if let testCase {
 //              run.testCases.append(testCase)
 //            }
-            
-//            for try await error in errorIo.lines() {
-//              print("Error: \(error)")
-//            }
-            
-          }
-        }
+//          }
+//        }
         
-        if runResult.terminationStatus == .exited(0), let start {
-          let duration = start.distance(to: .now())
-          print("Duration \(duration.seconds)")
-        } else {
-          print("Test finished without capturing start event")
-        }
-        
-        print("Finished!")
-        
+
         // Clean derrived data after test itration
-        do {
+//        do {
 //          try self.storage.delete(derrivedDataPath)
-          try self.storage.write(run.summary, name: "\(run.testPlan)-iteration-\(i+1).json")
-        } catch {
-          print(error)
-        }
+//          try self.storage.write(run.summary, name: "\(run.testPlan)-iteration-\(i+1).json")
+//        } catch {
+//          print(error)
+//        }
       }
     }
+  }
+  
+  private func invokeXcodebuild(
+    scheme: String,
+    destination: String = "platform=macOS,arch=arm64,name=My Mac",
+    derrivedDataPath: String? = nil,
+    resultBundlePath: String? = nil,
+    testPlan: String,
+    shouldSkipPackagePluginValidation: Bool = true,
+    shouldSkipMacroValidation: Bool = true,
+    isParallelTestingEnabled: Bool = false,
+    parallelTestingWorkerCount: Int = 1,
+    _ output: @escaping (String) -> Void
+  ) async throws {
+    let process = Process()
+    let standardOutput = Pipe()
+    process.standardOutput = standardOutput
+    process.executableURL = try await self.getXcodePath()
+      .appending(path: "usr")
+      .appending(path: "bin")
+      .appending(path: "xcodebuild")
+    
+    process.arguments = arguments {
+      "test"
+      "-scheme"; self.schema
+      "-destination"; "platform=macOS,arch=arm64,name=My Mac"
+      if let derrivedDataPath {
+        "-derivedDataPath"; "\(derrivedDataPath)"
+      }
+      
+      if let resultBundlePath {
+        "-resultBundlePath"; "\(resultBundlePath)"
+      }
+      "-testPlan"; "\(testPlan)"
+      if shouldSkipPackagePluginValidation {
+        "-skipPackagePluginValidation"
+      }
+      if shouldSkipMacroValidation {
+        "-skipMacroValidation"
+      }
+      "-parallel-testing-enabled"; isParallelTestingEnabled ? "YES" : "NO"
+      "-parallel-testing-worker-count"; "\(parallelTestingWorkerCount)"
+    }
+    
+    try process.run()
+    for try await line in standardOutput.fileHandleForReading.bytes.lines {
+      output(line)
+    }
+  }
+  
+  private func getXcodePath() async throws -> URL {
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: "/usr/bin/xcode-select")
+    process.arguments = arguments {
+      "--print-path"
+    }
+    
+    let standardOutput = Pipe()
+    process.standardOutput = standardOutput
+    try process.run()
+    
+    guard
+      let filePath = try await standardOutput.fileHandleForReading.bytes.lines.first(where: { _ in true })
+    else { fatalError("WIP") }
+    
+    return URL(filePath: filePath)
   }
   
   private func checkSimulator() async throws -> (id: String, status: String) {
