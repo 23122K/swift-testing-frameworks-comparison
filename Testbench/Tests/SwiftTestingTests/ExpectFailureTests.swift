@@ -1,5 +1,16 @@
 import Testing
 
+@Suite
+enum FooTests {
+  case bar
+  init() { self = .bar }
+  
+  @Test
+  func baz() async throws {
+    #expect(true)
+  }
+}
+
 @Suite(.serialized)
 struct ExpectFailureTests {
   @Test

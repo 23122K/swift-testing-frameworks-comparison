@@ -2,12 +2,27 @@ import XCTest
 
 final class ExpectFailureTests: XCTestCase {
   func testUnwrapCaughtFailureThenAssertEqual1() throws {
-    XCTAssertThrowsError(
-      try { throw Failure(code: 1) }()
-    ) { error in
-      let failure = try? XCTUnwrap(error as? Failure)
-      XCTAssert(failure?.code == 1)
+    XCTExpectFailure {
+//      throw NSError(domain: "foo.com.error", code: 1)
+      print("Foo")
+    } issueMatcher: {
+      switch $0.associatedError as? NSError {
+      case .some:
+        true
+        
+      case .none:
+        false
+      }
     }
+  }
+  
+  func testFoo() async throws {
+    let expectation = XCTestExpectation()
+    expectation.isInverted = true
+    
+//    expectation.fulfill()
+    
+    await fulfillment(of: [expectation], timeout: 1)
   }
 
   func testUnwrapCaughtFailureThenAssertEqual2() throws {
