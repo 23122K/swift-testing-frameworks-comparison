@@ -50,12 +50,6 @@ let package = Package(
       ],
       path: "Sources/Clients/DateClient"
     ),
-    .testTarget(
-      name: "TestbenchTests",
-      dependencies: [
-        "Testbench"
-      ]
-    ),
     .testTarget(name: "SwiftTestingTests"),
     .testTarget(name: "XCTestTests"),
   ],
