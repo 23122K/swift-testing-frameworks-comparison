@@ -22,6 +22,7 @@ struct TestingOptions: Sendable {
 struct TestSummary: Sendable, Codable {
   let testPlan: String
   let framework: String
+  let testRunDuration: Double
   let testCases: [TestCase]
 }
 
@@ -41,6 +42,7 @@ extension XcodebuildTestRun {
     TestSummary(
       testPlan: self.testPlan,
       framework: self.framework.description,
+      testRunDuration: self.testRunDuration,
       testCases: self.testCases
     )
   }
