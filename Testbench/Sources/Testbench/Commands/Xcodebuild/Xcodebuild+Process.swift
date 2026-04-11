@@ -5,31 +5,17 @@ extension XcodebuildCommand {
   func xcodebuildBuildForTesting(
     scheme: String,
     destination: String = "platform=macOS,arch=arm64,name=My Mac",
-    derrivedData: URL,
-    shouldSkipPackagePluginValidation: Bool = true,
-    shouldSkipMacroValidation: Bool = true,
-    isParallelTestingEnabled: Bool = false,
-    parallelTestingWorkerCount: Int = 1
+    derrivedData: URL
   ) async throws -> URL {
     let result = try await Subprocess.run(
       Configuration(
         executable: "xcrun",
         arguments: {
           "xcodebuild"
-          "clean"
           "build-for-testing"
-          "-scheme"; self.schema
-          "-configuration"; "Debug"
+          "-scheme"; scheme
           "-destination"; "\(destination)"
           "-derivedDataPath"; "\(derrivedData.path())"
-          if shouldSkipPackagePluginValidation {
-            "-skipPackagePluginValidation"
-          }
-          if shouldSkipMacroValidation {
-            "-skipMacroValidation"
-          }
-          "-parallel-testing-enabled"; isParallelTestingEnabled ? "YES" : "NO"
-          "-parallel-testing-worker-count"; "\(parallelTestingWorkerCount)"
         }
       )
     ) { _, _, stdout, stderr -> Void in
@@ -58,11 +44,18 @@ extension XcodebuildCommand {
 
 enum XcodebuildError: Error, CustomStringConvertible {
   case buildFailed(scheme: String, status: TerminationStatus)
+  case resultsAlreadyExist(scheme: String, path: String)
 
   var description: String {
     switch self {
     case let .buildFailed(scheme, status):
       return "xcodebuild build-for-testing failed for scheme '\(scheme)' (exit: \(status))"
+    case let .resultsAlreadyExist(scheme, path):
+      return """
+        Results for scheme '\(scheme)' already exist at:
+          \(path)
+        Re-run with --force / -f to purge existing results and continue.
+        """
     }
   }
 }
