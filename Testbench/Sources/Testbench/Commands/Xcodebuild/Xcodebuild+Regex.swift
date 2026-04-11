@@ -40,6 +40,14 @@ extension RegexComponent where Self == AnyRegex {
   static var testingTestSuite: Self {
     AnyRegex(/Suite\s(.+)\spassed\safter\s([\d.]+)\sseconds/)
   }
+
+  /// Captures wall-clock total time from the final XCTest summary line.
+  ///
+  /// Output format: `\t Executed N tests, with 0 failures (0 unexpected) in X.XXX (Y.YYY) seconds`
+  /// Captures Y.YYY — the wall-clock time shown in parentheses.
+  static var xctestTotalTime: Self {
+    AnyRegex(/Executed\s+\d+.+in\s+[\d.]+\s+\(([\d.]+)\)\s+seconds/)
+  }
 }
 
 extension Optional where Wrapped == Regex<AnyRegexOutput>.Match {
