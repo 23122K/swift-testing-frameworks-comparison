@@ -23,7 +23,7 @@ struct XcodebuildCommand: AsyncParsableCommand {
   var testingPlan: String = "testbench-testing"
   
   @Option(help: "Tests iterations, before each run clean build is done")
-  var iterations: Int = 1 // FIXME: Bump to ten
+  var iterations: Int = 10
   
   var frameworks: [TestFramework<XCTestOptions, TestingOptions>] {
     [
@@ -59,8 +59,8 @@ struct XcodebuildCommand: AsyncParsableCommand {
     for bundle in bundles {
       print("Bundle: \(bundle.path())")
     }
-    
-    print("Finished 2")
+
+    try await self.runXCTestBundles(bundles)
   }
   
   private func checkIfCanStartBenchmark() async throws {
