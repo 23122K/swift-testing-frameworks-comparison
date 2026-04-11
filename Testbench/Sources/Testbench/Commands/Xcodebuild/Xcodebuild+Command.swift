@@ -12,9 +12,6 @@ struct XcodebuildCommand: AsyncParsableCommand {
   
   @Argument(help: "Schema containing test plans for both XCTest and Testing")
   var schema: String
-  
-  @Flag(name: .customShort("p"))
-  var isParallelTestingEnabled: Bool = false
 
   @Flag(
     name: [.customLong("force"), .customShort("f")],
@@ -27,18 +24,15 @@ struct XcodebuildCommand: AsyncParsableCommand {
   
   mutating func run() async throws {
     try await self.checkIfCanStartBenchmark()
-    guard try self.checkAndPurgeExistingResults() else { return }
-    
-    print("1: \(self.isParallelTestingEnabled)")
+    try self.checkAndPurgeExistingResults()
+
     let derrivedData = self.storage
       .directory()
       .appending(path: "DerrivedData")
-    
+
     let path = try await self.xcodebuildBuildForTesting(
       scheme: self.schema,
-      derrivedData: derrivedData,
-      isParallelTestingEnabled: true,
-      parallelTestingWorkerCount: 4
+      derrivedData: derrivedData
     )
     
     let bundles = try self.storage
@@ -58,46 +52,30 @@ struct XcodebuildCommand: AsyncParsableCommand {
   }
   
   /// Checks whether previous xcodebuild results exist for this schema.
-  /// If they do, warns the user and asks for confirmation (or purges immediately when --force is set).
-  /// Returns `false` if the user chose to abort.
-  private func checkAndPurgeExistingResults() throws -> Bool {
+  /// Purges them when --force is set; otherwise exits with an error.
+  private func checkAndPurgeExistingResults() throws {
     let schemaResultsDir = self.storage
       .directory()
       .appending(path: "xcodebuild")
       .appending(path: self.schema)
 
-    var isDirectory: ObjCBool = false
-    let exists = FileManager.default.fileExists(
-      atPath: schemaResultsDir.path(),
-      isDirectory: &isDirectory
-    )
-
-    guard exists, isDirectory.boolValue else { return true }
-
-    let contents = try FileManager.default.contentsOfDirectory(atPath: schemaResultsDir.path())
-    guard !contents.isEmpty else { return true }
-
-    print("Warning: existing results for schema '\(self.schema)' found at:")
-    print("  \(schemaResultsDir.path())")
-    print("Running again will overwrite them. Mixed old and new iterations can corrupt comparisons.")
-
-    if self.force {
-      try FileManager.default.removeItem(at: schemaResultsDir)
-      print("Existing results purged (--force).")
-      return true
+    let contents: [String]
+    do {
+      contents = try self.storage.contentsOfDirectory(schemaResultsDir)
+    } catch {
+      return
     }
 
-    print("Purge existing results and continue? [y/N]: ", terminator: "")
-
-    let answer = readLine()?.trimmingCharacters(in: .whitespaces).lowercased() ?? ""
-    guard answer == "y" || answer == "yes" else {
-      print("Aborted. Re-run with --force / -f to purge automatically.")
-      return false
+    if contents.isEmpty {
+      return
     }
 
-    try FileManager.default.removeItem(at: schemaResultsDir)
-    print("Existing results purged.")
-    return true
+    guard self.force else {
+      throw XcodebuildError.resultsAlreadyExist(scheme: self.schema, path: schemaResultsDir.path())
+    }
+
+    try self.storage.delete(schemaResultsDir)
+    print("Existing results purged (--force).")
   }
 
   private func checkIfCanStartBenchmark() async throws {
