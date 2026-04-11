@@ -99,6 +99,14 @@ extension Configuration {
 }
 
 extension Subprocess.Configuration {
+  public static func xcrun(
+    @ResultBuilder<String> _ arguments: () -> [String]
+  ) -> Self {
+    Self(
+      executable: .path("/usr/bin/xcrun"),
+      arguments: Arguments(arguments())
+    )
+  }
   public init(
     executable name: String,
     @ResultBuilder<String> arguments: () -> [String]
