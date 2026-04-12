@@ -330,31 +330,32 @@ The only outlier of note is iteration~1 of \texttt{PeselXCTests} on both machine
 3$\sigma$ and is consistent with a cold-start effect on the first run after cache
 clearance. No comparable warm-up effect is visible in subsequent iterations.
 
-Figure~\ref{fig:pesel-boxplot} shows the marginal distributions for both suites on
-both machines. The non-overlapping interquartile ranges confirm that the difference
-is robust and not an artefact of measurement noise.
+Figure~\ref{fig:pesel-hist} shows the empirical distributions for both suites on
+both machines. The clearly separated histogram peaks, confirmed by the KDE overlays,
+indicate that the difference is robust and not an artefact of measurement noise.
 
 \begin{figure}[ht]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m2-results/xcodebuild/swift-pesel/plots/swift-pesel_boxplot.pdf}
+            m2-results/xcodebuild/swift-pesel/plots/swift-pesel_histograms.pdf}
         \caption{Apple M2 Pro}
-        \label{fig:pesel-m2-box}
+        \label{fig:pesel-m2-hist}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m5-results/xcodebuild/swift-pesel/plots/swift-pesel_boxplot.pdf}
+            m5-results/xcodebuild/swift-pesel/plots/m5_swift-pesel_histograms.pdf}
         \caption{Apple M5}
-        \label{fig:pesel-m5-box}
+        \label{fig:pesel-m5-hist}
     \end{subfigure}
     \caption{%
-        Total test run duration for \textit{swift-pesel} on both machines
-        (box: Q1--Q3; whiskers: $1.5\times\mathrm{IQR}$; $\blacklozenge$: mean;
-        $n=100$ per suite).
+        Empirical duration distributions for \textit{swift-pesel} on both machines.
+        Bars show normalised frequency; curves show KDE with Scott's bandwidth;
+        dashed and dotted vertical lines mark the mean and median respectively
+        ($n=100$ per suite).
     }
-    \label{fig:pesel-boxplot}
+    \label{fig:pesel-hist}
 \end{figure}
 
 \subsubsection*{bitchat --- pre-fix}
@@ -382,34 +383,34 @@ is robust and not an artefact of measurement noise.
 
 Prior to the fix, the Swift Testing suite ran 3.31\,s slower than XCTest on the M2~Pro
 ($+65.9\%$) and 3.17\,s slower on the M5 ($+66.3\%$), as shown in
-Table~\ref{tab:perf-bitchat-pre} and Figure~\ref{fig:bitchat-pre-box}. The
-distributions are well-separated and non-overlapping, ruling out any plausible
-measurement artefact. The gap magnitude is also consistent across both hardware
-platforms, which strengthens the case that the cause is specific to the suite's
-implementation rather than to system-level scheduling noise.
+Table~\ref{tab:perf-bitchat-pre} and Figure~\ref{fig:bitchat-pre-hist}. The
+distributions are clearly separated with no overlap between the two frameworks,
+ruling out any plausible measurement artefact. The gap magnitude is also consistent
+across both hardware platforms, which strengthens the case that the cause is specific
+to the suite's implementation rather than to system-level scheduling noise.
 
 \begin{figure}[ht]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m2-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+            m2-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/m2_pro_pre_refactor_bitchat_histograms.pdf}
         \caption{Apple M2 Pro --- before fix}
-        \label{fig:bitchat-pre-m2-box}
+        \label{fig:bitchat-pre-m2-hist}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m5-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+            m5-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/m5_pre_refactor_bitchat_histograms.pdf}
         \caption{Apple M5 --- before fix}
-        \label{fig:bitchat-pre-m5-box}
+        \label{fig:bitchat-pre-m5-hist}
     \end{subfigure}
     \caption{%
-        Total test run duration for \textit{bitchat} before the correctness fix,
-        on both machines. The Swift Testing suite is approximately 3.2--3.3\,s
-        slower than XCTest, with non-overlapping interquartile ranges on both
-        platforms ($n = 100$ per suite).
+        Empirical duration distributions for \textit{bitchat} before the
+        correctness fix. The Swift Testing and XCTest distributions are entirely
+        non-overlapping, with Swift Testing running approximately 3.2--3.3\,s
+        slower on both platforms ($n = 100$ per suite).
     }
-    \label{fig:bitchat-pre-box}
+    \label{fig:bitchat-pre-hist}
 \end{figure}
 
 \subsubsection*{bitchat --- root cause of the pre-fix gap}
@@ -489,7 +490,7 @@ entirely, eliminating the $7 \times 500\,\mathrm{ms} = 3.5\,\mathrm{s}$ overhead
 Following the fix, the Swift Testing suite completes in 4.556\,s on the M2~Pro and
 4.351\,s on the M5 --- in both cases \textit{faster} than its XCTest counterpart
 by approximately 0.44\,s ($-8.8\%$) and 0.43\,s ($-9.0\%$) respectively
-(Table~\ref{tab:perf-bitchat-post}, Figure~\ref{fig:bitchat-post-box}). The
+(Table~\ref{tab:perf-bitchat-post}, Figure~\ref{fig:bitchat-post-ci}). The
 XCTest baseline remained unchanged between the two measurement rounds within the
 bounds of normal variation ($\Delta = -0.028\,\mathrm{s}$ on M2~Pro,
 $\Delta = +0.008\,\mathrm{s}$ on M5), confirming that the change was isolated
@@ -506,23 +507,24 @@ The precise contribution of this factor is outside the scope of this study.
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m2-results/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+            m2-results/xcodebuild/bitchat/plots/m2_pro_bitchat_mean_ci.pdf}
         \caption{Apple M2 Pro --- after fix}
-        \label{fig:bitchat-post-m2-box}
+        \label{fig:bitchat-post-m2-ci}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.48\textwidth}
         \includegraphics[width=\textwidth]{%
-            m5-results/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+            m5-results/xcodebuild/bitchat/plots/m5_bitchat_mean_ci.pdf}
         \caption{Apple M5 --- after fix}
-        \label{fig:bitchat-post-m5-box}
+        \label{fig:bitchat-post-m5-ci}
     \end{subfigure}
     \caption{%
-        Total test run duration for \textit{bitchat} after the correctness fix.
-        The Swift Testing suite is now marginally but consistently faster than
-        XCTest on both platforms ($n = 100$ per suite).
+        Mean total test run duration with 95\% confidence intervals for
+        \textit{bitchat} after the correctness fix. $\sigma$ annotations indicate
+        the sample standard deviation. Swift Testing is marginally but consistently
+        faster than XCTest on both platforms ($n = 100$ per suite).
     }
-    \label{fig:bitchat-post-box}
+    \label{fig:bitchat-post-ci}
 \end{figure}
 
 Figure~\ref{fig:bitchat-ts-m2} shows the per-iteration time series for the
@@ -533,7 +535,7 @@ supporting the validity of the mean as a summary statistic.
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{%
-        m2-results/xcodebuild/bitchat/plots/bitchat_timeseries.pdf}
+        m2-results/xcodebuild/bitchat/plots/m2_pro_bitchat_timeseries.pdf}
     \caption{%
         Per-iteration total run duration for \textit{bitchat} (post-fix,
         Apple M2~Pro). Dashed lines indicate the per-suite mean. Both
