@@ -168,119 +168,34 @@ def _smart_unit(values_s: list[float]) -> tuple[float, str]:
     return 1.0, "s"
 
 
-def plot_boxplot(suites: dict[str, dict], output_dir: Path, suite_dir_name: str) -> None:
-    """Classic box-and-whisker for comparing suites."""
-    names = list(suites.keys())
-    all_vals = [s["durations"] for s in suites.values()]
-
-    # Determine unit based on overall range
-    flat = [v for sub in all_vals for v in sub]
-    scale, unit = _smart_unit(flat)
-
-    fig, ax = plt.subplots(figsize=(max(6, len(names) * 2.2), 5))
-    bp = ax.boxplot(
-        [np.array(v) * scale for v in all_vals],
-        patch_artist=True,
-        notch=False,
-        widths=0.5,
-        medianprops=dict(color="black", linewidth=2),
-        whiskerprops=dict(linewidth=1.2),
-        capprops=dict(linewidth=1.2),
-        flierprops=dict(marker="o", markersize=4, alpha=0.5),
-    )
-    for patch, color in zip(bp["boxes"], PALETTE):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.75)
-
-    # Overlay mean markers
-    for i, vals in enumerate(all_vals, start=1):
-        mean_scaled = np.mean(vals) * scale
-        ax.plot(i, mean_scaled, marker="D", color="white", markersize=7, zorder=5)
-        ax.plot(i, mean_scaled, marker="D", color=PALETTE[i - 1], markersize=5,
-                markeredgecolor="black", markeredgewidth=0.8, zorder=6,
-                label=f"{names[i-1]} mean={mean_scaled:.2f}{unit}")
-
-    ax.set_xticks(range(1, len(names) + 1))
-    ax.set_xticklabels(names, rotation=15, ha="right")
-    ax.set_ylabel(f"Total test run duration ({unit})")
-    ax.set_title(f"Test run duration — {suite_dir_name}\n(box: Q1–Q3, whiskers: 1.5×IQR, ◆ mean)")
-    ax.legend(loc="upper right", framealpha=0.9)
-
-    out = output_dir / f"{suite_dir_name}_boxplot.pdf"
-    fig.savefig(out)
-    plt.close(fig)
-    print(f"  Saved: {out}")
-
-
-def plot_violin(suites: dict[str, dict], output_dir: Path, suite_dir_name: str) -> None:
-    """Violin plot — shows full distribution shape."""
-    names = list(suites.keys())
-    all_vals = [s["durations"] for s in suites.values()]
-    flat = [v for sub in all_vals for v in sub]
-    scale, unit = _smart_unit(flat)
-
-    fig, ax = plt.subplots(figsize=(max(6, len(names) * 2.2), 5))
-    parts = ax.violinplot(
-        [np.array(v) * scale for v in all_vals],
-        positions=range(1, len(names) + 1),
-        showmedians=True,
-        showextrema=True,
-    )
-    for i, (body, color) in enumerate(zip(parts["bodies"], PALETTE)):
-        body.set_facecolor(color)
-        body.set_alpha(0.6)
-    parts["cmedians"].set_color("black")
-    parts["cmedians"].set_linewidth(2)
-    parts["cmaxes"].set_linewidth(1.2)
-    parts["cmins"].set_linewidth(1.2)
-    parts["cbars"].set_linewidth(1.2)
-
-    # Mean markers
-    for i, vals in enumerate(all_vals, start=1):
-        ax.scatter(i, np.mean(vals) * scale, marker="D", s=40, color="white",
-                   edgecolors=PALETTE[i - 1], linewidths=1.5, zorder=5)
-
-    ax.set_xticks(range(1, len(names) + 1))
-    ax.set_xticklabels(names, rotation=15, ha="right")
-    ax.set_ylabel(f"Total test run duration ({unit})")
-    ax.set_title(f"Duration distribution (violin, KDE Scott's bw) — {suite_dir_name}\n(line = median, ◆ = mean)")
-
-    out = output_dir / f"{suite_dir_name}_violin.pdf"
-    fig.savefig(out)
-    plt.close(fig)
-    print(f"  Saved: {out}")
-
-
-def plot_time_series(suites: dict[str, dict], output_dir: Path, suite_dir_name: str) -> None:
-    """Run duration per iteration — reveals trends / warm-up effects."""
+def plot_time_series_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
+    """All suites on one axes — combined time series."""
     flat = [v for s in suites.values() for v in s["durations"]]
     scale, unit = _smart_unit(flat)
 
     fig, ax = plt.subplots(figsize=(10, 4))
     for (name, info), color in zip(suites.items(), PALETTE):
         arr = np.array(info["durations"]) * scale
-        iterations = np.arange(1, len(arr) + 1)
-        ax.plot(iterations, arr, alpha=0.55, linewidth=0.8, color=color)
+        ax.plot(np.arange(1, len(arr) + 1), arr, alpha=0.55, linewidth=0.8, color=color)
         ax.axhline(arr.mean(), linestyle="--", linewidth=1.2, color=color,
                    label=f"{name} (mean={arr.mean():.2f}{unit})")
 
     ax.set_xlabel("Iteration")
     ax.set_ylabel(f"Total test run duration ({unit})")
-    ax.set_title(f"Run duration per iteration — {suite_dir_name}")
+    ax.set_title(f"Run duration per iteration — {scheme}")
     ax.legend(loc="upper right", framealpha=0.9)
     ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True, nbins=10))
 
-    out = output_dir / f"{suite_dir_name}_timeseries.pdf"
+    out = output_dir / f"{scheme}_timeseries.pdf"
     fig.savefig(out)
     plt.close(fig)
     print(f"  Saved: {out}")
 
 
-def plot_mean_ci(suites: dict[str, dict], output_dir: Path, suite_dir_name: str) -> None:
-    """Bar chart of means with 95% confidence intervals and std dev annotations."""
+def plot_mean_ci_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
+    """All suites as bars with 95% CI — combined mean CI chart."""
     names = list(suites.keys())
     stats_list = [s["stats"] for s in suites.values()]
-
     flat = [v for s in suites.values() for v in s["durations"]]
     scale, unit = _smart_unit(flat)
 
@@ -295,36 +210,34 @@ def plot_mean_ci(suites: dict[str, dict], output_dir: Path, suite_dir_name: str)
     ax.errorbar(x, means, yerr=[ci_lo, ci_hi], fmt="none", color="black",
                 capsize=5, capthick=1.5, linewidth=1.5, label="95% CI")
 
-    # Annotate with std dev above each CI bar
     for idx, (bar, s) in enumerate(zip(bars, stats_list)):
-        std_scaled = s["std"] * scale
         ax.text(
             bar.get_x() + bar.get_width() / 2,
             bar.get_height() + ci_hi[idx] + (means.max() * 0.02),
-            f"σ={std_scaled:.3f}",
+            f"σ={s['std'] * scale:.3f}",
             ha="center", va="bottom", fontsize=9,
         )
 
     ax.set_xticks(x)
     ax.set_xticklabels(names, rotation=15, ha="right")
     ax.set_ylabel(f"Mean duration ({unit})")
-    ax.set_title(f"Mean test run duration ± 95% CI — {suite_dir_name}\n(σ = sample std dev)")
+    ax.set_title(f"Mean test run duration ± 95% CI — {scheme}\n(σ = sample std dev)")
     ax.legend()
     ax.set_ylim(0, means.max() * 1.25)
 
-    out = output_dir / f"{suite_dir_name}_mean_ci.pdf"
+    out = output_dir / f"{scheme}_mean_ci.pdf"
     fig.savefig(out)
     plt.close(fig)
     print(f"  Saved: {out}")
 
 
-def plot_histogram(suites: dict[str, dict], output_dir: Path, suite_dir_name: str) -> None:
-    """Overlapping histograms with KDE for distribution shape."""
+def plot_histogram_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
+    """One subplot per suite in a single figure — combined histogram grid."""
     flat = [v for s in suites.values() for v in s["durations"]]
     scale, unit = _smart_unit(flat)
-    n_suites = len(suites)
-    cols = min(n_suites, 2)
-    rows = (n_suites + cols - 1) // cols
+    n = len(suites)
+    cols = min(n, 2)
+    rows = (n + cols - 1) // cols
 
     fig, axes = plt.subplots(rows, cols, figsize=(cols * 5, rows * 3.5), squeeze=False)
     axes_flat = [ax for row in axes for ax in row]
@@ -336,13 +249,11 @@ def plot_histogram(suites: dict[str, dict], output_dir: Path, suite_dir_name: st
         ax.hist(arr, bins=bins, color=color, alpha=0.55, edgecolor="white",
                 linewidth=0.5, density=True, label="Histogram")
 
-        # KDE overlay — bandwidth selected automatically via Scott's rule
-        kde = stats.gaussian_kde(arr)  # bw_method='scott' (default)
+        kde = stats.gaussian_kde(arr)
         pad = arr.std() * 0.5
         kde_x = np.linspace(arr.min() - pad, arr.max() + pad, 300)
         ax.plot(kde_x, kde(kde_x), color=color, linewidth=2, label="KDE (Scott's bw)")
 
-        # Mean / median lines
         ax.axvline(s["mean"] * scale, color="black", linewidth=1.5, linestyle="--",
                    label=f"Mean={s['mean'] * scale:.3f}")
         ax.axvline(s["median"] * scale, color="grey", linewidth=1.5, linestyle=":",
@@ -353,13 +264,103 @@ def plot_histogram(suites: dict[str, dict], output_dir: Path, suite_dir_name: st
         ax.set_title(f"{name}\n({info['framework']})")
         ax.legend(fontsize=8)
 
-    # Hide unused axes
-    for ax in axes_flat[n_suites:]:
+    for ax in axes_flat[n:]:
         ax.set_visible(False)
 
-    fig.suptitle(f"Duration distribution histograms — {suite_dir_name}", y=1.01)
+    fig.suptitle(f"Duration distributions — {scheme}", y=1.01)
     fig.tight_layout()
-    out = output_dir / f"{suite_dir_name}_histograms.pdf"
+    out = output_dir / f"{scheme}_histograms.pdf"
+    fig.savefig(out)
+    plt.close(fig)
+    print(f"  Saved: {out}")
+
+
+def plot_time_series(name: str, info: dict, output_dir: Path, color: str) -> None:
+    """Run duration per iteration — reveals trends / warm-up effects."""
+    scale, unit = _smart_unit(info["durations"])
+    arr = np.array(info["durations"]) * scale
+
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.plot(np.arange(1, len(arr) + 1), arr, alpha=0.55, linewidth=0.8, color=color)
+    ax.axhline(arr.mean(), linestyle="--", linewidth=1.2, color=color,
+               label=f"mean={arr.mean():.2f}{unit}")
+
+    ax.set_xlabel("Iteration")
+    ax.set_ylabel(f"Total test run duration ({unit})")
+    ax.set_title(f"Run duration per iteration — {name} ({info['framework']})")
+    ax.legend(loc="upper right", framealpha=0.9)
+    ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True, nbins=10))
+
+    out = output_dir / f"{name}_timeseries.pdf"
+    fig.savefig(out)
+    plt.close(fig)
+    print(f"  Saved: {out}")
+
+
+def plot_mean_ci(name: str, info: dict, output_dir: Path, color: str) -> None:
+    """Bar chart of mean with 95% CI and std dev annotation."""
+    scale, unit = _smart_unit(info["durations"])
+    s = info["stats"]
+
+    mean = s["mean"] * scale
+    ci_lo = mean - s["ci95_lo"] * scale
+    ci_hi = s["ci95_hi"] * scale - mean
+    std_scaled = s["std"] * scale
+
+    fig, ax = plt.subplots(figsize=(3, 5))
+    bar = ax.bar([0], [mean], color=color, alpha=0.75, edgecolor="black", linewidth=0.7)
+    ax.errorbar([0], [mean], yerr=[[ci_lo], [ci_hi]], fmt="none", color="black",
+                capsize=5, capthick=1.5, linewidth=1.5, label="95% CI")
+    ax.text(
+        bar[0].get_x() + bar[0].get_width() / 2,
+        mean + ci_hi + (mean * 0.02),
+        f"σ={std_scaled:.3f}",
+        ha="center", va="bottom", fontsize=9,
+    )
+
+    ax.set_xticks([0])
+    ax.set_xticklabels([name], rotation=15, ha="right")
+    ax.set_ylabel(f"Mean duration ({unit})")
+    ax.set_title(f"Mean ± 95% CI\n{name} ({info['framework']})")
+    ax.legend()
+    ax.set_ylim(0, (mean + ci_hi) * 1.25)
+
+    out = output_dir / f"{name}_mean_ci.pdf"
+    fig.savefig(out)
+    plt.close(fig)
+    print(f"  Saved: {out}")
+
+
+def plot_histogram(name: str, info: dict, output_dir: Path, color: str) -> None:
+    """Histogram with KDE for distribution shape."""
+    scale, unit = _smart_unit(info["durations"])
+    arr = np.array(info["durations"]) * scale
+    s = info["stats"]
+
+    fig, ax = plt.subplots(figsize=(6, 4))
+    bins = min(20, max(10, len(arr) // 5))
+    ax.hist(arr, bins=bins, color=color, alpha=0.55, edgecolor="white",
+            linewidth=0.5, density=True, label="Histogram")
+
+    # KDE overlay — bandwidth selected automatically via Scott's rule
+    kde = stats.gaussian_kde(arr)  # bw_method='scott' (default)
+    pad = arr.std() * 0.5
+    kde_x = np.linspace(arr.min() - pad, arr.max() + pad, 300)
+    ax.plot(kde_x, kde(kde_x), color=color, linewidth=2, label="KDE (Scott's bw)")
+
+    # Mean / median lines
+    ax.axvline(s["mean"] * scale, color="black", linewidth=1.5, linestyle="--",
+               label=f"Mean={s['mean'] * scale:.3f}")
+    ax.axvline(s["median"] * scale, color="grey", linewidth=1.5, linestyle=":",
+               label=f"Median={s['median'] * scale:.3f}")
+
+    ax.set_xlabel(f"Duration ({unit})")
+    ax.set_ylabel("Density")
+    ax.set_title(f"{name} ({info['framework']})")
+    ax.legend(fontsize=8)
+    fig.tight_layout()
+
+    out = output_dir / f"{name}_histograms.pdf"
     fig.savefig(out)
     plt.close(fig)
     print(f"  Saved: {out}")
@@ -405,11 +406,15 @@ def main() -> None:
     print_stats_table(suites)
 
     print(f"Generating plots → {output_dir}")
-    plot_boxplot(suites, output_dir, suite_dir_name)
-    plot_violin(suites, output_dir, suite_dir_name)
-    plot_time_series(suites, output_dir, suite_dir_name)
-    plot_mean_ci(suites, output_dir, suite_dir_name)
-    plot_histogram(suites, output_dir, suite_dir_name)
+    # Per-suite individual plots
+    for (name, info), color in zip(suites.items(), PALETTE):
+        plot_histogram(name, info, output_dir, color)
+        plot_mean_ci(name, info, output_dir, color)
+        plot_time_series(name, info, output_dir, color)
+    # Combined plots across all suites
+    plot_histogram_combined(suites, output_dir, suite_dir_name)
+    plot_mean_ci_combined(suites, output_dir, suite_dir_name)
+    plot_time_series_combined(suites, output_dir, suite_dir_name)
 
     print("\nDone.")
 
