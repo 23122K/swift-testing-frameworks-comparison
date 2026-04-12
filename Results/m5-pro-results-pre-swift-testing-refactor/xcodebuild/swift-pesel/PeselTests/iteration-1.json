@@ -1,0 +1,23 @@
+{
+  "framework" : "Swift Testing",
+  "testCases" : [
+    {
+      "duration" : 0.03,
+      "identifier" : "expectValidPeselNumber(_:) with 1000 test cases"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "expectedToDetectInvalidDateFailure()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "expectedToDetectInvalidChecksum()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "expectedToDetectInvalidFormat(_:) with 4 test cases"
+    }
+  ],
+  "testPlan" : "PeselTests",
+  "testRunDuration" : 0.033
+}

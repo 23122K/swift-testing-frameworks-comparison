@@ -19,7 +19,10 @@ struct XcodebuildCommand: AsyncParsableCommand {
   )
   var force: Bool = false
 
-  @Option(help: "Tests iterations, before each run clean build is done")
+  @Option(
+    name: [.customShort("i")],
+    help: "Tests iterations"
+  )
   var iterations: Int = 10
   
   mutating func run() async throws {
@@ -29,6 +32,12 @@ struct XcodebuildCommand: AsyncParsableCommand {
     let derrivedData = self.storage
       .directory()
       .appending(path: "DerrivedData")
+
+    do {
+      try self.storage.delete(derrivedData)
+    } catch {
+      print("Failed to purge DerrivedData directory: \(error). Skipping...")
+    }
 
     let path = try await self.xcodebuildBuildForTesting(
       scheme: self.schema,
@@ -49,6 +58,12 @@ struct XcodebuildCommand: AsyncParsableCommand {
     }
 
     try await self.runXCTestBundles(bundles)
+
+    let resultsPath = self.storage
+      .directory()
+      .appending(path: "xcodebuild")
+      .appending(path: self.schema)
+    print("Results: \(resultsPath.path())")
   }
   
   /// Checks whether previous xcodebuild results exist for this schema.
