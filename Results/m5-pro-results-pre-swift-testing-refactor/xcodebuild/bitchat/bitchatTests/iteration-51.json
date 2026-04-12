@@ -1,0 +1,1663 @@
+{
+  "framework" : "Swift Testing",
+  "testCases" : [
+    {
+      "duration" : 0.001,
+      "identifier" : "serviceInitialization()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "peerConnection()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "multiplePeerConnections()"
+    },
+    {
+      "duration" : 0.507,
+      "identifier" : "sendPublicMessage()"
+    },
+    {
+      "duration" : 0.52,
+      "identifier" : "sendPrivateMessage()"
+    },
+    {
+      "duration" : 0.507,
+      "identifier" : "sendMessageWithMentions()"
+    },
+    {
+      "duration" : 0.534,
+      "identifier" : "simulateIncomingMessage()"
+    },
+    {
+      "duration" : 0.503,
+      "identifier" : "simulateIncomingPacket()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "getPeerNicknames()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "startStopServices()"
+    },
+    {
+      "duration" : 0.516,
+      "identifier" : "messageDeliveryHandler()"
+    },
+    {
+      "duration" : 0.514,
+      "identifier" : "packetDeliveryHandler()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "padded_vs_unpadded_length()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "decode_padded_and_unpadded_round_trip()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "basicPacketEncodingDecoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "packetWithRecipient()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "packetWithSignature()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "packetWithRouteRoundTrip()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "packetWithRoutePadsShortHop()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "packetWithRouteAndCompressedPayload()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "v1PacketIgnoresRouteOnEncode()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "v2PacketIncludesRouteOnEncode()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "v2PacketWithoutRouteDecodesCorrectly()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "v1AndV2PayloadLengthDifference()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Create a large, compressible payload above current threshold (2048B)\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Small payloads should not be compressed\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "messagePadding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "invalidPKCS7PaddingIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "messageEncodingDecoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "privateMessageEncoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "messageWithMentions()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "relayMessageEncoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Too small data\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test maximum size handling\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test message with empty content\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test with supported version (version is always 1 in init)\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Create packet data with unsupported version\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test the specific crash scenario: payloadLength = 193 (0xc1) but only 30 bytes available\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test various truncation scenarios\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test compressed packet with invalid original size\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test packet claiming extremely large payload\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test compressed packet with unreasonable original size\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test packet designed to cause integer overflow\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test packets with incomplete headers\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Test exact boundary conditions\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "roundTripPreservesFields()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "decodeFallsBackToContentSizeWhenFileSizeMissing()"
+    },
+    {
+      "duration" : 0.115,
+      "identifier" : "sendPrivateMessage_mesh_storesAndSends()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "handlePrivateMessage_storesMessage()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "handlePrivateMessage_deduplicates()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "handlePrivateMessage_sendsReadReceipt_whenViewing()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "migratePrivateChats_consolidatesHistory_onFingerprintMatch()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isMessageBlocked_filtersBlockedUsers()"
+    },
+    {
+      "duration" : 0.007,
+      "identifier" : "switchLocationChannel_mesh_clearsGeo()"
+    },
+    {
+      "duration" : 0.106,
+      "identifier" : "subscribeNostrEvent_addsToTimeline_ifMatchesGeohash()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "initialization_setsDelegate()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "initialization_startsServices()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "initialization_hasEmptyMessageList()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "initialization_setsNickname()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sendMessage_delegatesToTransport()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sendMessage_emptyContent_ignored()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sendMessage_withMentions_sendsContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sendMessage_command_notSentToTransport()"
+    },
+    {
+      "duration" : 0.21,
+      "identifier" : "didReceiveMessage_callsDelegate()"
+    },
+    {
+      "duration" : 0.508,
+      "identifier" : "didReceivePublicMessage_addsToTimeline()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "didConnectToPeer_notifiesDelegate()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "didDisconnectFromPeer_notifiesDelegate()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isPeerConnected_delegatesToTransport()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "deduplicationService_isConfigured()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "deduplicationService_normalizedKey_consistent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sendPrivateMessage_delegatesToTransport()"
+    },
+    {
+      "duration" : 0.106,
+      "identifier" : "didUpdateBluetoothState_poweredOn_noAlert()"
+    },
+    {
+      "duration" : 0.105,
+      "identifier" : "didUpdateBluetoothState_poweredOff_showsAlert()"
+    },
+    {
+      "duration" : 0.104,
+      "identifier" : "didUpdateBluetoothState_unauthorized_showsAlert()"
+    },
+    {
+      "duration" : 0.023,
+      "identifier" : "panicClearAllData_delegatesToTransport()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "startServices_calledOnInit()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "slapNotFoundGrammar()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hugNotFoundGrammar()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "slapUsageMessage()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mapsSizeToPreferredStyle(size:expectedStyle:) with 10 test cases"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "preservesRequestedWeight()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "\"Reassembly from fragments delivers a public message\""
+    },
+    {
+      "duration" : 0.007,
+      "identifier" : "\"Duplicate fragment does not break reassembly\""
+    },
+    {
+      "duration" : 1.1,
+      "identifier" : "\"Max-sized file transfer survives reassembly\""
+    },
+    {
+      "duration" : 0.521,
+      "identifier" : "\"Invalid fragment header is ignored\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "buildFilterWithDuplicateIdsProducesStableEncoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "bucketAvoidsZeroCandidate()"
+    },
+    {
+      "duration" : 0.004,
+      "identifier" : "toggleAndNormalize()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "persistenceWritten()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_addsToActiveGeohash()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_noActiveGeohash_noOp()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_specificGeohash()"
+    },
+    {
+      "duration" : 0.011,
+      "identifier" : "recordParticipant_updatesLastSeen()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_lowercasesPubkey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "getVisiblePeople_returnsActiveGeohashParticipants()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "getVisiblePeople_excludesBlockedParticipants()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "getVisiblePeople_usesDisplayNameFromContext()"
+    },
+    {
+      "duration" : 0.011,
+      "identifier" : "getVisiblePeople_sortedByLastSeen()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "getVisiblePeople_emptyWhenNoActiveGeohash()"
+    },
+    {
+      "duration" : 0.105,
+      "identifier" : "participantCount_excludesExpiredEntries()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "removeParticipant_removesFromAllGeohashes()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "clear_removesAllData()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "clearGeohash_removesOnlySpecificGeohash()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "setActiveGeohash_clearsVisiblePeopleWhenNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "setActiveGeohash_refreshesVisiblePeople()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoPerson_identifiable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoPerson_equatable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_hasCorrectKind()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_hasEmptyContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_hasOnlyGeohashTag()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_noNicknameTag()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_usesSenderPubkey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "createGeohashPresenceEvent_isSigned()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "createGeohashPresenceEvent_differentGeohashes()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geohashEphemeral_includesBothKinds()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geohashEphemeral_hasLimit1000()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geohashEphemeral_respectsSinceParameter()"
+    },
+    {
+      "duration" : 0.056,
+      "identifier" : "handleNostrEvent_presenceUpdatesParticipantTracker()"
+    },
+    {
+      "duration" : 0.057,
+      "identifier" : "handleNostrEvent_presenceDoesNotAddToTimeline()"
+    },
+    {
+      "duration" : 0.057,
+      "identifier" : "handleNostrEvent_chatMessageUpdatesParticipant()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "presenceEvent_hasDifferentKindThanChat()"
+    },
+    {
+      "duration" : 0.055,
+      "identifier" : "subscribeNostrEvent_acceptsPresenceKind()"
+    },
+    {
+      "duration" : 0.057,
+      "identifier" : "subscribeNostrEvent_presenceForNonActiveGeohash()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "allowedPrecisions_onlyLowPrecision()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geohashLengthDeterminesPrecision()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "highPrecisionGeohash_isPrivacySensitive()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_highPrecisionZeroCount_showsUnknown()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_highPrecisionNonZeroCount_showsActual()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_lowPrecisionZeroCount_showsActual()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_lowPrecisionNonZeroCount_showsActual()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_allHighPrecisionLevels()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_allLowPrecisionLevels()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_bookmarkHighPrecision()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "displayLogic_bookmarkLowPrecision()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eventKind_geohashPresence_is20001()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eventKind_ephemeralEvent_is20000()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eventKind_presenceIsEphemeral()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_fromPresenceEvent_countsParticipant()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_multiplePresenceEvents_countsUnique()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordParticipant_nonActiveGeohash_stillCounts()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "objectWillChange_firesOnNonActiveGeohashUpdate()"
+    },
+    {
+      "duration" : 0.4,
+      "identifier" : "concurrentPacketIntakeAndSyncRequest()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "staleAnnouncementsArePurgedWithMessages()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "ignoresAnnounceOlderThanStaleTimeout()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "maintenanceEmitsTypedSyncRequests()"
+    },
+    {
+      "duration" : 0.011,
+      "identifier" : "handleRequestSyncHonorsTypeFilter()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexString()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringUppercase()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringMixedCase()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringWith0xPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringWith0XPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringWithWhitespace()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validHexStringWith0xPrefixAndWhitespace()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyHexString()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyHexStringWithWhitespace()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyHexStringWith0xPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "oddLengthHexStringReturnsNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "oddLengthHexStringWith0xPrefixReturnsNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "invalidCharactersReturnNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mixedValidAndInvalidCharactersReturnNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "specialCharactersReturnNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "roundTripConversion()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "roundTripConversionWith0xPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validStringPassesValidation()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyStringReturnsNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "whitespaceOnlyStringReturnsNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringExceedingMaxLengthReturnsNil()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringAtMaxLengthIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "whitespaceIsTrimmed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nullCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "bellCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "backspaceCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "escapeCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "deleteCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "multipleControlCharactersAreRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emojiIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "unicodeCharactersAreAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "specialCharactersAreAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validNicknameIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nicknameWithEmojiIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nicknameTooLongIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nicknameAtMaxLengthIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nicknameWithControlCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "currentTimestampIsValid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampWithinFiveMinutesIsValid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampThirtyMinutesAgoIsInvalid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampTenMinutesAgoIsInvalid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampTenMinutesInFutureIsInvalid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampAtFiveMinuteBoundaryIsValid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "timestampJustOutsideFiveMinuteWindowIsInvalid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "singleCharacterStringIsAccepted()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringWithOnlyNewlinesIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringWithMixedWhitespaceIsTrimmed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringWithLeadingControlCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "stringWithTrailingControlCharacterIsRejected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "fullMeshCommunication()"
+    },
+    {
+      "duration" : 0.054,
+      "identifier" : "dynamicTopologyChanges()"
+    },
+    {
+      "duration" : 0.056,
+      "identifier" : "networkPartitionRecovery()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mixedPublicPrivateMessages()"
+    },
+    {
+      "duration" : 0.004,
+      "identifier" : "encryptedAndUnencryptedMix()"
+    },
+    {
+      "duration" : 0.049,
+      "identifier" : "messageDeliveryUnderChurn()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "peerPresenceTrackingAndReconnection()"
+    },
+    {
+      "duration" : 0.007,
+      "identifier" : "encryptedMessageAfterPeerRestart()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "largeScaleNetwork()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "highLoadScenario()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mixedTrafficPatterns()"
+    },
+    {
+      "duration" : 0.004,
+      "identifier" : "rehandshakeAfterDecryptionFailure()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "endToEndSecurityScenario()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainReadResult_successIsNotRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainReadResult_itemNotFoundIsNotRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainReadResult_deviceLockedIsRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainReadResult_authenticationFailedIsRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainReadResult_accessDeniedIsNotRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainSaveResult_successIsNotRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainSaveResult_duplicateItemIsRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainSaveResult_deviceLockedIsRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "keychainSaveResult_storageFullIsNotRecoverable()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mockKeychain_canSimulateReadErrors()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mockKeychain_canSimulateSaveErrors()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mockKeychain_returnsItemNotFoundForMissingKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mockKeychain_returnsSuccessForExistingKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mockKeychain_saveWithResultStoresData()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "noiseEncryptionService_generatesNewIdentityWhenMissing()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "noiseEncryptionService_loadsExistingIdentity()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "noiseEncryptionService_handlesAccessDeniedGracefully()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "noiseEncryptionService_handlesDeviceLockedGracefully()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geohashEncoderPrecisionMapping()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nostrGeohashFilterEncoding()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "perGeohashIdentityDeterministic()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "subscribeUsesGeoRelaysAndAppendsNotes()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "directLinkProducesRoute()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "multiHopRouteComputation()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "unconfirmedEdgeDoesNotRoute()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "removingPeerClearsEdges()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sameStartAndEndReturnsEmptyRoute()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyCache_containsReturnsFalse()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "record_addsEntry()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "record_updatesExistingEntry()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "record_multipleEntries()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "remove_removesEntry()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "clear_removesAllEntries()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eviction_removesOldestWhenOverCapacity()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eviction_maintainsCapacity()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eviction_capacityOfOne()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "eviction_skipsRemovedKeys()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "emptyKey_works()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "largeCapacity_works()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_basicContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_caseInsensitive()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_whitespaceCollapsed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_trimmed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_urlQueryStripped()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_httpAndHttpsDistinct()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_differentContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_returnsHashFormat()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_emptyContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_longContentTruncated()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_prefixLengthRespected()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_urlsInMiddleOfContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedKey_multipleUrls()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordContent_storesTimestamp()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordContent_updatesTimestamp()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "contentTimestamp_nilForUnseen()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordContentKey_directKeyAccess()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "normalizedContentKey_consistentWithNormalizer()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordNostrEvent_marksAsProcessed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hasProcessedNostrEvent_falseForUnseen()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nostrEvent_multipleEvents()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "recordNostrAck_marksAsProcessed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "ackKey_format()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "ackKey_differentComponents()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "clearAll_clearsEverything()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "clearNostrCaches_preservesContent()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "contentCache_respectsCapacity()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nostrEventCache_respectsCapacity()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "realWorldDeduplication_similarMessages()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "realWorldDeduplication_caseVariations()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Concurrent content recording is safe via MainActor\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Concurrent Nostr event recording is safe via MainActor\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Mixed concurrent operations are safe via MainActor\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Concurrent cache access is safe via MainActor\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Cache eviction under concurrent load is safe\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_singleMention()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_multipleMentions()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_mentionWithSuffix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_noMentions()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_unicodeNickname()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_mentionWithUnderscore()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "extractMentions_emailNotCaptured()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "containsCashuToken_validTokenA()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "containsCashuToken_validTokenB()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "containsCashuToken_noToken()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "containsCashuToken_tooShort()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hashtagPattern_standaloneHashtag()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hashtagPattern_multipleHashtags()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hashtagPattern_hashInMiddleOfWord()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "bolt11Pattern_mainnet()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "bolt11Pattern_testnet()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "lnurlPattern_valid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "lightningSchemePattern_valid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "cashuPattern_valid()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "linkDetector_httpURL()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "linkDetector_httpsURL()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "linkDetector_multipleURLs()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "splitSuffix_withSuffix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "splitSuffix_withoutSuffix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "splitSuffix_withAtPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hasVeryLongToken_noLongToken()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hasVeryLongToken_withLongToken()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "hasVeryLongToken_exactThreshold()"
+    },
+    {
+      "duration" : 0.003,
+      "identifier" : "mimeTypeParsingAndExtensions(mimeString:expectedType:expectedExt:) with 15 test cases"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "validSignatures(mime:bytes:) with 8 test cases"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "invalidDataDoesNotMatch()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "octetStreamAlwaysMatches()"
+    },
+    {
+      "duration" : 0.008,
+      "identifier" : "nip17MessageRoundTrip()"
+    },
+    {
+      "duration" : 0.013,
+      "identifier" : "giftWrapUsesUniqueEphemeralKeys()"
+    },
+    {
+      "duration" : 0.005,
+      "identifier" : "decryptionFailsWithWrongRecipient()"
+    },
+    {
+      "duration" : 0.006,
+      "identifier" : "ackRoundTripNIP44V2_Delivered()"
+    },
+    {
+      "duration" : 0.006,
+      "identifier" : "ackRoundTripNIP44V2_ReadReceipt()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Concurrent read receipt enqueue does not crash\""
+    },
+    {
+      "duration" : 0.1,
+      "identifier" : "\"Read queue processes under concurrent load\""
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "\"isPeerReachable is thread safe\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"isNostrBlocked returns true for blocked pubkeys\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"isBlocked returns true for blocked fingerprints\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"getBlockedNostrPubkeys returns all blocked pubkeys\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"BitchatMessage with blocked sender is identified\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Case insensitive blocking for Nostr pubkeys\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "assemblesSingleFrameAcrossChunks()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "assemblesMultipleFramesSequentially()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "dropsInvalidPrefixByte()"
+    },
+    {
+      "duration" : 0.022,
+      "identifier" : "assemblesCompressedLargeFrame()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "empty_prefix_with16()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "empty_prefix_with64()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mesh_prefix_with16()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "mesh_prefix_with64()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "name_prefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "noise_prefix_with16()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "noise_prefix_with64()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoDM_prefix_with16()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoDM_prefix_with64()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoChat_prefix_with16()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "geoChat_prefix_with64()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "with_unknown_prefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "with_only_prefix_no_bare()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "data_valid_utf8()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "data_invalid_utf8()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "substring()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nostrUnderscore_pubKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "nostr_pubKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "publicKey_derivesFingerprint()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "toShort_whenNoiseKeyExists()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "toShort_whenNoiseKeyExists_withNoisePrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "toShort_whenNoNoiseKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "routingData_fromShortID()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "routingData_fromNoiseKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "routingPeerRoundTrip()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "codable_emptyPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "codable_withPrefix()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "codable_multiplePrefixes()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "comparable_sorting_and_equality()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "equality()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isEmpty_true_and_false()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isGeoChat()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isGeoDM()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "toPercentEncoded()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "accepts_short_hex_peer_id()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "accepts_full_noise_key_hex()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "accepts_internal_alnum_dash_underscore()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "rejects_invalid_characters()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "rejects_too_long()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isShort()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "isNoiseKeyHex_and_noiseKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "prefixes()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "fileTransfer_toShortNormalizesNoiseKeyToFingerprint()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "fileTransfer_shortIDMatchesMyPeerIDFormat()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "fileTransfer_truncatedRawKeyDoesNotMatchMyPeerID()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "fileTransfer_shortIDProducesCorrect8ByteRoutingData()"
+    },
+    {
+      "duration" : 0.106,
+      "identifier" : "simplePrivateMessageShouldNotBeSentWithoutConnection()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "simplePrivateMessage()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "privateMessageNotReceivedByOthers()"
+    },
+    {
+      "duration" : 0.002,
+      "identifier" : "privateMessageEncryption()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "privateMessageRelay()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "privateMessageThroughput()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "largePrivateMessage()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "simplePublicMessage()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "multiRecipientBroadcast()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "messageRelayChain()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "multiHopRelay()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "ttlDecrement()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "zeroTTLNotRelayed()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "duplicateMessagePrevention()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "duplicateContentAsNewMessageNotPrevented()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "messageWithMentions()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "meshTopologyBroadcast()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "partialMeshRelay()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "highVolumeMessaging()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "largeMessageBroadcast()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Rate limit configuration values are sensible\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Exponential backoff calculation is correct\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Rate limiting would significantly slow enumeration attacks\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "\"Max attempts threshold prevents complete enumeration\""
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealAndOpenRoundtrip()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealAndOpenWithAAD()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealProducesDifferentCiphertextWithDifferentNonces()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnShortKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnLongKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnEmptyKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "openThrowsOnInvalidKeyLength()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnShortNonce()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnLongNonce()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "sealThrowsOnEmptyNonce()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "openThrowsOnInvalidNonceLength()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "openFailsWithWrongKey()"
+    },
+    {
+      "duration" : 0.001,
+      "identifier" : "openFailsWithTamperedCiphertext()"
+    }
+  ],
+  "testPlan" : "bitchatTests",
+  "testRunDuration" : 7.96
+}
