@@ -1,0 +1,581 @@
+% Required packages (add to preamble if not already present):
+%   \usepackage{graphicx}
+%   \usepackage{subcaption}
+%   \usepackage{booktabs}
+%   \usepackage{siunitx}   % optional, for aligned decimal columns
+%
+% Adjust \graphicspath to match your thesis layout, e.g.:
+%   \graphicspath{{../Results/}}
+% The figure paths below assume this root.
+
+\chapter{Evaluation}
+
+This chapter moves from the descriptive overview of XCTest and Swift Testing established
+in the preceding chapters to an empirical assessment of their practical differences.
+The evaluation is structured around three areas: a qualitative analysis of the
+differences, limitations, and migration experience --- encompassing the associated tooling
+and test runners --- followed by a quantitative code complexity analysis across two
+real-world projects, and finally a performance regression analysis aimed at detecting
+any runtime overhead introduced by the transition between frameworks.
+
+\section{Differences, Limitations, Migration and Tooling}
+
+When comparing Swift Testing to XCTest, the differences that emerge are either
+negligible from the perspective of domain-level testing, or are a consequence of
+XCTest's age and the degree to which both the Swift language and software testing
+practices have evolved since its introduction. Rather than introducing new concepts
+or mimicking those found in XCTest, Swift Testing leans heavily on language features
+and semantics, arriving with a small set of interfaces that collectively cover almost
+all of the functionality found in XCTest. Swift Testing, along with its runner, is
+bundled within the Xcode toolchain --- improving ergonomics of usage and removing the
+need to declare it as an explicit dependency. It should be noted that the two
+frameworks are not yet cross-compatible; however, the Swift Evolution proposal
+ST-0021: Targeted Interoperability between Swift Testing and XCTest has been put into
+motion, potentially enabling this functionality in the near future and further
+lowering the migration bar.
+
+The most prominent limitations are those concerning Swift concurrency --- in particular,
+unstructured tasks created in initialisers, or functions that do not provide a
+callback or return a value that could be tied to a task result. Although Swift Testing
+provides the \texttt{confirmation} API, which can be combined with continuations, a
+gap remains that in some cases forces the use of \texttt{Task.sleep} or
+\texttt{Task.yield} in order to satisfy an assertion, producing fragile and
+potentially flaky tests in the process. Similarly, certain patterns involving test
+suite inheritance do not translate to Swift Testing at all, requiring a fundamentally
+different approach. A less immediately visible limitation arises from the fact that,
+since Xcode 26, the default actor isolation in Xcode projects has been set to
+\texttt{@MainActor}, causing test suites and their contained tests to be implicitly
+bound to the main actor. As a result, rather than executing in true concurrent
+parallelism, tests are enqueued onto the main actor's executor and run serially with
+respect to one another --- in contrast to XCTest, which spawns multiple test runners
+and schedules whole test cases across them. In large codebases, this implicit
+isolation could constitute a meaningful performance regression, a concern examined
+further in Section~\ref{TODO}.
+
+When it comes to migration, the official migration guide \cite{apple2024migration}
+covers the majority of cases, documenting how the interfaces of the two frameworks
+correspond and what is achievable with Swift Testing. The limitations noted above
+notwithstanding, none present a critical obstacle: new tests can be written alongside
+existing ones without additional configuration, and where a direct port proves
+difficult, migration of individual test cases can be deferred to a later stage. On
+Darwin platforms, where \texttt{xcodebuild} is the standard build and test tool,
+both frameworks are supported out of the box --- tests from both are discovered and
+executed without any additional steps. Migration to Swift Testing is therefore
+relatively straightforward, best approached incrementally by introducing new test
+declarations alongside the existing XCTest suite and gradually deprecating the latter,
+rather than rewriting everything from scratch.
+
+Regarding tooling, the \texttt{swift test} CLI presents several limitations that
+are worth noting in the context of migration. There is currently no way to filter
+test runs by tag or collection of tags directly from the command line, nor is there
+support for test repetition or running until failure. The output, although significantly
+improved over earlier releases, remains limited in certain respects --- most notably,
+XCTest results are not surfaced in the Swift Testing output, and vice versa, meaning
+that in a mixed-framework target, the results of one framework are not visible in the
+other's output. This is of particular relevance in CI/CD environments, where
+\cite{beller2015} demonstrated that the majority of test execution occurs, and where
+result completeness is essential for reliable pipeline feedback. On Darwin platforms,
+\texttt{xcodebuild} partially bridges this gap: it discovers and executes tests from
+both frameworks and produces an \texttt{xcresult} bundle that captures results from
+both. Community tools such as \texttt{xcbeautify} and \texttt{xcpretty} can be used
+to parse and reformat this output, though they may occasionally miss individual test
+case failures. The \texttt{--xunit-output} flag available via \texttt{swift test}
+produces a separate \texttt{-swift-testing.xml} file alongside the XCTest output
+file; however, as noted in the Methodology chapter, this output is only persisted
+when the \texttt{--parallel} flag is also passed, limiting its utility under
+sequential execution conditions.
+
+\section{Code Complexity Analysis}
+
+\subsection{Results}
+
+% TODO: introduce the two projects briefly in one sentence each, then present tables.
+
+\begin{table}[ht]
+    \centering
+    \caption{Code complexity metrics --- Project 1 (macOS Application)}
+    \label{tab:complexity-project1}
+    \begin{tabular}{lll}
+        \hline
+        \textbf{Metric}            & \textbf{XCTest} & \textbf{Swift Testing} \\
+        \hline
+        Lines of code              & TODO            & TODO                   \\
+        Number of test functions   & TODO            & TODO                   \\
+        Assertion count            & TODO            & TODO                   \\
+        Boilerplate overhead (LoC) & TODO            & TODO                   \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{table}[ht]
+    \centering
+    \caption{Code complexity metrics --- Project 2 (SPM Framework)}
+    \label{tab:complexity-project2}
+    \begin{tabular}{lll}
+        \hline
+        \textbf{Metric}            & \textbf{XCTest} & \textbf{Swift Testing} \\
+        \hline
+        Lines of code              & TODO            & TODO                   \\
+        Number of test functions   & TODO            & TODO                   \\
+        Assertion count            & TODO            & TODO                   \\
+        Boilerplate overhead (LoC) & TODO            & TODO                   \\
+        \hline
+    \end{tabular}
+\end{table}
+
+% TODO: prose interpreting the delta, referencing \cite{winkler2024},
+% \cite{yu2019}, and the 34\% reduction reported by \cite{barbosahora2022}.
+
+\section{Performance Regression Analysis}
+
+\subsection{Measurement Challenges}
+
+Establishing a reliable and comparable measurement baseline for test execution time
+proved non-trivial, as neither of the two standard toolchain approaches produced
+results suitable for direct comparison across frameworks.
+
+The first approach considered was \texttt{swift test} with the
+\texttt{--xunit-output} flag, which produces structured timing output in the xUnit
+XML format. However, as established in the Swift Package Manager implementation,
+this flag only persists output to disk when the \texttt{--parallel} flag is also
+passed. Since parallel execution was explicitly excluded from this evaluation --- as
+discussed in Section~\ref{TODO} --- this approach was not viable. Furthermore, when
+targeting XCTest suites in isolation using \texttt{--disable-swift-testing}, no
+output file is generated at all, regardless of the \texttt{--parallel} flag,
+rendering this approach unsuitable for XCTest measurement as well.
+
+The second approach involved \texttt{xcodebuild test} with the
+\texttt{-resultBundlePath} flag, which captures test results in the
+\texttt{xcresult} format. This worked reliably for XCTest targets; however, for
+test plans containing only Swift Testing tests, the resulting \texttt{xcresult}
+bundle reported test durations that were either entirely absent or fixed at a
+constant value of one second, irrespective of actual execution time. This behaviour
+was raised on the Swift Forums \cite{TODO-forumpost}, where Jonathan Grynspan, a
+maintainer of Swift Testing at Apple, confirmed that this is a known bug in Xcode
+and that it had already been reported internally.
+
+Given that neither standard approach produced reliable per-test timing data under
+the required conditions, an alternative measurement strategy was adopted, as
+described in the following section.
+
+\subsection{Custom Measurement Tool}
+
+The empirical investigation of parallelism behaviour across both tools and their
+invocation variants informed the design of a custom measurement tool,
+\textit{Testbench}, developed specifically for this study. Prior to its development,
+a dedicated test target was prepared containing pre-fabricated tests with known sleep
+durations --- one suite sleeping for one second, one for two seconds across two tests,
+and one for five seconds --- to serve as a controlled baseline for detecting whether
+parallel execution was present during measurement.
+
+Four distinct invocation strategies were evaluated. The first, \texttt{swift test}
+with \texttt{--parallel} and \texttt{--num-workers}, revealed an important asymmetry
+between the two frameworks. For XCTest, the number of parallel workers has a direct
+and measurable effect: running three test classes with \texttt{--num-workers 3}
+reduces total duration to approximately that of the longest individual class, whereas
+specifying fewer workers than test classes produces proportionally longer runtimes.
+For Swift Testing, the \texttt{--num-workers} flag has no observable effect --- even
+with a single worker specified, tests execute in parallel, a consequence of how the
+Swift Testing runner is implemented internally, independently of the worker count
+passed by the host tool. Passing \texttt{--no-parallel} to \texttt{swift test}
+enforces serial execution for both frameworks, producing total durations of
+approximately ten seconds in both cases --- consistent with the sum of all individual
+test durations.
+
+The second strategy, \texttt{xcodebuild test}, exhibited analogous behaviour. The
+\texttt{-parallel-testing-worker-count} flag has no effect on Swift Testing targets
+regardless of the value supplied, while \texttt{-parallel-testing-enabled NO}
+correctly enforces serial execution for both frameworks. The third strategy,
+\texttt{xcodebuild build-for-testing} followed by \texttt{xcodebuild
+test-without-building} with an \texttt{.xctestrun} file, behaved identically to
+\texttt{xcodebuild test} with respect to parallelism: the
+\texttt{-parallel-testing-worker-count} argument remained ineffective for Swift
+Testing, and serial execution could again only be guaranteed via
+\texttt{-parallel-testing-enabled NO}.
+
+The fourth strategy, \texttt{xcrun xctest} invoked directly against a compiled
+\texttt{.xctest} bundle, proved to be the only approach that reliably enforces serial
+execution for both frameworks without additional flags, and without the timing
+reliability issues identified in the preceding section. Both the XCTest and Swift
+Testing bundles produced a total suite duration of approximately ten seconds ---
+the sum of all individual test durations --- confirming strictly sequential execution,
+as shown in Listing~\ref{lst:xcrun-xctest-output} and
+Listing~\ref{lst:xcrun-swifttesting-output} respectively. The output also illustrates
+the structural difference in how the two frameworks report results: XCTest emits
+line-by-line output to \texttt{stderr} with explicit suite and test case boundaries,
+whereas Swift Testing emits per-test and per-suite durations in its own distinct
+format, also to \texttt{stderr}.
+
+\begin{codeblock}{XCTest serial execution output of \texttt{xcrun xctest XCTestTests.xctest}}{lst:xcrun-xctest-output}{bash}
+Test Suite 'All tests' started at 2026-04-11 21:07:32.681.
+Test Suite 'XCTestTests.xctest' started at 2026-04-11 21:07:32.689.
+Test Suite 'BarXCTests' started at 2026-04-11 21:07:32.689.
+Test Case '-[XCTestTests.BarXCTests testBarOne]' started.
+Test Case '-[XCTestTests.BarXCTests testBarOne]' passed (1.043 seconds).
+Test Suite 'BarXCTests' passed at 2026-04-11 21:07:33.732.
+     Executed 1 test, with 0 failures (0 unexpected) in 1.043 (1.043) seconds
+Test Suite 'BazXCTests' started at 2026-04-11 21:07:33.732.
+Test Case '-[XCTestTests.BazXCTests testBazOne]' started.
+Test Case '-[XCTestTests.BazXCTests testBazOne]' passed (2.083 seconds).
+Test Case '-[XCTestTests.BazXCTests testBazTwo]' started.
+Test Case '-[XCTestTests.BazXCTests testBazTwo]' passed (2.020 seconds).
+Test Suite 'BazXCTests' passed at 2026-04-11 21:07:37.836.
+     Executed 2 tests, with 0 failures (0 unexpected) in 4.102 (4.103) seconds
+Test Suite 'FooXCTests' started at 2026-04-11 21:07:37.836.
+Test Case '-[XCTestTests.FooXCTests testFooOne]' started.
+Test Case '-[XCTestTests.FooXCTests testFooOne]' passed (5.060 seconds).
+Test Suite 'FooXCTests' passed at 2026-04-11 21:07:42.896.
+     Executed 1 test, with 0 failures (0 unexpected) in 5.060 (5.060) seconds
+Test Suite 'All tests' passed at 2026-04-11 21:07:42.896.
+     Executed 4 tests, with 0 failures (0 unexpected) in 10.205 (10.216) seconds
+\end{codeblock}
+
+In contrast, Swift Testing emits a more compact output, reporting durations at the
+per-test and per-suite level rather than interleaving start and end events, as shown
+in Listing~\ref{lst:xcrun-swifttesting-output}.
+
+\begin{codeblock}{Swift Testing serial execution output of \texttt{xcrun xctest SwiftTestingTests.xctest}}{lst:xcrun-swifttesting-output}{bash}
+Test run started.
+Suite BarTests started.
+Test "test Bar one" passed after 1.040 seconds.
+Suite BarTests passed after 1.041 seconds.
+Suite BazTests started.
+Test "test Baz one" passed after 2.008 seconds.
+Test "test Baz two" passed after 2.029 seconds.
+Suite BazTests passed after 4.039 seconds.
+Suite FooTests started.
+Test "test Foo one" passed after 5.001 seconds.
+Suite FooTests passed after 5.001 seconds.
+Test run with 4 tests in 3 suites passed after 10.082 seconds.
+\end{codeblock}
+
+Given these findings, Testbench adopts a two-phase approach. In the first phase, it
+invokes \texttt{xcodebuild build-for-testing} to compile the target scheme and
+produce \texttt{.xctest} bundles in a designated derived data directory. In the
+second phase, it invokes \texttt{xcrun xctest} directly against each discovered
+bundle, ensuring that both XCTest and Swift Testing suites are executed serially and
+in isolation, without any parallelism introduced by the host tool. This guarantees
+measurement conditions that are consistent and comparable across both frameworks.
+
+Testbench is implemented as a Swift command-line tool using the \texttt{ArgumentParser}
+library for its interface and the \texttt{Subprocess} library for process execution.
+It exposes three subcommands: \texttt{report}, which collects and persists a machine
+report including hardware, operating system, Swift, and \texttt{xcodebuild} version
+information prior to any measurement run; \texttt{xcodebuild}, which orchestrates
+the build-and-run cycle for a given scheme across a configurable number of
+iterations, with derived data and caches cleared between runs; and \texttt{results},
+which manages the stored output. Per-test and total suite execution times are
+extracted from the \texttt{stderr} output of \texttt{xcrun xctest} using regular
+expressions targeting the distinct output formats of each framework. Each iteration
+is persisted as a structured JSON file, capturing the test plan name, framework,
+total suite duration, and per-test case identifiers and durations, enabling
+subsequent statistical analysis of the collected results.
+
+\subsection{Results}
+\label{sec:perf-results}
+
+Measurements were collected on two machines: an Apple M2~Pro
+(Mac14,9, 10~cores, 16~GB, Swift~6.2.3) and an Apple M5
+(Mac17,2, 10~cores, 16~GB, Swift~6.2.1). Both ran macOS~Sequoia on
+\texttt{arm64}. Each test suite was executed for $n = 100$ independent iterations
+with derived data cleared between runs. All statistics reported below use the sample
+standard deviation ($\sigma$, $\text{ddof}=1$) and a 95\% Student's
+$t$-interval, which is appropriate for the sample size used.
+
+Two projects were measured: \textit{swift-pesel}, a small SPM library whose Swift
+Testing suite includes a parameterised test over 1\,000 argument cases; and
+\textit{bitchat}, a macOS Bluetooth chat application whose tests involve asynchronous
+delegate callbacks and structured concurrency. For \textit{bitchat}, measurements
+were taken both before and after a correctness fix to the Swift Testing suite,
+described in Section~\ref{sec:perf-anomaly-sleep}.
+
+\subsubsection*{swift-pesel}
+
+\begin{table}[ht]
+    \centering
+    \caption{%
+        Total test run duration --- \textit{swift-pesel}
+        ($n = 100$ iterations per suite; 95\% CI in parentheses).%
+    }
+    \label{tab:perf-pesel}
+    \begin{tabular}{llrrr}
+        \toprule
+        \textbf{Machine} & \textbf{Suite (Framework)} &
+        \textbf{Mean (ms)} & \textbf{$\sigma$ (ms)} & \textbf{95\% CI (ms)} \\
+        \midrule
+        M2 Pro & \texttt{PeselTests} (Swift Testing)  & 48.8 & 1.1 & [48.6,\ 49.0] \\
+               & \texttt{PeselXCTests} (XCTest)        & 11.1 & 0.6 & [10.9,\ 11.2] \\
+        \midrule
+        M5     & \texttt{PeselTests} (Swift Testing)  & 31.5 & 0.6 & [31.3,\ 31.6] \\
+               & \texttt{PeselXCTests} (XCTest)        &  7.1 & 0.8 & [\ 6.9,\ \ 7.2] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+On both machines the Swift Testing suite takes approximately $4.4\times$ longer than
+its XCTest counterpart (Table~\ref{tab:perf-pesel}). This ratio, consistent across
+hardware generations, is not attributable to framework overhead in isolation. The
+Swift Testing suite exercises a parameterised test,
+\texttt{expectValidPeselNumber(\_:)}, over 1\,000 argument cases --- each case
+recorded as a distinct test event with its own result entry. The XCTest counterpart
+encodes the equivalent validation as a loop within a single test method, incurring no
+per-iteration tracking cost. The observed difference therefore reflects the
+combination of Swift Testing's per-instance result tracking and the 1\,000-case
+parameterisation, rather than any regression in single-test execution speed. The
+coefficient of variation remains below 2\% for \texttt{PeselTests} and below 6\%
+for \texttt{PeselXCTests}, indicating stable, low-noise measurements.
+
+The only outlier of note is iteration~1 of \texttt{PeselXCTests} on both machines
+(0.017\,s on M2~Pro, 0.015\,s on M5), which exceeds the distribution by more than
+3$\sigma$ and is consistent with a cold-start effect on the first run after cache
+clearance. No comparable warm-up effect is visible in subsequent iterations.
+
+Figure~\ref{fig:pesel-boxplot} shows the marginal distributions for both suites on
+both machines. The non-overlapping interquartile ranges confirm that the difference
+is robust and not an artefact of measurement noise.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m2-results/xcodebuild/swift-pesel/plots/swift-pesel_boxplot.pdf}
+        \caption{Apple M2 Pro}
+        \label{fig:pesel-m2-box}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m5-results/xcodebuild/swift-pesel/plots/swift-pesel_boxplot.pdf}
+        \caption{Apple M5}
+        \label{fig:pesel-m5-box}
+    \end{subfigure}
+    \caption{%
+        Total test run duration for \textit{swift-pesel} on both machines
+        (box: Q1--Q3; whiskers: $1.5\times\mathrm{IQR}$; $\blacklozenge$: mean;
+        $n=100$ per suite).
+    }
+    \label{fig:pesel-boxplot}
+\end{figure}
+
+\subsubsection*{bitchat --- pre-fix}
+
+\begin{table}[ht]
+    \centering
+    \caption{%
+        Total test run duration --- \textit{bitchat}, before correctness fix
+        ($n = 100$ iterations per suite; 95\% CI in parentheses).%
+    }
+    \label{tab:perf-bitchat-pre}
+    \begin{tabular}{llrrr}
+        \toprule
+        \textbf{Machine} & \textbf{Suite (Framework)} &
+        \textbf{Mean (s)} & \textbf{$\sigma$ (s)} & \textbf{95\% CI (s)} \\
+        \midrule
+        M2 Pro & \texttt{bitchatTests} (Swift Testing)  & 8.330 & 0.117 & [8.307,\ 8.353] \\
+               & \texttt{bitchatXCTests} (XCTest)        & 5.023 & 0.051 & [5.013,\ 5.034] \\
+        \midrule
+        M5     & \texttt{bitchatTests} (Swift Testing)  & 7.946 & 0.026 & [7.941,\ 7.951] \\
+               & \texttt{bitchatXCTests} (XCTest)        & 4.775 & 0.026 & [4.770,\ 4.781] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Prior to the fix, the Swift Testing suite ran 3.31\,s slower than XCTest on the M2~Pro
+($+65.9\%$) and 3.17\,s slower on the M5 ($+66.3\%$), as shown in
+Table~\ref{tab:perf-bitchat-pre} and Figure~\ref{fig:bitchat-pre-box}. The
+distributions are well-separated and non-overlapping, ruling out any plausible
+measurement artefact. The gap magnitude is also consistent across both hardware
+platforms, which strengthens the case that the cause is specific to the suite's
+implementation rather than to system-level scheduling noise.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m2-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+        \caption{Apple M2 Pro --- before fix}
+        \label{fig:bitchat-pre-m2-box}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m5-pro-results-pre-swift-testing-refactor/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+        \caption{Apple M5 --- before fix}
+        \label{fig:bitchat-pre-m5-box}
+    \end{subfigure}
+    \caption{%
+        Total test run duration for \textit{bitchat} before the correctness fix,
+        on both machines. The Swift Testing suite is approximately 3.2--3.3\,s
+        slower than XCTest, with non-overlapping interquartile ranges on both
+        platforms ($n = 100$ per suite).
+    }
+    \label{fig:bitchat-pre-box}
+\end{figure}
+
+\subsubsection*{bitchat --- root cause of the pre-fix gap}
+\label{sec:perf-anomaly-sleep}
+
+Root-cause analysis of the pre-fix gap identified a systematic misuse of Swift
+Testing's \texttt{confirmation} API in \texttt{BLEServiceTests.swift}. Seven
+asynchronous tests --- covering \texttt{sendMessage}, \texttt{sendPrivateMessage},
+\texttt{sendMessageWithMentions}, \texttt{simulateIncomingMessage},
+\texttt{simulateIncomingPacket}, \texttt{messageDeliveryHandler}, and
+\texttt{packetDeliveryHandler} --- each contained an unconditional
+\texttt{sleep(0.5)} call inside their \texttt{confirmation} body, totalling 3.5\,s
+of dead wait per run:
+
+\begin{verbatim}
+@Test func sendPublicMessage() async throws {
+    try await confirmation { receivedPublicMessage in
+        ...
+        service.sendMessage("Hello, world!")
+        try await sleep(0.5)   // ← 500 ms regardless of when callback fires
+    }
+}
+\end{verbatim}
+
+The XCTest counterpart used \texttt{fulfillment(of:timeout:)}, which returns as soon
+as the expectation is fulfilled --- in practice, sub-millisecond once the main queue
+processes the pending \texttt{DispatchQueue.main.async} block:
+
+\begin{verbatim}
+func testSendPublicMessage() async {
+    let exp = expectation(description: "...")
+    ...
+    service.sendMessage("Hello, world!")
+    await fulfillment(of: [exp], timeout: 1.0)  // ← returns on fulfillment
+}
+\end{verbatim}
+
+The critical semantic difference is that \texttt{confirmation} has no built-in
+polling: it executes the body closure synchronously to completion and then asserts
+the callback count. Any \texttt{sleep} inside it constitutes unconditional dead time,
+whereas \texttt{fulfillment(of:timeout:)} drives the run loop and returns
+immediately on fulfilment. Of the seven affected tests, only three actually required
+any sleep --- those where the delegate callback is dispatched via
+\texttt{DispatchQueue.main.async} in \texttt{MockBLEService.swift} (lines~75 and~104).
+The remaining four observe synchronous callback paths
+(\texttt{simulateIncomingMessage}, \texttt{simulateIncomingPacket},
+\texttt{packetDeliveryHandler}) and require no sleep at all, since the confirmation
+fires before the body closure returns.
+
+The fix reduced the three necessary sleeps from 500\,ms to 10\,ms --- sufficient for
+a single main-queue dispatch to drain --- and removed the four unnecessary ones
+entirely, eliminating the $7 \times 500\,\mathrm{ms} = 3.5\,\mathrm{s}$ overhead.
+
+\subsubsection*{bitchat --- post-fix}
+
+\begin{table}[ht]
+    \centering
+    \caption{%
+        Total test run duration --- \textit{bitchat}, after correctness fix
+        ($n = 100$ iterations per suite; 95\% CI in parentheses).%
+    }
+    \label{tab:perf-bitchat-post}
+    \begin{tabular}{llrrr}
+        \toprule
+        \textbf{Machine} & \textbf{Suite (Framework)} &
+        \textbf{Mean (s)} & \textbf{$\sigma$ (s)} & \textbf{95\% CI (s)} \\
+        \midrule
+        M2 Pro & \texttt{bitchatTests} (Swift Testing)  & 4.556 & 0.036 & [4.548,\ 4.563] \\
+               & \texttt{bitchatXCTests} (XCTest)        & 4.995 & 0.033 & [4.988,\ 5.001] \\
+        \midrule
+        M5     & \texttt{bitchatTests} (Swift Testing)  & 4.351 & 0.040 & [4.343,\ 4.359] \\
+               & \texttt{bitchatXCTests} (XCTest)        & 4.783 & 0.037 & [4.776,\ 4.791] \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Following the fix, the Swift Testing suite completes in 4.556\,s on the M2~Pro and
+4.351\,s on the M5 --- in both cases \textit{faster} than its XCTest counterpart
+by approximately 0.44\,s ($-8.8\%$) and 0.43\,s ($-9.0\%$) respectively
+(Table~\ref{tab:perf-bitchat-post}, Figure~\ref{fig:bitchat-post-box}). The
+XCTest baseline remained unchanged between the two measurement rounds within the
+bounds of normal variation ($\Delta = -0.028\,\mathrm{s}$ on M2~Pro,
+$\Delta = +0.008\,\mathrm{s}$ on M5), confirming that the change was isolated
+to the Swift Testing suite.
+
+The remaining difference in favour of Swift Testing may be attributable to
+differences in per-test isolation mechanics --- Swift Testing uses value-typed
+\texttt{struct} suites with per-test initialisation, whereas XCTest allocates a
+fresh \texttt{class} instance and calls \texttt{setUp}/\texttt{tearDown} for
+each test, which can carry higher allocation and Objective-C messaging overhead.
+The precise contribution of this factor is outside the scope of this study.
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m2-results/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+        \caption{Apple M2 Pro --- after fix}
+        \label{fig:bitchat-post-m2-box}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{%
+            m5-results/xcodebuild/bitchat/plots/bitchat_boxplot.pdf}
+        \caption{Apple M5 --- after fix}
+        \label{fig:bitchat-post-m5-box}
+    \end{subfigure}
+    \caption{%
+        Total test run duration for \textit{bitchat} after the correctness fix.
+        The Swift Testing suite is now marginally but consistently faster than
+        XCTest on both platforms ($n = 100$ per suite).
+    }
+    \label{fig:bitchat-post-box}
+\end{figure}
+
+Figure~\ref{fig:bitchat-ts-m2} shows the per-iteration time series for the
+post-fix \textit{bitchat} measurements on the M2~Pro. Both suites are stable
+across all 100 iterations with no visible trend, drift, or warm-up effect,
+supporting the validity of the mean as a summary statistic.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{%
+        m2-results/xcodebuild/bitchat/plots/bitchat_timeseries.pdf}
+    \caption{%
+        Per-iteration total run duration for \textit{bitchat} (post-fix,
+        Apple M2~Pro). Dashed lines indicate the per-suite mean. Both
+        suites exhibit stable, low-variance behaviour across all 100 iterations.
+    }
+    \label{fig:bitchat-ts-m2}
+\end{figure}
+
+\subsubsection*{Summary}
+
+The results confirm that, in the absence of implementation defects, Swift Testing
+introduces no performance regression relative to XCTest. For the small-suite
+\textit{swift-pesel} project, the $4.4\times$ overhead of the Swift Testing suite
+is attributable to the framework's per-instance result tracking over a
+1\,000-case parameterised test, not to any regression in single-test overhead. For
+the larger \textit{bitchat} project, a superficially large gap --- $+66\%$ on both
+machines --- was caused entirely by seven unconditional \texttt{sleep(0.5)} calls
+inside \texttt{confirmation} bodies in the Swift Testing suite, a misuse of the API
+with no counterpart in the XCTest suite. After correcting this pattern, Swift Testing
+ran approximately 9\% \textit{faster} than XCTest on both platforms. The finding
+corroborates the key distinction between \texttt{confirmation} and
+\texttt{fulfillment(of:timeout:)}: the latter exits as soon as the expectation is
+fulfilled, while the former always runs the body to completion, making any sleep
+inside it unconditional dead time. This difference is easy to overlook during
+migration and represents a meaningful performance pitfall when porting
+asynchronous tests.
+
+\subsection{Anomalies}
+
+Two anomalies were identified during the course of the evaluation. The first
+concerns parameterised tests executed directly from the Xcode IDE: when a
+parameterised test function is supplied with a sufficiently large argument
+collection, Xcode tends to become unresponsive for an extended period while
+awaiting the test result. This behaviour was not observed when invoking the same
+test via \texttt{swift test} or \texttt{xcodebuild}, isolating the issue to the
+IDE layer rather than the framework or its runner. The issue has been filed with
+Apple as FB13986710 and remains unresolved at the time of writing.
+
+The second concerns the \texttt{@MainActor} isolation behaviour introduced as the
+default in Xcode 26 projects, discussed in Section~\ref{TODO}. While its impact
+was not directly measurable within the scope of the two projects examined here,
+the architectural implication --- that tests bound to the main actor executor run
+serially rather than in parallel --- warrants attention in the context of larger
+codebases, where the performance gap relative to XCTest's multi-runner scheduling
+model may become significant.
