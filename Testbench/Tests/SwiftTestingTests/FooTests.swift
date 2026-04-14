@@ -5,9 +5,6 @@ import Testing
 struct FooTests {
   @Test
   func `test Foo one`() async throws {
-    try await confirmation { confirm in
-      try await Task.sleep(for: .seconds(5))
-      confirm()
-    }
+    try await Task.sleep(for: .seconds(5))
   }
 }

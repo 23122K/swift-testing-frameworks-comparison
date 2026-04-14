@@ -5,7 +5,7 @@ extension XcodebuildCommand {
   func xcodebuildBuildForTesting(
     scheme: String,
     destination: String = "platform=macOS,arch=arm64,name=My Mac",
-    derrivedData: URL
+    derivedData: URL
   ) async throws -> URL {
     let result = try await Subprocess.run(
       Configuration(
@@ -15,11 +15,10 @@ extension XcodebuildCommand {
           "build-for-testing"
           "-scheme"; scheme
           "-destination"; "\(destination)"
-          "-derivedDataPath"; "\(derrivedData.path())"
+          "-derivedDataPath"; "\(derivedData.path())"
         }
       )
-    ) { _, _, stdout, stderr -> Void in
-      // Stream both stdout and stderr so build errors are visible.
+    ) { _, _, stdout, stderr in
       try await withThrowingTaskGroup(of: Void.self) { group in
         group.addTask {
           for try await line in stdout.lines() { print(line) }
@@ -35,7 +34,7 @@ extension XcodebuildCommand {
       throw XcodebuildError.buildFailed(scheme: scheme, status: result.terminationStatus)
     }
 
-    return derrivedData
+    return derivedData
       .appending(path: "Build")
       .appending(path: "Products")
       .appending(path: "Debug")

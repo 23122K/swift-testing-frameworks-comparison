@@ -29,19 +29,19 @@ struct XcodebuildCommand: AsyncParsableCommand {
     try await self.checkIfCanStartBenchmark()
     try self.checkAndPurgeExistingResults()
 
-    let derrivedData = self.storage
+    let derivedData = self.storage
       .directory()
       .appending(path: "DerrivedData")
 
     do {
-      try self.storage.delete(derrivedData)
+      try self.storage.delete(derivedData)
     } catch {
       print("Failed to purge DerrivedData directory: \(error). Skipping...")
     }
 
     let path = try await self.xcodebuildBuildForTesting(
       scheme: self.schema,
-      derrivedData: derrivedData
+      derivedData: derivedData
     )
     
     let bundles = try self.storage
