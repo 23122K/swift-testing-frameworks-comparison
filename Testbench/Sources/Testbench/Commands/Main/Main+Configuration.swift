@@ -6,6 +6,7 @@ extension MainCommand {
     subcommands: [
       ReportCommand.self,
       XcodebuildCommand.self,
+      XCTestCommand.self,
       ResultsCommand.self,
     ]
   )
