@@ -9,7 +9,7 @@ extension StorageClient: SharedContainer {
     let directory = mutex.withLock { fileManager in
       fileManager.temporaryDirectory.appending(path: "com.23122K.TestBenchmark")
     }
-    
+
     return StorageClient(
       _write: { content, path, encoder in
         try mutex.withLock { fileManager in
@@ -18,7 +18,7 @@ extension StorageClient: SharedContainer {
             atPath: directory.path(),
             isDirectory: &directoryExists
           )
-          
+
           if !directoryExists.boolValue {
             try fileManager.createDirectory(
               at: directory,
@@ -26,7 +26,7 @@ extension StorageClient: SharedContainer {
             )
           }
         }
-      
+
         return try mutex.withLock { fileManager in
           try fileManager.createFile(
             atPath: directory.appending(path: path).path(),
@@ -67,6 +67,28 @@ extension StorageClient: SharedContainer {
       delete: { url in
         try mutex.withLock { fileManager in
           try fileManager.removeItem(at: url)
+        }
+      },
+      createDirectory: { url in
+        try mutex.withLock { fileManager in
+          try fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+        }
+      },
+      copy: { source, destination in
+        try mutex.withLock { fileManager in
+          try fileManager.copyItem(at: source, to: destination)
+        }
+      },
+      isDirectory: { url in
+        mutex.withLock { fileManager in
+          var isDir: ObjCBool = false
+          fileManager.fileExists(atPath: url.path(), isDirectory: &isDir)
+          return isDir.boolValue
+        }
+      },
+      writeData: { data, url in
+        try mutex.withLock { _ in
+          try data.write(to: url)
         }
       }
     )

@@ -9,7 +9,11 @@ public final class StorageClient: Sendable {
   public let currentPathDirectry: @Sendable () -> URL
   public let directory: @Sendable () -> URL
   public let delete: @Sendable (URL) throws -> Void
-  
+  public let createDirectory: @Sendable (URL) throws -> Void
+  public let copy: @Sendable (URL, URL) throws -> Void
+  public let isDirectory: @Sendable (URL) -> Bool
+  public let writeData: @Sendable (Data, URL) throws -> Void
+
   public init(
     _write: @Sendable @escaping (any Encodable, String, JSONEncoder) throws -> Bool,
     _decode: @Sendable @escaping (String) throws -> Data?,
@@ -17,7 +21,11 @@ public final class StorageClient: Sendable {
     contentsOfDirectory: @Sendable @escaping (URL) throws -> [String],
     currentPathDirectry: @Sendable @escaping () -> URL,
     directory: @Sendable @escaping () -> URL,
-    delete: @Sendable @escaping (URL) throws -> Void
+    delete: @Sendable @escaping (URL) throws -> Void,
+    createDirectory: @Sendable @escaping (URL) throws -> Void,
+    copy: @Sendable @escaping (URL, URL) throws -> Void,
+    isDirectory: @Sendable @escaping (URL) -> Bool,
+    writeData: @Sendable @escaping (Data, URL) throws -> Void
   ) {
     self._write = _write
     self._decode = _decode
@@ -26,6 +34,10 @@ public final class StorageClient: Sendable {
     self.currentPathDirectry = currentPathDirectry
     self.directory = directory
     self.delete = delete
+    self.createDirectory = createDirectory
+    self.copy = copy
+    self.isDirectory = isDirectory
+    self.writeData = writeData
   }
 }
 
@@ -38,7 +50,7 @@ extension StorageClient {
   ) throws -> Bool {
     try self._write(content, name, encoder)
   }
-  
+
   public func decode<T: Decodable>(
     name: String,
     decoder: JSONDecoder = JSONDecoder(),

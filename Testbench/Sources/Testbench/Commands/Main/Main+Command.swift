@@ -47,15 +47,27 @@ struct MainCommand: AsyncParsableCommand {
     if let path = self.path {
       let url = URL(filePath: path, directoryHint: .isDirectory)
       let contents = try self.storage.contentsOfDirectory(url)
-      if contents.contains(
-        where: { $0 == ".testbench" }
-      ) {
-        self.defaults.set(url.path(), forKey: .repositoryURL)
-        print("Path set to: \(url.path())")
-      } else {
-        print("Invalid path: \(url.path())")
-        print("Path must point at swift-testing-fameworks-comparison repostory")
+      guard contents.contains(where: { $0 == ".testbench" }),
+            contents.contains(where: { $0 == "Testbench" }) else {
+        throw MainError.invalidRepositoryPath(url.path())
       }
+      self.defaults.set(url.path(), forKey: .repositoryURL)
+      print("Path set to: \(url.path())")
+    }
+  }
+}
+
+enum MainError: Error, CustomStringConvertible {
+  case invalidRepositoryPath(String)
+
+  var description: String {
+    switch self {
+    case let .invalidRepositoryPath(path):
+      return """
+        Invalid path: \(path)
+        Path must point at the swift-testing-frameworks-comparison repository \
+        (must contain both .testbench and Testbench/).
+        """
     }
   }
 }
