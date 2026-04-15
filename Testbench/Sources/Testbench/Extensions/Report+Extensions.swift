@@ -1,21 +1,86 @@
+import Foundation
 import Models
 
 extension Report.Battery {
-  public init(stdout: String?) throws {
-    guard
-      let stdout,
-      let batteryPercentage = stdout.firstMatch(of: .batteryStateOfCharge)?.value(),
-      let isCharging = stdout.firstMatch(of: .batteryCharging)?.value(),
-      let isLowPowerModeOnBatteryEnabled = stdout.firstMatch(of: .batteryBatteryPowerLowPowerMode)?.value(),
-      let isLowPowerModeOnAcEnabled = stdout.firstMatch(of: .batteryAcPowerLowPowerMode)?.value()
-    else { throw Report.Failure.stdout(stdout) }
+  public init(
+    batteryStdout: String?,
+    powerSettingsStdout: String?
+  ) throws {
+    guard let batteryStdout else { throw Report.Failure.stdout(batteryStdout) }
+
+    let noInternalBattery = "No internal battery detected"
+    let unavailable = "Unavailable"
+
+    if batteryStdout.localizedCaseInsensitiveContains("no batteries") {
+      self.init(
+        batteryPercentage: noInternalBattery,
+        isCharging: noInternalBattery,
+        isLowPowerModeOnBatteryEnabled: noInternalBattery,
+        isLowPowerModeOnAcEnabled: Self.lowPowerMode(
+          in: powerSettingsStdout,
+          systemProfilerRegex: .batteryAcPowerLowPowerMode,
+          pmsetRegex: .batteryAcPowerLowPowerModePmset
+        ) ?? unavailable
+      )
+      return
+    }
     
     self.init(
-      batteryPercentage: batteryPercentage,
-      isCharging: isCharging,
-      isLowPowerModeOnBatteryEnabled: isLowPowerModeOnBatteryEnabled,
-      isLowPowerModeOnAcEnabled: isLowPowerModeOnAcEnabled
+      batteryPercentage: batteryStdout.firstMatch(of: .batteryStateOfChargePmset)?.value()
+        ?? batteryStdout.firstMatch(of: .batteryStateOfCharge)?.value()
+        ?? unavailable,
+      isCharging: Self.chargingState(in: batteryStdout) ?? unavailable,
+      isLowPowerModeOnBatteryEnabled: Self.lowPowerMode(
+        in: powerSettingsStdout,
+        systemProfilerRegex: .batteryBatteryPowerLowPowerMode,
+        pmsetRegex: .batteryBatteryPowerLowPowerModePmset
+      ) ?? unavailable,
+      isLowPowerModeOnAcEnabled: Self.lowPowerMode(
+        in: powerSettingsStdout,
+        systemProfilerRegex: .batteryAcPowerLowPowerMode,
+        pmsetRegex: .batteryAcPowerLowPowerModePmset
+      ) ?? unavailable
     )
+  }
+
+  private static func chargingState(in stdout: String) -> String? {
+    if let value = stdout.firstMatch(of: .batteryCharging)?.value() {
+      return value
+    }
+
+    guard let status = stdout.firstMatch(of: .batteryChargingPmset)?.value()?.lowercased() else {
+      return nil
+    }
+
+    switch status {
+    case "charging", "charged", "finishing charge":
+      return "Yes"
+    case "discharging":
+      return "No"
+    default:
+      return status.capitalized
+    }
+  }
+
+  private static func lowPowerMode(
+    in stdout: String?,
+    systemProfilerRegex: AnyRegex,
+    pmsetRegex: AnyRegex
+  ) -> String? {
+    guard let stdout else { return nil }
+
+    if let value = stdout.firstMatch(of: systemProfilerRegex)?.value() {
+      return value
+    }
+
+    switch stdout.firstMatch(of: pmsetRegex)?.value() {
+    case "1":
+      return "Yes"
+    case "0":
+      return "No"
+    default:
+      return nil
+    }
   }
 }
 

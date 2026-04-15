@@ -21,9 +21,18 @@ extension Configuration {
   )
   
   static let battery = Configuration(
-    Executable.name("system_profiler"),
+    Executable.name("pmset"),
     arguments: [
-      "SPPowerDataType"
+      "-g",
+      "batt"
+    ]
+  )
+
+  static let batteryPowerSettings = Configuration(
+    Executable.name("pmset"),
+    arguments: [
+      "-g",
+      "custom"
     ]
   )
   

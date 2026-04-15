@@ -56,17 +56,33 @@ extension RegexComponent where Self == AnyRegex {
   static var batteryStateOfCharge: Self {
     AnyRegex(/State of Charge \(\%\):\s*(\d+)/)
   }
+
+  static var batteryStateOfChargePmset: Self {
+    AnyRegex(/(\d+)%/)
+  }
   
   static var batteryCharging: Self {
     AnyRegex(/Charging:\s*(\w+)/)
+  }
+
+  static var batteryChargingPmset: Self {
+    AnyRegex(/;\s*([A-Za-z ]+?)\s*;/)
   }
   
   static var batteryAcPowerLowPowerMode: Self {
     AnyRegex(/(?s)AC Power:.*?Low Power Mode:\s*(Yes|No)/)
   }
+
+  static var batteryAcPowerLowPowerModePmset: Self {
+    AnyRegex(/(?s)AC Power:.*?lowpowermode\s+([01])/)
+  }
   
   static var batteryBatteryPowerLowPowerMode: Self {
     AnyRegex(/(?s)Battery Power:.*?Low Power Mode:\s*(Yes|No)/)
+  }
+
+  static var batteryBatteryPowerLowPowerModePmset: Self {
+    AnyRegex(/(?s)Battery Power:.*?lowpowermode\s+([01])/)
   }
   
   // MARK: - XcodeBuikd
@@ -93,5 +109,4 @@ extension RegexComponent where Self == AnyRegex {
     AnyRegex(/Benchmark\s\(([A-Z0-9-]+)\)\s\((\w+)\)/)
   }
 }
-
 
