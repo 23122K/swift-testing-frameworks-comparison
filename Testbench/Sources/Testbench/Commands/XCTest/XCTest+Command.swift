@@ -49,6 +49,7 @@ struct XCTestCommand: AsyncParsableCommand {
       return
     }
 
+    try await generateReportSequentially()
     try await self.runAllBundles(bundles)
 
     let resultsPath = self.storage

@@ -6,31 +6,85 @@ import Models
 extension XCTestCommand {
   /// Runs each `(scheme, bundle)` pair `iterations` times, saving per-iteration JSON results.
   func runAllBundles(_ bundles: [(scheme: String, bundle: URL)]) async throws {
-    for (scheme, bundle) in bundles {
+    let loader = Loader()
+
+    for (index, (scheme, bundle)) in bundles.enumerated() {
       let bundleName = bundle.lastPathComponent
       let targetName = bundle.deletingPathExtension().lastPathComponent
-      var isSwiftTesting = false
+      let queued = Array(bundles.dropFirst(index + 1))
+      var frameworkName: String? = nil
 
-      for iteration in 1...self.iterations {
-        let lines = try await self.xcrunXCTest(bundle: bundle)
-        if iteration == 1 {
-          isSwiftTesting = self.isSwiftTestingBundle(lines)
+      await loader.start(
+        scheme: scheme,
+        bundleName: bundleName,
+        iteration: 1,
+        total: self.iterations,
+        queued: queued
+      )
+      let tickTask = Task<Void, Never> {
+        while !Task.isCancelled {
+          do {
+            try await Task.sleep(for: .milliseconds(100))
+          } catch is CancellationError {
+            break
+          } catch {
+            break
+          }
+
+          if Task.isCancelled {
+            break
+          }
+
+          await loader.tick()
         }
-        let frameworkName = isSwiftTesting ? "Swift Testing" : "XCTest"
-        let runtime = self.extractRuntime(from: lines)
-        let testCases = self.extractTestCases(from: lines, isSwiftTesting: isSwiftTesting)
-
-        let summary = TestSummary(
-          testPlan: targetName,
-          framework: frameworkName,
-          testRunDuration: runtime,
-          testCases: testCases
-        )
-        try self.saveSummary(summary, scheme: scheme, targetName: targetName, iteration: iteration)
-
-        print("[\(scheme) / \(bundleName) / \(frameworkName)] Iteration \(iteration)/\(self.iterations): \(String(format: "%.3f", runtime))s")
       }
+
+      do {
+        for iteration in 1...self.iterations {
+          if iteration > 1 {
+            await loader.beginIteration(iteration)
+          }
+
+          let lines = try await self.xcrunXCTest(bundle: bundle)
+          if iteration == 1 {
+            frameworkName = self.isSwiftTestingBundle(lines) ? "Swift Testing" : "XCTest"
+          }
+          let runtime = self.extractRuntime(from: lines)
+          let framework = frameworkName ?? "XCTest"
+          let isSwiftTesting = framework == "Swift Testing"
+          let testCases = self.extractTestCases(from: lines, isSwiftTesting: isSwiftTesting)
+
+          let summary = TestSummary(
+            testPlan: targetName,
+            framework: framework,
+            testRunDuration: runtime,
+            testCases: testCases
+          )
+          try self.saveSummary(summary, scheme: scheme, targetName: targetName, iteration: iteration)
+
+          await loader.finish(
+            framework: framework,
+            iteration: iteration,
+            runtime: runtime,
+          )
+        }
+      } catch {
+        tickTask.cancel()
+        await tickTask.value
+        throw error
+      }
+
+      tickTask.cancel()
+      await tickTask.value
+      await loader.complete(
+        scheme: scheme,
+        bundleName: bundleName,
+        framework: frameworkName ?? "XCTest",
+        total: self.iterations
+      )
     }
+
+    await loader.finishOutput()
   }
 
   /// Runs a single `.xctest` bundle via `xcrun xctest` and returns all stderr lines.
