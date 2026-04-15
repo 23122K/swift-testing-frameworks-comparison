@@ -17,6 +17,7 @@ actor Loader {
   }
 
   private let frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+  private let childIndent = "  "
   private var frameIndex = 0
   private var previousLineCount = 0
   private var isActive = false
@@ -112,7 +113,7 @@ actor Loader {
         lines.append(styledScheme(bundle.scheme))
         lastScheme = bundle.scheme
       }
-      var line = " \(ANSI.green)✓\(ANSI.reset) \(bundle.scheme)/\(bundle.bundleName) \(bundle.total)/\(bundle.total) \(bundle.framework)"
+      var line = "\(childIndent)\(ANSI.green)✓\(ANSI.reset) \(bundle.scheme)/\(bundle.bundleName) \(bundle.total)/\(bundle.total) \(bundle.framework)"
       if bundle.averageRuntime > 0 {
         line += " \(String(format: "%.3f", bundle.averageRuntime))s (Average time)"
       }
@@ -125,7 +126,7 @@ actor Loader {
         lastScheme = currentScheme
       }
 
-      var current = "  \(spinner) \(currentBundleName) \(iteration)/\(total)"
+      var current = "\(childIndent)\(spinner) \(currentBundleName) \(iteration)/\(total)"
       if let framework {
         current += " \(framework)"
       }
@@ -141,7 +142,7 @@ actor Loader {
         lines.append(styledScheme(item.scheme, dimmed: true))
         lastScheme = item.scheme
       }
-      lines.append("\(ANSI.dim)  ↳ \(item.bundle.lastPathComponent)\(ANSI.reset)")
+      lines.append("\(ANSI.dim)\(childIndent)↳ \(item.bundle.lastPathComponent)\(ANSI.reset)")
     }
 
     write(lines.joined(separator: "\n"))
