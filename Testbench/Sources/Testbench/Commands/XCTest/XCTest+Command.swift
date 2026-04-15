@@ -56,8 +56,6 @@ struct XCTestCommand: AsyncParsableCommand {
     let resultsPath = self.storage
       .directory()
       .appending(path: "xcodebuild")
-    print("Results: \(resultsPath.path())")
-    print("Copied to: \(exportedResultsURL.path())")
   }
 
   private func printArtifacts(_ bundles: [(scheme: String, bundle: URL)], in artifactsURL: URL) {
@@ -128,7 +126,7 @@ struct XCTestCommand: AsyncParsableCommand {
 
   private func exportResults(
     to repositoryURL: URL,
-    bundles: [(scheme: String, bundle: URL)]
+    bundles _: [(scheme: String, bundle: URL)]
   ) throws -> URL {
     let hardware: Report.Hardware = try self.storage.decode(name: "hardware.json")
     let resultsRoot = repositoryURL.appending(path: "Results")
@@ -157,22 +155,9 @@ struct XCTestCommand: AsyncParsableCommand {
       try self.storage.writeData(data, destination)
     }
 
-    let bundleNamesBySchemeAndTarget = Dictionary(
-      uniqueKeysWithValues: bundles.map { bundle in
-        (
-          "\(bundle.scheme)::\(bundle.bundle.deletingPathExtension().lastPathComponent)",
-          bundle.bundle.lastPathComponent
-        )
-      }
-    )
-
     let xcodebuildSource = storageDirectory.appending(path: "xcodebuild")
     if self.storage.isDirectory(xcodebuildSource) {
-      try self.exportIterations(
-        from: xcodebuildSource,
-        to: deviceRoot,
-        bundleNamesBySchemeAndTarget: bundleNamesBySchemeAndTarget
-      )
+      try self.exportIterations(from: xcodebuildSource, to: deviceRoot)
     }
 
     return deviceRoot
@@ -180,8 +165,7 @@ struct XCTestCommand: AsyncParsableCommand {
 
   private func exportIterations(
     from sourceRoot: URL,
-    to destinationRoot: URL,
-    bundleNamesBySchemeAndTarget: [String: String]
+    to destinationRoot: URL
   ) throws {
     for scheme in try self.storage.contentsOfDirectory(sourceRoot).sorted() {
       let schemeSource = sourceRoot.appending(path: scheme)
@@ -194,17 +178,14 @@ struct XCTestCommand: AsyncParsableCommand {
         let targetSource = schemeSource.appending(path: target)
         guard self.storage.isDirectory(targetSource) else { continue }
 
-        let lookupKey = "\(scheme)::\(target)"
-        let bundleName = bundleNamesBySchemeAndTarget[lookupKey] ?? target
-        let iterationsDestination = schemeDestination
-          .appending(path: bundleName)
-          .appending(path: "iterations")
-        try self.storage.createDirectory(iterationsDestination)
+        let targetDestination = schemeDestination.appending(path: target)
+        try self.storage.createDirectory(targetDestination)
 
         for entry in try self.storage.contentsOfDirectory(targetSource).sorted() {
+          guard self.isIterationResultFile(entry) else { continue }
           let source = targetSource.appending(path: entry)
           guard !self.storage.isDirectory(source) else { continue }
-          let destination = iterationsDestination.appending(path: entry)
+          let destination = targetDestination.appending(path: entry)
           let data = try self.storage.contents(source)
           try self.storage.writeData(data, destination)
         }
@@ -232,6 +213,10 @@ struct XCTestCommand: AsyncParsableCommand {
       .replacingOccurrences(of: "--", with: "-")
       .trimmingCharacters(in: CharacterSet(charactersIn: "-"))
     return sanitized.isEmpty ? "unknown-device" : sanitized
+  }
+
+  private func isIterationResultFile(_ name: String) -> Bool {
+    name.hasPrefix("iteration-") && name.hasSuffix(".json")
   }
 }
 

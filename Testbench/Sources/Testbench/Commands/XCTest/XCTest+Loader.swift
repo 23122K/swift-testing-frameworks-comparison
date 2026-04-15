@@ -113,7 +113,7 @@ actor Loader {
         lines.append(styledScheme(bundle.scheme))
         lastScheme = bundle.scheme
       }
-      var line = "\(childIndent)\(ANSI.green)✓\(ANSI.reset) \(bundle.scheme)/\(bundle.bundleName) \(bundle.total)/\(bundle.total) \(bundle.framework)"
+      var line = "\(childIndent)\(ANSI.green)✓\(ANSI.reset) \(bundle.bundleName) \(bundle.total)/\(bundle.total) \(bundle.framework)"
       if bundle.averageRuntime > 0 {
         line += " \(String(format: "%.3f", bundle.averageRuntime))s (Average time)"
       }
