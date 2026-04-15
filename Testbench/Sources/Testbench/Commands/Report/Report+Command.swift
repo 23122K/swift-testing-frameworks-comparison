@@ -81,13 +81,7 @@ struct ReportCommand: AsyncParsableCommand {
       }
       
       group.addTask {
-        try await Subprocess.run(
-          Configuration.battery,
-          output: .string(limit: 128*128)
-        )
-        .standardOutput
-        .map(Report.Battery.init(stdout:))
-        .map { Report.battery($0) }!
+        .battery(try await loadBatteryReport())
       }
       
       group.addTask {

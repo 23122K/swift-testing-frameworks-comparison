@@ -27,13 +27,7 @@ func generateReport(storage: StorageClient) async throws {
     }
 
     group.addTask {
-      try await Subprocess.run(
-        Configuration.battery,
-        output: .string(limit: 128*128)
-      )
-      .standardOutput
-      .map(Report.Battery.init(stdout:))
-      .map { Report.battery($0) }!
+      .battery(try await loadBatteryReport())
     }
 
     group.addTask {
@@ -86,13 +80,10 @@ func generateReportSequentially() async throws {
       .hardware(try Report.Hardware(stdout: stdout))
     }
 
-    try await runReportStep(
+    try await runBatteryReportStep(
       named: "battery.json",
-      configuration: .battery,
       loader: loader
-    ) { stdout in
-      .battery(try Report.Battery(stdout: stdout))
-    }
+    )
 
     try await runReportStep(
       named: "system.json",
@@ -167,6 +158,61 @@ private func runReportStep(
     await tickTask.value
     throw error
   }
+}
+
+private func runBatteryReportStep(
+  named name: String,
+  loader: ReportLoader
+) async throws {
+  await loader.start(step: name)
+  let tickTask = Task<Void, Never> {
+    while !Task.isCancelled {
+      do {
+        try await Task.sleep(for: .milliseconds(100))
+      } catch is CancellationError {
+        break
+      } catch {
+        break
+      }
+
+      if Task.isCancelled {
+        break
+      }
+
+      await loader.tick()
+    }
+  }
+
+  do {
+    let report = try await loadBatteryReport()
+
+    tickTask.cancel()
+    await tickTask.value
+
+    try writeReport(.battery(report))
+    await loader.complete(step: name)
+  } catch {
+    tickTask.cancel()
+    await tickTask.value
+    throw error
+  }
+}
+
+func loadBatteryReport() async throws -> Report.Battery {
+  async let batteryStdout = Subprocess.run(
+    Configuration.battery,
+    output: .string(limit: 128 * 128)
+  ).standardOutput
+
+  async let powerSettingsStdout = Subprocess.run(
+    Configuration.batteryPowerSettings,
+    output: .string(limit: 128 * 128)
+  ).standardOutput
+
+  return try await Report.Battery(
+    batteryStdout: batteryStdout,
+    powerSettingsStdout: powerSettingsStdout
+  )
 }
 
 private func writeReport(_ report: Report) throws {
