@@ -51,11 +51,7 @@ struct XCTestCommand: AsyncParsableCommand {
 
     try await generateReportSequentially()
     try await self.runAllBundles(bundles)
-    let exportedResultsURL = try self.exportResults(to: repositoryURL, bundles: bundles)
-
-    let resultsPath = self.storage
-      .directory()
-      .appending(path: "xcodebuild")
+    try self.exportResults(to: repositoryURL, bundles: bundles)
   }
 
   private func printArtifacts(_ bundles: [(scheme: String, bundle: URL)], in artifactsURL: URL) {
@@ -124,6 +120,7 @@ struct XCTestCommand: AsyncParsableCommand {
 
   // MARK: - Export
 
+  @discardableResult
   private func exportResults(
     to repositoryURL: URL,
     bundles _: [(scheme: String, bundle: URL)]
