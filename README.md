@@ -8,14 +8,6 @@ make build
 
 If `~/.local/bin` is not on your `PATH`, the build step adds it to `~/.zshrc` — restart your shell or run `source ~/.zshrc` once before continuing.
 
-## Generate a system report
-
-Before running benchmarks, record the device:
-
-```sh
-testbench report --generate
-```
-
 ## Run
 
 ```sh
@@ -32,5 +24,5 @@ make remove
 
 ```sh
 testbench --help
-testbench help <subcommand>
+testbench <subcommand> --help
 ```
