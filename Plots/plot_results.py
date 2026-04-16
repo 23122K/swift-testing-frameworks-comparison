@@ -2,26 +2,23 @@
 """
 Multi-device benchmark analysis for Swift Testing vs XCTest comparison.
 
-For each (scheme, testSuite) combination it generates:
-  - Histogram with KDE overlay — one subplot per device, shared x-axis
-  - Boxplot with jitter — one box per device (Tukey 1.5 × IQR whiskers)
+Generates, for each (device, scheme, testSuite) triplet:
+  - Histogram with KDE overlay
+  - Boxplot with jitter
 
-At the end it generates a single cross-device time-series summary figure:
-  rows = schemes, cols = test suites (Swift Testing | XCTest), lines = devices.
-
-Iteration integrity is verified before any plots are produced.
+Generates, for each (scheme, testSuite) pair:
+  - Time-series plot comparing all devices (one line per device)
 
 Usage:
     python3 plot_results.py <Results-dir> [--output-dir <dir>]
 
 Example:
     python3 plot_results.py ../Results
-    python3 plot_results.py ../Results --output-dir ./plots/multi-device
+    python3 plot_results.py ../Results --output-dir ./plots
 """
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 
@@ -61,8 +58,8 @@ def _fd_bins(arr: np.ndarray) -> int:
     """
     Freedman–Diaconis bin-count estimator.
 
-    Bin width h = 2 · IQR · n^{-1/3} is robust to non-normality and adapts to
-    actual data spread — preferred over arbitrary fixed counts for academic work.
+    Bin width h = 2 · IQR · n^{-1/3} adapts to actual data spread and is
+    robust to non-normality — preferred over fixed counts for academic work.
     Falls back to sqrt(n) when IQR = 0 (degenerate distribution).
     """
     iqr = float(np.subtract(*np.percentile(arr, [75, 25])))
@@ -74,15 +71,12 @@ def _fd_bins(arr: np.ndarray) -> int:
 
 
 def _smart_unit(values_s) -> tuple[float, str]:
-    """Choose ms display unit when all values are below 1 second."""
+    """Use ms display unit when all values are below 1 second."""
     return (1000.0, "ms") if max(values_s) < 1.0 else (1.0, "s")
 
 
 def _device_label(device_dir: Path) -> str:
-    """
-    Derive a short human-readable label.
-    Reads Report/hardware.json when available; otherwise parses the directory name.
-    """
+    """Short human-readable label from Report/hardware.json, or directory name."""
     hw_file = device_dir / "Report" / "hardware.json"
     if hw_file.exists():
         try:
@@ -95,9 +89,14 @@ def _device_label(device_dir: Path) -> str:
                 return " · ".join(parts)
         except Exception:
             pass
-    # Fallback: "Mac16-11__Apple-M4-Pro__24-GB__MCX44D" → "Apple M4 Pro"
     parts = device_dir.name.split("__")
     return parts[1].replace("-", " ") if len(parts) >= 2 else device_dir.name
+
+
+def _device_short(label: str) -> str:
+    """Filesystem-safe short chip name, e.g. 'Apple M4 Pro' → 'M4Pro'."""
+    chip = label.split(" · ")[0]          # "Apple M4 Pro"
+    return chip.replace("Apple ", "").replace(" ", "")
 
 
 # ── Data loading ──────────────────────────────────────────────────────────────
@@ -105,8 +104,6 @@ def _device_label(device_dir: Path) -> str:
 
 def load_all(results_dir: Path) -> tuple[dict, list[str]]:
     """
-    Walk Results/<device>/<scheme>/<suite>/iteration-*.json.
-
     Returns
     -------
     data : dict[scheme][suite][device_label] = {"durations": list[float], "framework": str}
@@ -158,11 +155,8 @@ def load_all(results_dir: Path) -> tuple[dict, list[str]]:
 
 def validate_iterations(data: dict, device_order: list[str]) -> None:
     """
-    Verify that every (scheme, suite, device) triplet:
-      • Has the expected number of iterations (median across all series)
-      • Contains no non-positive durations
-
-    Prints a full table and a pass/fail summary.
+    Verify every (scheme, suite, device) has the expected iteration count
+    and no non-positive durations.
     """
     all_counts = [
         len(info["durations"])
@@ -175,7 +169,7 @@ def validate_iterations(data: dict, device_order: list[str]) -> None:
     print("\n" + "=" * 90)
     print("ITERATION INTEGRITY CHECK")
     print("=" * 90)
-    print(f"Expected iterations per series (median across all 32 series): {expected}\n")
+    print(f"Expected iterations per series (median across all series): {expected}\n")
 
     header = f"{'Scheme':<22} {'Suite':<26} {'Device':<36} {'n':>5}  Status"
     print(header)
@@ -203,32 +197,25 @@ def validate_iterations(data: dict, device_order: list[str]) -> None:
     if anomalies == 0:
         print(f"\nAll {len(all_counts)} series passed — {expected} iterations each.\n")
     else:
-        print(f"\n{anomalies} anomaly/anomalies found. Review WARN/MISSING rows above.\n")
+        print(f"\n{anomalies} anomaly/anomalies found.\n")
 
 
 # ── Statistics ────────────────────────────────────────────────────────────────
 
 
 def compute_stats(durations: list[float]) -> dict:
-    """
-    Descriptive statistics with 95% CI (Student's t, n-1 df) and
-    D'Agostino–Pearson K² normality test.
-    """
     arr = np.array(durations)
     n = len(arr)
     mean = float(arr.mean())
     median = float(np.median(arr))
-    std = float(arr.std(ddof=1))   # Bessel-corrected
+    std = float(arr.std(ddof=1))
     se = float(stats.sem(arr))
     ci95 = stats.t.interval(0.95, df=n - 1, loc=mean, scale=se)
     q1, q3 = map(float, np.percentile(arr, [25, 75]))
     iqr = q3 - q1
 
-    # Normality: D'Agostino–Pearson K² (appropriate for n ≥ 20).
-    # Guard against zero-variance distributions (e.g. a sub-ms suite whose
-    # timer resolution is 1 ms, so every run records the same value).
-    # Use a relative tolerance rather than exact equality to handle
-    # floating-point representation noise in near-constant series.
+    # D'Agostino–Pearson K² normality test (appropriate for n ≥ 20).
+    # Guard for zero-variance series (sub-ms suites with 1-ms resolution).
     if std < 1e-12 * max(abs(mean), 1.0):
         k2_stat, k2_p = float("nan"), float("nan")
     else:
@@ -254,7 +241,6 @@ def compute_stats(durations: list[float]) -> dict:
 
 
 def print_summary_table(data: dict, device_order: list[str]) -> None:
-    """Print a compact descriptive-statistics table for all 32 series."""
     col = (
         f"{'Scheme':<22} {'Suite':<26} {'Device':<36} {'Fw':<16} {'n':>4} "
         f"{'Mean(s)':>9} {'Med(s)':>8} {'SD':>8} {'CV%':>6} "
@@ -273,7 +259,11 @@ def print_summary_table(data: dict, device_order: list[str]) -> None:
                     continue
                 info = data[scheme][suite][dev]
                 s = compute_stats(info["durations"])
-                norm_str = f"{s['normaltest_p']:.3f}" + ("*" if s["normaltest_p"] < 0.05 else " ")
+                norm_str = (
+                    f"{s['normaltest_p']:.3f}" + ("*" if s["normaltest_p"] < 0.05 else " ")
+                    if not np.isnan(s["normaltest_p"])
+                    else "  n/a"
+                )
                 print(
                     f"{scheme:<22} {suite:<26} {dev:<36} {info['framework']:<16} "
                     f"{s['n']:>4} {s['mean']:>9.4f} {s['median']:>8.4f} {s['std']:>8.5f} "
@@ -284,259 +274,171 @@ def print_summary_table(data: dict, device_order: list[str]) -> None:
     print("  * K²-p < 0.05: significant departure from normality (D'Agostino–Pearson)\n")
 
 
-# ── Per-suite plots ───────────────────────────────────────────────────────────
+# ── Per-suite individual plots ────────────────────────────────────────────────
 
 
-def plot_histograms(
+def plot_histogram(
+    device: str,
     scheme: str,
     suite: str,
-    device_data: dict[str, dict],
-    device_order: list[str],
+    info: dict,
     output_dir: Path,
+    color: str,
 ) -> None:
     """
-    Histogram + KDE for each device, arranged in a grid with a shared x-axis.
+    Histogram + KDE for a single (device, scheme, testSuite) series.
 
-    Using a shared x-axis enables direct visual comparison of the location and
-    spread of each device's distribution.  Bin width follows Freedman–Diaconis.
-    KDE uses Scott's rule bandwidth (scipy default).
+    Bin width via Freedman–Diaconis. KDE uses Scott's rule bandwidth.
+    Mean and median are annotated as vertical lines.
     """
-    present = [d for d in device_order if d in device_data]
-    if not present:
-        return
+    durations = info["durations"]
+    scale, unit = _smart_unit(durations)
+    arr = np.array(durations) * scale
+    s = compute_stats(durations)
 
-    all_dur = [v for d in present for v in device_data[d]["durations"]]
-    scale, unit = _smart_unit(all_dur)
+    fig, ax = plt.subplots(figsize=(7, 4))
 
-    cols = min(len(present), 2)
-    rows = (len(present) + cols - 1) // cols
-    fig, axes = plt.subplots(
-        rows, cols, figsize=(cols * 5.8, rows * 4.0), sharex=True, squeeze=False
+    bins = _fd_bins(arr)
+    ax.hist(arr, bins=bins, color=color, alpha=0.50, edgecolor="white",
+            linewidth=0.5, density=True)
+
+    if arr.std() > 1e-12 * max(abs(arr.mean()), 1.0):
+        kde = stats.gaussian_kde(arr)
+        pad = (arr.max() - arr.min()) * 0.07 or arr.mean() * 0.05
+        kde_x = np.linspace(arr.min() - pad, arr.max() + pad, 400)
+        ax.plot(kde_x, kde(kde_x), color=color, linewidth=2.0,
+                label="KDE (Scott's rule)")
+
+    ax.axvline(s["mean"] * scale, color="black", linewidth=1.5, linestyle="--",
+               label=f"Mean {s['mean'] * scale:.4f} {unit}")
+    ax.axvline(s["median"] * scale, color="dimgrey", linewidth=1.5, linestyle=":",
+               label=f"Median {s['median'] * scale:.4f} {unit}")
+
+    norm_str = (
+        f"K²={s['normaltest_stat']:.2f}, p={s['normaltest_p']:.3f}"
+        if not np.isnan(s["normaltest_p"])
+        else "K² n/a (zero variance)"
     )
-    axes_flat = [ax for row in axes for ax in row]
-
-    x_all = np.array(all_dur) * scale
-    pad = (x_all.max() - x_all.min()) * 0.07
-
-    for ax, dev, color in zip(axes_flat, present, PALETTE):
-        arr = np.array(device_data[dev]["durations"]) * scale
-        s = compute_stats(device_data[dev]["durations"])
-        bins = _fd_bins(arr)
-
-        ax.hist(
-            arr, bins=bins, color=color, alpha=0.50,
-            edgecolor="white", linewidth=0.5, density=True,
-        )
-
-        # KDE — Scott's rule bandwidth (scipy default for gaussian_kde).
-        # Skip KDE for zero-variance series (bw would be ~0 → undefined).
-        if arr.std() > 1e-12 * max(abs(arr.mean()), 1.0):
-            kde = stats.gaussian_kde(arr)
-            kde_x = np.linspace(x_all.min() - pad, x_all.max() + pad, 400)
-            ax.plot(kde_x, kde(kde_x), color=color, linewidth=2.0,
-                    label="KDE (Scott's rule)")
-
-        ax.axvline(
-            s["mean"] * scale, color="black", linewidth=1.5, linestyle="--",
-            label=f"Mean {s['mean'] * scale:.3f} {unit}",
-        )
-        ax.axvline(
-            s["median"] * scale, color="dimgrey", linewidth=1.5, linestyle=":",
-            label=f"Median {s['median'] * scale:.3f} {unit}",
-        )
-
-        norm_annot = f"K²={s['normaltest_stat']:.2f}, p={s['normaltest_p']:.3f}"
-        ax.set_title(
-            f"{dev}\n({device_data[dev]['framework']})   {norm_annot}",
-            fontsize=9,
-        )
-        ax.set_xlabel(f"Duration ({unit})")
-        ax.set_ylabel("Density")
-        ax.legend(fontsize=7)
-
-    for ax in axes_flat[len(present) :]:
-        ax.set_visible(False)
-
-    fig.suptitle(f"Duration distributions — {scheme} / {suite}", y=1.01, fontsize=12)
+    ax.set_xlabel(f"Duration ({unit})")
+    ax.set_ylabel("Density")
+    ax.set_title(
+        f"{scheme} / {suite}  ·  {device}\n"
+        f"({info['framework']}, n={s['n']})   {norm_str}"
+    )
+    ax.legend(fontsize=8)
     fig.tight_layout()
 
-    fname = output_dir / f"{scheme}_{suite}_histograms.pdf"
+    short = _device_short(device)
+    fname = output_dir / f"{short}_{scheme}_{suite}_histogram.pdf"
     fig.savefig(fname)
     plt.close(fig)
     print(f"  Saved: {fname}")
 
 
-def plot_boxplots(
+def plot_boxplot(
+    device: str,
     scheme: str,
     suite: str,
-    device_data: dict[str, dict],
-    device_order: list[str],
+    info: dict,
     output_dir: Path,
+    color: str,
 ) -> None:
     """
-    Side-by-side boxplots (Tukey 1.5 × IQR whiskers) with jittered raw data.
+    Boxplot with jitter for a single (device, scheme, testSuite) series.
 
-    The jitter layer exposes the full empirical distribution (n = 100 per box).
-    Tukey fences are the standard for exploratory boxplots in academic work.
+    Tukey 1.5 × IQR whiskers. Jitter exposes all 100 individual run durations.
     """
-    present = [d for d in device_order if d in device_data]
-    if not present:
-        return
+    durations = info["durations"]
+    scale, unit = _smart_unit(durations)
+    arr = np.array(durations) * scale
+    s = compute_stats(durations)
 
-    all_dur = [v for d in present for v in device_data[d]["durations"]]
-    scale, unit = _smart_unit(all_dur)
-
-    data_scaled = [np.array(device_data[d]["durations"]) * scale for d in present]
-    colors = PALETTE[: len(present)]
-
-    fig, ax = plt.subplots(figsize=(max(5, len(present) * 2.5), 5))
+    fig, ax = plt.subplots(figsize=(3.5, 5))
 
     bp = ax.boxplot(
-        data_scaled,
+        [arr],
         patch_artist=True,
         notch=False,
         whis=1.5,
-        flierprops=dict(
-            marker="o",
-            markerfacecolor="none",
-            markersize=4,
-            linestyle="none",
-            markeredgewidth=0.7,
-        ),
+        flierprops=dict(marker="o", markerfacecolor="none", markersize=4,
+                        linestyle="none", markeredgewidth=0.7),
         medianprops=dict(color="black", linewidth=2.0),
         widths=0.5,
     )
-    for patch, color in zip(bp["boxes"], colors):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.65)
+    bp["boxes"][0].set_facecolor(color)
+    bp["boxes"][0].set_alpha(0.65)
 
-    # Jitter overlay — individual run durations
     rng = np.random.default_rng(42)
-    for i, (arr, color) in enumerate(zip(data_scaled, colors), start=1):
-        x_jitter = rng.uniform(-0.20, 0.20, size=len(arr)) + i
-        ax.scatter(x_jitter, arr, color=color, alpha=0.22, s=8,
-                   linewidths=0, zorder=3)
+    x_jitter = rng.uniform(-0.18, 0.18, size=len(arr)) + 1
+    ax.scatter(x_jitter, arr, color=color, alpha=0.25, s=8, linewidths=0, zorder=3)
 
-    ax.set_xticks(range(1, len(present) + 1))
-    ax.set_xticklabels(present, rotation=20, ha="right")
-    ax.set_ylabel(f"Test run duration ({unit})")
+    ax.set_xticks([1])
+    ax.set_xticklabels([_device_short(device)])
+    ax.set_ylabel(f"Duration ({unit})")
     ax.set_title(
-        f"Test run duration by device — {scheme} / {suite}\n"
-        f"(whiskers = 1.5 × IQR; circles = individual runs; n = 100 per device)"
+        f"{scheme} / {suite}\n"
+        f"{device}\n"
+        f"({info['framework']}, n={s['n']})\n"
+        f"mean={s['mean'] * scale:.4f}  σ={s['std'] * scale:.5f}",
+        fontsize=9,
     )
     fig.tight_layout()
 
-    fname = output_dir / f"{scheme}_{suite}_boxplot.pdf"
+    short = _device_short(device)
+    fname = output_dir / f"{short}_{scheme}_{suite}_boxplot.pdf"
     fig.savefig(fname)
     plt.close(fig)
     print(f"  Saved: {fname}")
 
 
-# ── Cross-device time-series summary ─────────────────────────────────────────
+# ── Per-(scheme, suite) cross-device time series ──────────────────────────────
 
 
-def _suite_sort_key(name: str) -> int:
-    """Sort Swift Testing suites before XCTest suites."""
-    return 1 if "XCTest" in name else 0
-
-
-def plot_cross_device_timeseries(
-    data: dict, device_order: list[str], output_dir: Path
+def plot_timeseries(
+    scheme: str,
+    suite: str,
+    device_data: dict[str, dict],
+    device_order: list[str],
+    output_dir: Path,
 ) -> None:
     """
-    One figure combining all schemes and test suites.
+    Time-series for one (scheme, testSuite): one line per device.
 
-    Layout: rows = schemes (alphabetical), cols = test suites sorted so that
-    the Swift Testing suite always appears before the paired XCTest suite.
-    Each subplot shows one line per device, making hardware-generation trends
-    and within-suite variability immediately comparable.
-
-    A single legend is placed outside the grid to avoid duplication.
+    Reveals warm-up effects, run-to-run variability, and hardware-generation
+    differences for the same test workload.
     """
-    schemes = sorted(data.keys())
+    present = [d for d in device_order if d in device_data]
+    if not present:
+        return
 
-    # Per-scheme suite lists, Swift Testing before XCTest
-    suite_lists = {s: sorted(data[s].keys(), key=_suite_sort_key) for s in schemes}
-    max_cols = max(len(v) for v in suite_lists.values())
+    all_dur = [v for d in present for v in device_data[d]["durations"]]
+    scale, unit = _smart_unit(all_dur)
 
-    fig, axes = plt.subplots(
-        len(schemes),
-        max_cols,
-        figsize=(max_cols * 6.5, len(schemes) * 3.4),
-        squeeze=False,
+    fig, ax = plt.subplots(figsize=(10, 4))
+
+    for dev, color in zip(present, PALETTE):
+        arr = np.array(device_data[dev]["durations"]) * scale
+        iters = np.arange(1, len(arr) + 1)
+        short = _device_short(dev)
+        ax.plot(iters, arr, alpha=0.45, linewidth=0.9, color=color)
+        ax.axhline(arr.mean(), linestyle="--", linewidth=1.2, color=color,
+                   label=f"{short}  μ={arr.mean():.3f} {unit}")
+
+    fw = device_data[present[0]]["framework"]
+    ax.set_xlabel("Iteration")
+    ax.set_ylabel(f"Duration ({unit})")
+    ax.set_title(
+        f"Run duration per iteration — {scheme} / {suite}  ({fw})\n"
+        f"(dashed lines = mean; solid lines = individual iterations)"
     )
+    ax.legend(loc="upper right", framealpha=0.9)
+    ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True, nbins=10))
+    fig.tight_layout()
 
-    for row_idx, scheme in enumerate(schemes):
-        suites = suite_lists[scheme]
-        for col_idx in range(max_cols):
-            ax = axes[row_idx][col_idx]
-            if col_idx >= len(suites):
-                ax.set_visible(False)
-                continue
-
-            suite = suites[col_idx]
-            device_data = data[scheme][suite]
-            present = [d for d in device_order if d in device_data]
-
-            all_dur = [v for d in present for v in device_data[d]["durations"]]
-            scale, unit = _smart_unit(all_dur)
-
-            for dev, color in zip(present, PALETTE):
-                arr = np.array(device_data[dev]["durations"]) * scale
-                iters = np.arange(1, len(arr) + 1)
-                ax.plot(iters, arr, alpha=0.40, linewidth=0.9, color=color)
-                ax.axhline(
-                    arr.mean(),
-                    linestyle="--",
-                    linewidth=1.2,
-                    color=color,
-                    # Chip name only, e.g. "Apple M4 Pro"
-                    label=dev.split(" · ")[0].strip(),
-                )
-
-            fw = device_data[present[0]]["framework"] if present else ""
-            ax.set_title(f"{scheme}\n{suite}  ({fw})", fontsize=9)
-            ax.set_xlabel("Iteration", fontsize=8)
-            ax.set_ylabel(f"Duration ({unit})", fontsize=8)
-            ax.tick_params(labelsize=7)
-            ax.xaxis.set_major_locator(ticker.MaxNLocator(integer=True, nbins=6))
-
-    # Shared legend below the figure
-    handles, labels = [], []
-    for ax_row in axes:
-        for ax in ax_row:
-            if ax.get_visible():
-                h, l = ax.get_legend_handles_labels()
-                for hi, li in zip(h, l):
-                    if li not in labels:
-                        handles.append(hi)
-                        labels.append(li)
-                break
-        if handles:
-            break
-
-    fig.legend(
-        handles,
-        labels,
-        loc="lower center",
-        ncol=len(device_order),
-        fontsize=9,
-        framealpha=0.9,
-        bbox_to_anchor=(0.5, -0.02),
-    )
-
-    fig.suptitle(
-        "Test run duration per iteration — all schemes × all devices\n"
-        "(dashed lines = mean; each solid line = one iteration series)",
-        y=1.01,
-        fontsize=12,
-    )
-    fig.tight_layout(rect=[0, 0.04, 1, 1])
-
-    fname = output_dir / "cross_device_timeseries.pdf"
+    fname = output_dir / f"{scheme}_{suite}_timeseries.pdf"
     fig.savefig(fname)
     plt.close(fig)
-    print(f"\n  Saved: {fname}")
+    print(f"  Saved: {fname}")
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────
@@ -545,30 +447,20 @@ def plot_cross_device_timeseries(
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Multi-device benchmark analysis: histograms, boxplots, and "
-            "cross-device time-series for each (scheme, testSuite) combination."
+            "Per-suite histograms and boxplots, plus cross-device time series."
         )
     )
-    parser.add_argument(
-        "results_dir",
-        type=Path,
-        help="Path to the Results/ directory.",
-    )
-    parser.add_argument(
-        "--output-dir",
-        type=Path,
-        default=None,
-        help="Output directory for PDFs (default: <results_dir>/../Plots).",
-    )
+    parser.add_argument("results_dir", type=Path,
+                        help="Path to the Results/ directory.")
+    parser.add_argument("--output-dir", type=Path, default=None,
+                        help="Output directory for PDFs (default: <results_dir>/../Plots).")
     args = parser.parse_args()
 
     results_dir = args.results_dir.resolve()
     if not results_dir.is_dir():
         sys.exit(f"[ERROR] Not a directory: {results_dir}")
 
-    output_dir = (
-        args.output_dir or results_dir.parent / "Plots"
-    ).resolve()
+    output_dir = (args.output_dir or results_dir.parent / "Plots").resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print(f"\nLoading results from: {results_dir}")
@@ -576,27 +468,29 @@ def main() -> None:
 
     print(f"Devices  ({len(device_order)}): {device_order}")
     print(f"Schemes  ({len(data)}): {sorted(data.keys())}")
-    total_series = sum(
-        len(devices) for suites in data.values() for devices in suites.values()
-    )
-    print(f"Series total: {total_series}")
+    total = sum(len(devices) for suites in data.values() for devices in suites.values())
+    print(f"Series total: {total}")
 
-    # ── Integrity check ────────────────────────────────────────────────────
     validate_iterations(data, device_order)
-
-    # ── Descriptive statistics ─────────────────────────────────────────────
     print_summary_table(data, device_order)
 
-    # ── Per-(scheme, suite) plots ──────────────────────────────────────────
     print(f"Generating plots → {output_dir}\n")
+
+    # ── Per-(device, scheme, suite): histogram + boxplot ───────────────────
     for scheme in sorted(data):
         for suite in sorted(data[scheme]):
-            device_data = data[scheme][suite]
-            plot_histograms(scheme, suite, device_data, device_order, output_dir)
-            plot_boxplots(scheme, suite, device_data, device_order, output_dir)
+            for dev, color in zip(device_order, PALETTE):
+                if dev not in data[scheme][suite]:
+                    continue
+                info = data[scheme][suite][dev]
+                plot_histogram(dev, scheme, suite, info, output_dir, color)
+                plot_boxplot(dev, scheme, suite, info, output_dir, color)
 
-    # ── Cross-device time-series ───────────────────────────────────────────
-    plot_cross_device_timeseries(data, device_order, output_dir)
+    # ── Per-(scheme, suite): cross-device time series ─────────────────────
+    print()
+    for scheme in sorted(data):
+        for suite in sorted(data[scheme]):
+            plot_timeseries(scheme, suite, data[scheme][suite], device_order, output_dir)
 
     print("\nDone.")
 
