@@ -14,10 +14,10 @@
       "identifier" : "PeselXCTests.PeselTests testExpectedToDetectInvalidFormat"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "PeselXCTests.PeselTests testExpectValidPeselNumber"
     }
   ],
   "testPlan" : "PeselXCTests",
-  "testRunDuration" : 0.013
+  "testRunDuration" : 0.008
 }
