@@ -19,6 +19,8 @@ import os
 import sys
 from pathlib import Path
 
+import re
+
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
@@ -45,6 +47,28 @@ matplotlib.rcParams.update(
 
 # Palette: colourblind-friendly (Wong 2011)
 PALETTE = ["#0072B2", "#D55E00", "#009E73", "#CC79A7", "#E69F00", "#56B4E9", "#F0E442"]
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+
+def _fd_bins(arr: np.ndarray) -> int:
+    """
+    Freedman-Diaconis bin-count estimator.
+
+    Preferred over fixed counts for academic work because the bin width
+    h = 2 · IQR · n^{-1/3} is robust to non-normality and adapts to the
+    actual data spread.  Falls back to sqrt(n) when IQR is zero (degenerate
+    distribution).
+    """
+    iqr = float(np.subtract(*np.percentile(arr, [75, 25])))
+    if iqr == 0:
+        return max(5, int(np.ceil(np.sqrt(len(arr)))))
+    bw = 2.0 * iqr / (len(arr) ** (1.0 / 3.0))
+    n_bins = int(np.ceil((arr.max() - arr.min()) / bw))
+    return max(5, min(60, n_bins))
 
 
 # ---------------------------------------------------------------------------
@@ -103,57 +127,80 @@ def load_directory(input_dir: Path) -> dict[str, dict]:
 
 def compute_stats(durations: list[float]) -> dict:
     arr = np.array(durations)
-    mean = arr.mean()
-    median = np.median(arr)
-    std = arr.std(ddof=1)          # sample std dev (n-1)
-    se = stats.sem(arr)            # standard error of the mean
-    ci95 = stats.t.interval(0.95, df=len(arr) - 1, loc=mean, scale=se)
+    n = len(arr)
+    mean = float(arr.mean())
+    median = float(np.median(arr))
+    std = float(arr.std(ddof=1))    # Bessel-corrected sample std dev
+    se = float(stats.sem(arr))      # SEM = std / sqrt(n)
+    ci95 = stats.t.interval(0.95, df=n - 1, loc=mean, scale=se)
     q1, q3 = np.percentile(arr, [25, 75])
-    iqr = q3 - q1
+    iqr = float(q3 - q1)
 
-    # Outlier flag: z-score filter |z| > 3 (informational only, not a formal test)
-    # Note: with n=100, ~0.27 false positives are expected at this threshold.
-    z_scores = np.abs((arr - mean) / std)
-    outlier_mask = z_scores > 3.0
+    # D'Agostino–Pearson K² omnibus normality test (appropriate for n ≥ 20).
+    # The null hypothesis is that the data come from a normal distribution.
+    # Rejecting H₀ (p < 0.05) implies significant skewness or kurtosis.
+    # Guard against zero-variance distributions (e.g. a sub-ms suite whose
+    # timer resolution is 1 ms, so every run records the same value).
+    # Use a relative tolerance to handle floating-point noise in near-constant
+    # series (e.g. std ≈ 1e-18 when all values are 0.007).
+    if std < 1e-12 * max(abs(mean), 1.0):
+        k2_stat, k2_p = float("nan"), float("nan")
+    else:
+        k2_stat, k2_p = stats.normaltest(arr)
+
+    # Tukey extreme outlier rule: outside [Q1 − 3·IQR, Q3 + 3·IQR].
+    # Uses robust (IQR-based) estimators — more appropriate than z-scores
+    # when the distribution may already contain outliers.
+    fence_lo = q1 - 3.0 * iqr
+    fence_hi = q3 + 3.0 * iqr
+    outlier_mask = (arr < fence_lo) | (arr > fence_hi)
 
     return {
-        "n": len(arr),
+        "n": n,
         "mean": mean,
         "median": median,
         "std": std,
         "se": se,
-        "ci95_lo": ci95[0],
-        "ci95_hi": ci95[1],
-        "min": arr.min(),
-        "max": arr.max(),
-        "q1": q1,
-        "q3": q3,
+        "ci95_lo": float(ci95[0]),
+        "ci95_hi": float(ci95[1]),
+        "min": float(arr.min()),
+        "max": float(arr.max()),
+        "q1": float(q1),
+        "q3": float(q3),
         "iqr": iqr,
         "outliers": arr[outlier_mask].tolist(),
         "outlier_indices": np.where(outlier_mask)[0].tolist(),
-        "cv": std / mean * 100,   # coefficient of variation in %
+        "cv": std / mean * 100,        # coefficient of variation (%)
+        "normaltest_stat": float(k2_stat),
+        "normaltest_p": float(k2_p),
     }
 
 
 def print_stats_table(suites: dict[str, dict]) -> None:
-    header = f"{'Suite':<22} {'Framework':<16} {'n':>4} {'Mean (s)':>10} {'Median (s)':>11} {'Std Dev':>9} {'CV%':>6} {'Min':>8} {'Max':>8}"
+    header = (
+        f"{'Suite':<22} {'Framework':<16} {'n':>4} {'Mean (s)':>10} "
+        f"{'Median (s)':>11} {'Std Dev':>9} {'CV%':>6} {'Min':>8} {'Max':>8} {'K²-p':>7}"
+    )
     print("\n" + "=" * len(header))
     print(header)
     print("=" * len(header))
     for name, info in suites.items():
         s = info["stats"]
+        norm_p = s["normaltest_p"]
+        norm_str = f"{norm_p:.3f}" + ("*" if norm_p < 0.05 else " ")
         print(
             f"{name:<22} {info['framework']:<16} {s['n']:>4} "
             f"{s['mean']:>10.4f} {s['median']:>11.4f} {s['std']:>9.5f} "
-            f"{s['cv']:>6.2f} {s['min']:>8.4f} {s['max']:>8.4f}"
+            f"{s['cv']:>6.2f} {s['min']:>8.4f} {s['max']:>8.4f} {norm_str:>7}"
         )
         if s["outliers"]:
             idx_str = ", ".join(
                 f"iter-{i + 1}={v:.4f}s"
                 for i, v in zip(s["outlier_indices"], s["outliers"])
             )
-            print(f"  {'':22}  ^ outliers (|z|>3): {idx_str}")
-    print("=" * len(header) + "\n")
+            print(f"  {'':22}  ^ outliers (Tukey 3×IQR): {idx_str}")
+    print("=" * len(header))
+    print("  * p < 0.05: significant departure from normality (D'Agostino–Pearson K²)\n")
 
 
 # ---------------------------------------------------------------------------
@@ -245,7 +292,7 @@ def plot_histogram_combined(suites: dict[str, dict], output_dir: Path, scheme: s
     for ax, (name, info), color in zip(axes_flat, suites.items(), PALETTE):
         arr = np.array(info["durations"]) * scale
         s = info["stats"]
-        bins = min(20, max(10, len(arr) // 5))
+        bins = _fd_bins(arr)
         ax.hist(arr, bins=bins, color=color, alpha=0.55, edgecolor="white",
                 linewidth=0.5, density=True, label="Histogram")
 
@@ -367,6 +414,74 @@ def plot_histogram(name: str, info: dict, output_dir: Path, color: str) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Pairwise hypothesis tests
+# ---------------------------------------------------------------------------
+
+
+def _base_name(suite_name: str) -> str:
+    """Strip trailing 'XCTests' or 'Tests' to obtain a pairing key."""
+    return re.sub(r"(XC)?Tests$", "", suite_name)
+
+
+def print_pairwise_tests(suites: dict[str, dict]) -> None:
+    """
+    For each pair of suites that share the same base name (e.g. 'bitchat')
+    but differ in framework, run:
+      • Two-sided Mann-Whitney U test (non-parametric; no normality assumption)
+      • Welch's two-sample t-test (parametric; included for completeness)
+      • Rank-biserial correlation r (effect size for Mann-Whitney U)
+      • Cohen's d (standardised mean difference; effect size for t)
+
+    The Mann-Whitney U test is preferred when normality cannot be assumed.
+    """
+    groups: dict[str, list[tuple[str, dict]]] = {}
+    for name, info in suites.items():
+        groups.setdefault(_base_name(name), []).append((name, info))
+
+    pairs = [(v[0], v[1]) for v in groups.values() if len(v) == 2]
+    if not pairs:
+        return
+
+    header = (
+        f"\n{'Pair':<44} {'U-stat':>10} {'U-p':>8} {'r_rb':>6} "
+        f"{'t-stat':>8} {'t-p':>8} {'Cohen d':>8} {'Verdict'}"
+    )
+    print("=" * len(header.strip()))
+    print("PAIRWISE HYPOTHESIS TESTS (Swift Testing vs XCTest)")
+    print("=" * len(header.strip()))
+    print(header)
+    print("-" * len(header.strip()))
+
+    for (n1, i1), (n2, i2) in pairs:
+        a = np.array(i1["durations"])
+        b = np.array(i2["durations"])
+        n_a, n_b = len(a), len(b)
+
+        u_stat, u_p = stats.mannwhitneyu(a, b, alternative="two-sided")
+        # Rank-biserial correlation: r = 1 - 2U / (n_a * n_b)
+        r_rb = 1.0 - 2.0 * u_stat / (n_a * n_b)
+
+        t_stat, t_p = stats.ttest_ind(a, b, equal_var=False)   # Welch's t
+        # Cohen's d using pooled std (Glass's Δ with Hedges correction optional)
+        pooled_std = np.sqrt((a.std(ddof=1) ** 2 + b.std(ddof=1) ** 2) / 2.0)
+        cohens_d = (a.mean() - b.mean()) / pooled_std if pooled_std > 0 else 0.0
+
+        sig = "p<.05" if u_p < 0.05 else "n.s."
+        pair_label = f"{n1} vs {n2}"
+        print(
+            f"{pair_label:<44} {u_stat:>10.1f} {u_p:>8.4f} {r_rb:>6.3f} "
+            f"{t_stat:>8.3f} {t_p:>8.4f} {cohens_d:>8.3f}  {sig}"
+        )
+
+    print("-" * len(header.strip()))
+    print(
+        "  r_rb: rank-biserial correlation (|r|≥0.1 small, ≥0.3 medium, ≥0.5 large)\n"
+        "  Cohen d: |d|≥0.2 small, ≥0.5 medium, ≥0.8 large\n"
+        "  Mann-Whitney U preferred when K² normality test is rejected.\n"
+    )
+
+
+# ---------------------------------------------------------------------------
 # Entry point
 # ---------------------------------------------------------------------------
 
@@ -404,6 +519,7 @@ def main() -> None:
         info["stats"] = compute_stats(info["durations"])
 
     print_stats_table(suites)
+    print_pairwise_tests(suites)
 
     print(f"Generating plots → {output_dir}")
     # Per-suite individual plots
