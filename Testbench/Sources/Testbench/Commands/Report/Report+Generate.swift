@@ -17,13 +17,11 @@ func generateReport(storage: StorageClient) async throws {
     }
 
     group.addTask {
-      try await Subprocess.run(
+      let stdout = (try? await Subprocess.run(
         Configuration.xcodebuild,
         output: .string(limit: 128*128)
-      )
-      .standardOutput
-      .map(Report.Xcodebuild.init(stdout:))
-      .map { Report.xcodebuild($0) }!
+      ).standardOutput) ?? nil
+      return .xcodebuild(Report.Xcodebuild(stdout: stdout))
     }
 
     group.addTask {
@@ -101,12 +99,12 @@ func generateReportSequentially() async throws {
       .swift(try Report.Swift(stdout: stdout))
     }
 
-    try await runReportStep(
+    await runOptionalReportStep(
       named: "xcodebuild.json",
       configuration: .xcodebuild,
       loader: loader
     ) { stdout in
-      .xcodebuild(try Report.Xcodebuild(stdout: stdout))
+      .xcodebuild(Report.Xcodebuild(stdout: stdout))
     }
   } catch {
     await loader.finishOutput()
@@ -195,6 +193,20 @@ private func runBatteryReportStep(
     tickTask.cancel()
     await tickTask.value
     throw error
+  }
+}
+
+private func runOptionalReportStep(
+  named name: String,
+  configuration: Configuration,
+  loader: ReportLoader,
+  map: (String?) -> Report
+) async {
+  do {
+    try await runReportStep(named: name, configuration: configuration, loader: loader, map: map)
+  } catch {
+    try? writeReport(map(nil))
+    await loader.complete(step: name)
   }
 }
 

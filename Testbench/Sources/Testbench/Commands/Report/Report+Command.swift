@@ -71,13 +71,11 @@ struct ReportCommand: AsyncParsableCommand {
       }
       
       group.addTask {
-        try await Subprocess.run(
+        let stdout = (try? await Subprocess.run(
           Configuration.xcodebuild,
           output: .string(limit: 128*128)
-        )
-        .standardOutput
-        .map(Report.Xcodebuild.init(stdout:))
-        .map { Report.xcodebuild($0) }!
+        ).standardOutput) ?? nil
+        return .xcodebuild(Report.Xcodebuild(stdout: stdout))
       }
       
       group.addTask {

@@ -142,16 +142,11 @@ extension Report.System {
 }
 
 extension Report.Xcodebuild {
-  public init(stdout: String?) throws {
-     guard
-      let stdout,
-      let version = stdout.firstMatch(of: .xcodeVersion)?.value(),
-      let buildVersion = stdout.firstMatch(of: .xcodeBuildVersion)?.value()
-    else { throw Report.Failure.stdout(stdout) }
-    
+  public init(stdout: String?) {
+    let notAvailable = "Not available"
     self.init(
-      version: version,
-      buildVersion: buildVersion
+      version: stdout?.firstMatch(of: .xcodeVersion)?.value() ?? notAvailable,
+      buildVersion: stdout?.firstMatch(of: .xcodeBuildVersion)?.value() ?? notAvailable
     )
   }
 }
