@@ -14,15 +14,15 @@
       "identifier" : "multiplePeerConnections()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.015,
       "identifier" : "sendPublicMessage()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "sendPrivateMessage()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.015,
       "identifier" : "sendMessageWithMentions()"
     },
     {
@@ -190,11 +190,11 @@
       "identifier" : "decodeFallsBackToContentSizeWhenFileSizeMissing()"
     },
     {
-      "duration" : 0.118,
+      "duration" : 0.116,
       "identifier" : "sendPrivateMessage_mesh_storesAndSends()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.001,
       "identifier" : "handlePrivateMessage_storesMessage()"
     },
     {
@@ -202,11 +202,11 @@
       "identifier" : "handlePrivateMessage_deduplicates()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.001,
       "identifier" : "handlePrivateMessage_sendsReadReceipt_whenViewing()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.001,
       "identifier" : "migratePrivateChats_consolidatesHistory_onFingerprintMatch()"
     },
     {
@@ -218,7 +218,7 @@
       "identifier" : "switchLocationChannel_mesh_clearsGeo()"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.102,
       "identifier" : "subscribeNostrEvent_addsToTimeline_ifMatchesGeohash()"
     },
     {
@@ -238,7 +238,7 @@
       "identifier" : "initialization_setsNickname()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "sendMessage_delegatesToTransport()"
     },
     {
@@ -258,15 +258,15 @@
       "identifier" : "didReceiveMessage_callsDelegate()"
     },
     {
-      "duration" : 0.509,
+      "duration" : 0.504,
       "identifier" : "didReceivePublicMessage_addsToTimeline()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "didConnectToPeer_notifiesDelegate()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "didDisconnectFromPeer_notifiesDelegate()"
     },
     {
@@ -286,11 +286,11 @@
       "identifier" : "sendPrivateMessage_delegatesToTransport()"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.104,
       "identifier" : "didUpdateBluetoothState_poweredOn_noAlert()"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.105,
       "identifier" : "didUpdateBluetoothState_poweredOff_showsAlert()"
     },
     {
@@ -298,15 +298,15 @@
       "identifier" : "didUpdateBluetoothState_unauthorized_showsAlert()"
     },
     {
-      "duration" : 0.039,
+      "duration" : 0.024,
       "identifier" : "panicClearAllData_delegatesToTransport()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "startServices_calledOnInit()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.001,
       "identifier" : "slapNotFoundGrammar()"
     },
     {
@@ -318,7 +318,7 @@
       "identifier" : "slapUsageMessage()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.001,
       "identifier" : "mapsSizeToPreferredStyle(size:expectedStyle:) with 10 test cases"
     },
     {
@@ -326,19 +326,19 @@
       "identifier" : "preservesRequestedWeight()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.002,
       "identifier" : "\"Reassembly from fragments delivers a public message\""
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.008,
       "identifier" : "\"Duplicate fragment does not break reassembly\""
     },
     {
-      "duration" : 1.123,
+      "duration" : 1.102,
       "identifier" : "\"Max-sized file transfer survives reassembly\""
     },
     {
-      "duration" : 0.525,
+      "duration" : 0.517,
       "identifier" : "\"Invalid fragment header is ignored\""
     },
     {
@@ -354,7 +354,7 @@
       "identifier" : "toggleAndNormalize()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "persistenceWritten()"
     },
     {
@@ -390,7 +390,7 @@
       "identifier" : "getVisiblePeople_usesDisplayNameFromContext()"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.011,
       "identifier" : "getVisiblePeople_sortedByLastSeen()"
     },
     {
@@ -398,7 +398,7 @@
       "identifier" : "getVisiblePeople_emptyWhenNoActiveGeohash()"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.106,
       "identifier" : "participantCount_excludesExpiredEntries()"
     },
     {
@@ -430,27 +430,27 @@
       "identifier" : "geoPerson_equatable()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "createGeohashPresenceEvent_hasCorrectKind()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.001,
       "identifier" : "createGeohashPresenceEvent_hasEmptyContent()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "createGeohashPresenceEvent_hasOnlyGeohashTag()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "createGeohashPresenceEvent_noNicknameTag()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "createGeohashPresenceEvent_usesSenderPubkey()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "createGeohashPresenceEvent_isSigned()"
     },
     {
@@ -470,15 +470,15 @@
       "identifier" : "geohashEphemeral_respectsSinceParameter()"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.06,
       "identifier" : "handleNostrEvent_presenceUpdatesParticipantTracker()"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.055,
       "identifier" : "handleNostrEvent_presenceDoesNotAddToTimeline()"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.055,
       "identifier" : "handleNostrEvent_chatMessageUpdatesParticipant()"
     },
     {
@@ -486,7 +486,7 @@
       "identifier" : "presenceEvent_hasDifferentKindThanChat()"
     },
     {
-      "duration" : 0.056,
+      "duration" : 0.053,
       "identifier" : "subscribeNostrEvent_acceptsPresenceKind()"
     },
     {
@@ -566,7 +566,7 @@
       "identifier" : "objectWillChange_firesOnNonActiveGeohashUpdate()"
     },
     {
-      "duration" : 0.362,
+      "duration" : 0.396,
       "identifier" : "concurrentPacketIntakeAndSyncRequest()"
     },
     {
@@ -582,7 +582,7 @@
       "identifier" : "maintenanceEmitsTypedSyncRequests()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.014,
       "identifier" : "handleRequestSyncHonorsTypeFilter()"
     },
     {
@@ -786,11 +786,11 @@
       "identifier" : "fullMeshCommunication()"
     },
     {
-      "duration" : 0.055,
+      "duration" : 0.059,
       "identifier" : "dynamicTopologyChanges()"
     },
     {
-      "duration" : 0.055,
+      "duration" : 0.06,
       "identifier" : "networkPartitionRecovery()"
     },
     {
@@ -802,7 +802,7 @@
       "identifier" : "encryptedAndUnencryptedMix()"
     },
     {
-      "duration" : 0.047,
+      "duration" : 0.051,
       "identifier" : "messageDeliveryUnderChurn()"
     },
     {
@@ -810,7 +810,7 @@
       "identifier" : "peerPresenceTrackingAndReconnection()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "encryptedMessageAfterPeerRestart()"
     },
     {
@@ -818,15 +818,15 @@
       "identifier" : "largeScaleNetwork()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "highLoadScenario()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "mixedTrafficPatterns()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "rehandshakeAfterDecryptionFailure()"
     },
     {
@@ -1110,7 +1110,7 @@
       "identifier" : "realWorldDeduplication_caseVariations()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "\"Concurrent content recording is safe via MainActor\""
     },
     {
@@ -1118,7 +1118,7 @@
       "identifier" : "\"Concurrent Nostr event recording is safe via MainActor\""
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "\"Mixed concurrent operations are safe via MainActor\""
     },
     {
@@ -1242,7 +1242,7 @@
       "identifier" : "hasVeryLongToken_exactThreshold()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.002,
       "identifier" : "mimeTypeParsingAndExtensions(mimeString:expectedType:expectedExt:) with 15 test cases"
     },
     {
@@ -1258,23 +1258,23 @@
       "identifier" : "octetStreamAlwaysMatches()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.009,
       "identifier" : "nip17MessageRoundTrip()"
     },
     {
-      "duration" : 0.022,
+      "duration" : 0.013,
       "identifier" : "giftWrapUsesUniqueEphemeralKeys()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.006,
       "identifier" : "decryptionFailsWithWrongRecipient()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.006,
       "identifier" : "ackRoundTripNIP44V2_Delivered()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.007,
       "identifier" : "ackRoundTripNIP44V2_ReadReceipt()"
     },
     {
@@ -1282,11 +1282,11 @@
       "identifier" : "\"Concurrent read receipt enqueue does not crash\""
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.11,
       "identifier" : "\"Read queue processes under concurrent load\""
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.002,
       "identifier" : "\"isPeerReachable is thread safe\""
     },
     {
@@ -1322,7 +1322,7 @@
       "identifier" : "dropsInvalidPrefixByte()"
     },
     {
-      "duration" : 0.037,
+      "duration" : 0.024,
       "identifier" : "assemblesCompressedLargeFrame()"
     },
     {
@@ -1510,7 +1510,7 @@
       "identifier" : "fileTransfer_shortIDProducesCorrect8ByteRoutingData()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.11,
       "identifier" : "simplePrivateMessageShouldNotBeSentWithoutConnection()"
     },
     {
@@ -1659,5 +1659,5 @@
     }
   ],
   "testPlan" : "bitchatTests",
-  "testRunDuration" : 4.527
+  "testRunDuration" : 4.401
 }
