@@ -22,7 +22,7 @@
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
@@ -30,7 +30,7 @@
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
@@ -62,7 +62,7 @@
       "identifier" : "asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "functionWithEscapingClosure_default_noAdditionalAnnotations()"
     },
     {
@@ -94,7 +94,7 @@
       "identifier" : "stringFunctionWithDefaultParameters_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "intFunctionWithVariadicParameters_default_noAdditionalAnnotations()"
     },
     {
@@ -138,7 +138,7 @@
       "identifier" : "functionWithInoutAndDefaultArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -146,7 +146,7 @@
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -254,7 +254,7 @@
       "identifier" : "actor_default_internalAccessModifier()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "mainActorStruct_withCustomAccessLevel_internalAccessModifier()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.628
+  "testRunDuration" : 0.626
 }

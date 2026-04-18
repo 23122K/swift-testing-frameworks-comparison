@@ -2,7 +2,7 @@
   "framework" : "XCTest",
   "testCases" : [
     {
-      "duration" : 0.015,
+      "duration" : 0.016,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation"
     },
     {
@@ -106,7 +106,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_staticFunctionWithArgument_omittableAsStringLiteralType_withOmitResultAnnotation"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_staticGenericFunction_default_withDiscardableResultAnnotation"
     },
     {
@@ -170,7 +170,7 @@
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.65
+  "testRunDuration" : 0.654
 }

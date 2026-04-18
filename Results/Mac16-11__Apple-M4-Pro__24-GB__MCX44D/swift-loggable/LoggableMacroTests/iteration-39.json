@@ -26,7 +26,7 @@
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
@@ -46,7 +46,7 @@
       "identifier" : "throwingFunction_default_withTagAndLevelAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "throwingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -54,7 +54,7 @@
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.016,
+      "duration" : 0.017,
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -86,7 +86,7 @@
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "genericTupleFunctionWithWhereClauseAndArguments_default_withRedundantTagAnnotation()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -150,7 +150,7 @@
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "staticGenericFunction_default_withDiscardableResultAnnotation()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -262,10 +262,10 @@
       "identifier" : "genericEnum_withCustomSubsystemAndCategory_privateAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "genericExtension_withCustomAccessLevel_privateAccessModifier()"
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.623
+  "testRunDuration" : 0.62
 }

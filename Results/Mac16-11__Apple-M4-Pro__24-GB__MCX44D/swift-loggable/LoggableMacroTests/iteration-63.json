@@ -30,7 +30,7 @@
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
@@ -166,15 +166,15 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.01,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.627
+  "testRunDuration" : 0.624
 }

@@ -2,7 +2,7 @@
   "framework" : "XCTest",
   "testCases" : [
     {
-      "duration" : 0.016,
+      "duration" : 0.015,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation"
     },
     {
@@ -46,7 +46,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithInoutArgument_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithOptionalArgument_default_noAdditionalAnnotations"
     },
     {
@@ -98,7 +98,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_overridingStringFunction_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation"
     },
     {
@@ -118,7 +118,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.109,
+      "duration" : 0.11,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_enum_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.005,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_extension_default_noAdditionalAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.65
+  "testRunDuration" : 0.654
 }

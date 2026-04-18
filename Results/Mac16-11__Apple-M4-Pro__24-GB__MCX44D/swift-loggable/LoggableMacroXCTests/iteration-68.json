@@ -46,7 +46,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithInoutArgument_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithOptionalArgument_default_noAdditionalAnnotations"
     },
     {
@@ -98,7 +98,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_overridingStringFunction_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.107,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.64
+  "testRunDuration" : 0.648
 }

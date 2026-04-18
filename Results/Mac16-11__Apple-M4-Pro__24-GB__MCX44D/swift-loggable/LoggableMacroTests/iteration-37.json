@@ -30,7 +30,7 @@
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
@@ -54,7 +54,7 @@
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.016,
+      "duration" : 0.017,
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -138,7 +138,7 @@
       "identifier" : "functionWithInoutAndDefaultArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -146,7 +146,7 @@
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -262,7 +262,7 @@
       "identifier" : "genericEnum_withCustomSubsystemAndCategory_privateAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "genericExtension_withCustomAccessLevel_privateAccessModifier()"
     }
   ],

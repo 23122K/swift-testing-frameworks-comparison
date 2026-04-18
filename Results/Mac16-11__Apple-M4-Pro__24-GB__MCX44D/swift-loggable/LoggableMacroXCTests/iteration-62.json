@@ -98,7 +98,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_overridingStringFunction_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation"
     },
     {
@@ -154,7 +154,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_default_noAdditinalAnnotations"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.108,
+      "duration" : 0.107,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {

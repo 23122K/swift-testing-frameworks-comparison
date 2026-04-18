@@ -2,11 +2,11 @@
   "framework" : "Swift Testing",
   "testCases" : [
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "voidFunction_default_noAdditinalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "voidFunction_lggableAsInitializer_noAdditionalAnnotations()"
     },
     {
@@ -26,19 +26,19 @@
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "mutatingFunctionWithArgument_taggableAndLevelableAsPrameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -46,7 +46,7 @@
       "identifier" : "throwingFunction_default_withTagAndLevelAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "throwingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -58,7 +58,7 @@
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation()"
     },
     {
@@ -106,7 +106,7 @@
       "identifier" : "intClosureFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "functionWithAsyncClosureArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -114,7 +114,7 @@
       "identifier" : "functionWithArgument_default_mainActorAnnotation()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithMultipleConstraints_default_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -146,7 +146,7 @@
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
@@ -230,7 +230,7 @@
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "class_default_openAccessModifier()"
     },
     {
@@ -254,18 +254,18 @@
       "identifier" : "actor_default_internalAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "mainActorStruct_withCustomAccessLevel_internalAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "genericEnum_withCustomSubsystemAndCategory_privateAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "genericExtension_withCustomAccessLevel_privateAccessModifier()"
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.617
+  "testRunDuration" : 0.627
 }

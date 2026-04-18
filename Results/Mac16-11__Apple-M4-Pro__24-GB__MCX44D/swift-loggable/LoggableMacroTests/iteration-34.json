@@ -30,7 +30,7 @@
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
@@ -54,11 +54,11 @@
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.016,
+      "duration" : 0.017,
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation()"
     },
     {
@@ -86,7 +86,7 @@
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "genericTupleFunctionWithWhereClauseAndArguments_default_withRedundantTagAnnotation()"
     },
     {
@@ -114,7 +114,7 @@
       "identifier" : "functionWithArgument_default_mainActorAnnotation()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithMultipleConstraints_default_noAdditionalAnnotations()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {

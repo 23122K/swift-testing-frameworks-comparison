@@ -14,7 +14,7 @@
       "identifier" : "voidFunction_loggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "stringFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -22,7 +22,7 @@
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
@@ -130,7 +130,7 @@
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.008,
       "identifier" : "overridingStringFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -142,7 +142,7 @@
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
@@ -150,11 +150,11 @@
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "staticGenericFunction_default_withDiscardableResultAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "stringFunctionWithTupleParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
@@ -262,10 +262,10 @@
       "identifier" : "genericEnum_withCustomSubsystemAndCategory_privateAccessModifier()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "genericExtension_withCustomAccessLevel_privateAccessModifier()"
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.63
+  "testRunDuration" : 0.635
 }

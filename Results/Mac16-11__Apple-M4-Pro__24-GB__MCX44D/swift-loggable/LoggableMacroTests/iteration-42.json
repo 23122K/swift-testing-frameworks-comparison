@@ -26,7 +26,7 @@
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -150,7 +150,7 @@
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "staticGenericFunction_default_withDiscardableResultAnnotation()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -174,7 +174,7 @@
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -182,7 +182,7 @@
       "identifier" : "class_withLoggableAsInitializer_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsFunction_noAdditionalAnnotations()"
     },
     {
@@ -210,7 +210,7 @@
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
@@ -262,7 +262,7 @@
       "identifier" : "genericEnum_withCustomSubsystemAndCategory_privateAccessModifier()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "genericExtension_withCustomAccessLevel_privateAccessModifier()"
     }
   ],
