@@ -2,7 +2,7 @@
   "framework" : "XCTest",
   "testCases" : [
     {
-      "duration" : 0.001,
+      "duration" : 0,
       "identifier" : "PeselXCTests.PeselTests testExpectedToDetectInvalidChecksum"
     },
     {
@@ -14,10 +14,10 @@
       "identifier" : "PeselXCTests.PeselTests testExpectedToDetectInvalidFormat"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "PeselXCTests.PeselTests testExpectValidPeselNumber"
     }
   ],
   "testPlan" : "PeselXCTests",
-  "testRunDuration" : 0.015
+  "testRunDuration" : 0.009
 }

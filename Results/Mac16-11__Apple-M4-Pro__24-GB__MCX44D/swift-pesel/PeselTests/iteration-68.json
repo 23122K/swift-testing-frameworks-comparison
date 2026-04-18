@@ -2,7 +2,7 @@
   "framework" : "Swift Testing",
   "testCases" : [
     {
-      "duration" : 0.107,
+      "duration" : 0.041,
       "identifier" : "expectValidPeselNumber(_:) with 1000 test cases"
     },
     {
@@ -19,5 +19,5 @@
     }
   ],
   "testPlan" : "PeselTests",
-  "testRunDuration" : 0.11
+  "testRunDuration" : 0.043
 }
