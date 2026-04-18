@@ -26,11 +26,11 @@
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "mutatingFunction_default_withLevelAnnotation()"
     },
     {
@@ -38,7 +38,7 @@
       "identifier" : "mutatingFunctionWithArgument_taggableAndLevelableAsPrameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -58,7 +58,7 @@
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "asyncThrowingFunction_levelableAsStringLiteralTypeParameter_withTagAnnotation()"
     },
     {
@@ -106,7 +106,7 @@
       "identifier" : "intClosureFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "functionWithAsyncClosureArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -114,7 +114,7 @@
       "identifier" : "functionWithArgument_default_mainActorAnnotation()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithMultipleConstraints_default_noAdditionalAnnotations()"
     },
     {
@@ -146,7 +146,7 @@
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "functionWithClosureDefaultValue_default_noAdditionalAnnotations()"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.107,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.619
+  "testRunDuration" : 0.621
 }
