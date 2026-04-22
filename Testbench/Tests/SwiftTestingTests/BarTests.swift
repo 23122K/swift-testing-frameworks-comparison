@@ -1,7 +1,6 @@
 import Testing
 
 @Suite
-@MainActor
 struct BarTests {
   @Test
   func `test Bar one`() async throws {
