@@ -190,11 +190,11 @@
       "identifier" : "bitchatXCTests.BitchatFilePacketTests testRoundTripPreservesFields"
     },
     {
-      "duration" : 0.109,
+      "duration" : 0.108,
       "identifier" : "bitchatXCTests.ChatViewModelBluetoothTests testDidUpdateBluetoothState_poweredOff_showsAlert"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.105,
       "identifier" : "bitchatXCTests.ChatViewModelBluetoothTests testDidUpdateBluetoothState_poweredOn_noAlert"
     },
     {
@@ -230,7 +230,7 @@
       "identifier" : "bitchatXCTests.ChatViewModelLifecycleTests testStartServices_calledOnInit"
     },
     {
-      "duration" : 0.112,
+      "duration" : 0.108,
       "identifier" : "bitchatXCTests.ChatViewModelNostrExtensionTests testSubscribeNostrEvent_addsToTimeline_ifMatchesGeohash"
     },
     {
@@ -254,7 +254,7 @@
       "identifier" : "bitchatXCTests.ChatViewModelPeerTests testIsPeerConnected_delegatesToTransport"
     },
     {
-      "duration" : 0.054,
+      "duration" : 0.058,
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testHandleNostrEvent_chatMessageUpdatesParticipant"
     },
     {
@@ -262,7 +262,7 @@
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testHandleNostrEvent_presenceDoesNotAddToTimeline"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.061,
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testHandleNostrEvent_presenceUpdatesParticipantTracker"
     },
     {
@@ -270,11 +270,11 @@
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testPresenceEvent_hasDifferentKindThanChat"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.059,
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testSubscribeNostrEvent_acceptsPresenceKind"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.058,
       "identifier" : "bitchatXCTests.ChatViewModelPresenceHandlingTests testSubscribeNostrEvent_presenceForNonActiveGeohash"
     },
     {
@@ -298,7 +298,7 @@
       "identifier" : "bitchatXCTests.ChatViewModelPrivateChatExtensionTests testMigratePrivateChats_consolidatesHistory_onFingerprintMatch"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.105,
       "identifier" : "bitchatXCTests.ChatViewModelPrivateChatExtensionTests testSendPrivateMessage_mesh_storesAndSends"
     },
     {
@@ -306,11 +306,11 @@
       "identifier" : "bitchatXCTests.ChatViewModelPrivateChatTests testSendPrivateMessage_delegatesToTransport"
     },
     {
-      "duration" : 0.215,
+      "duration" : 0.216,
       "identifier" : "bitchatXCTests.ChatViewModelReceivingTests testDidReceiveMessage_callsDelegate"
     },
     {
-      "duration" : 0.519,
+      "duration" : 0.51,
       "identifier" : "bitchatXCTests.ChatViewModelReceivingTests testDidReceivePublicMessage_addsToTimeline"
     },
     {
@@ -406,11 +406,11 @@
       "identifier" : "bitchatXCTests.FragmentationTests testDuplicateFragmentDoesNotBreakReassembly"
     },
     {
-      "duration" : 0.512,
+      "duration" : 0.505,
       "identifier" : "bitchatXCTests.FragmentationTests testInvalidFragmentHeaderIsIgnored"
     },
     {
-      "duration" : 1.083,
+      "duration" : 1.059,
       "identifier" : "bitchatXCTests.FragmentationTests testMaxSizedFileTransferSurvivesReassembly"
     },
     {
@@ -434,7 +434,7 @@
       "identifier" : "bitchatXCTests.GeohashBookmarksStoreTests testToggleAndNormalize"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testClear_removesAllData"
     },
     {
@@ -462,7 +462,7 @@
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testGetVisiblePeople_returnsActiveGeohashParticipants"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testGetVisiblePeople_sortedByLastSeen"
     },
     {
@@ -470,7 +470,7 @@
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testGetVisiblePeople_usesDisplayNameFromContext"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.105,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testParticipantCount_excludesExpiredEntries"
     },
     {
@@ -490,15 +490,15 @@
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testRecordParticipant_specificGeohash"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testRecordParticipant_updatesLastSeen"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testRemoveParticipant_removesFromAllGeohashes"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0,
       "identifier" : "bitchatXCTests.GeohashParticipantTrackerTests testSetActiveGeohash_clearsVisiblePeopleWhenNil"
     },
     {
@@ -518,11 +518,11 @@
       "identifier" : "bitchatXCTests.GeohashPresencePrivacyTests testHighPrecisionGeohash_isPrivacySensitive"
     },
     {
-      "duration" : 0.398,
+      "duration" : 0.406,
       "identifier" : "bitchatXCTests.GossipSyncManagerTests testConcurrentPacketIntakeAndSyncRequest"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.013,
       "identifier" : "bitchatXCTests.GossipSyncManagerTests testHandleRequestSyncHonorsTypeFilter"
     },
     {
@@ -734,15 +734,15 @@
       "identifier" : "bitchatXCTests.InputValidatorTests testWhitespaceOnlyStringReturnsNil"
     },
     {
-      "duration" : 0.053,
+      "duration" : 0.056,
       "identifier" : "bitchatXCTests.IntegrationTests testDynamicTopologyChanges"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.005,
       "identifier" : "bitchatXCTests.IntegrationTests testEncryptedAndUnencryptedMix"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "bitchatXCTests.IntegrationTests testEncryptedMessageAfterPeerRestart"
     },
     {
@@ -762,7 +762,7 @@
       "identifier" : "bitchatXCTests.IntegrationTests testLargeScaleNetwork"
     },
     {
-      "duration" : 0.051,
+      "duration" : 0.05,
       "identifier" : "bitchatXCTests.IntegrationTests testMessageDeliveryUnderChurn"
     },
     {
@@ -774,7 +774,7 @@
       "identifier" : "bitchatXCTests.IntegrationTests testMixedTrafficPatterns"
     },
     {
-      "duration" : 0.056,
+      "duration" : 0.054,
       "identifier" : "bitchatXCTests.IntegrationTests testNetworkPartitionRecovery"
     },
     {
@@ -846,7 +846,7 @@
       "identifier" : "bitchatXCTests.KeychainErrorHandlingTests testNoiseEncryptionService_generatesNewIdentityWhenMissing"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "bitchatXCTests.KeychainErrorHandlingTests testNoiseEncryptionService_handlesAccessDeniedGracefully"
     },
     {
@@ -1242,11 +1242,11 @@
       "identifier" : "bitchatXCTests.NostrProtocolPresenceTests testCreateGeohashPresenceEvent_usesSenderPubkey"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "bitchatXCTests.NostrProtocolTests testAckRoundTripNIP44V2_Delivered"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.008,
       "identifier" : "bitchatXCTests.NostrProtocolTests testAckRoundTripNIP44V2_ReadReceipt"
     },
     {
@@ -1258,7 +1258,7 @@
       "identifier" : "bitchatXCTests.NostrProtocolTests testGiftWrapUsesUniqueEphemeralKeys"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.005,
       "identifier" : "bitchatXCTests.NostrProtocolTests testNip17MessageRoundTrip"
     },
     {
@@ -1266,11 +1266,11 @@
       "identifier" : "bitchatXCTests.NostrTransportTests testConcurrentReadReceiptEnqueue"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.001,
       "identifier" : "bitchatXCTests.NostrTransportTests testIsPeerReachableThreadSafety"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.107,
       "identifier" : "bitchatXCTests.NostrTransportTests testReadQueueProcessingUnderLoad"
     },
     {
@@ -1294,7 +1294,7 @@
       "identifier" : "bitchatXCTests.NotificationBlockingTests testNostrBlocking_caseInsensitive"
     },
     {
-      "duration" : 0.023,
+      "duration" : 0.024,
       "identifier" : "bitchatXCTests.NotificationStreamAssemblerTests testAssemblesCompressedLargeFrame"
     },
     {
@@ -1530,7 +1530,7 @@
       "identifier" : "bitchatXCTests.PrivateChatE2ETests testPrivateMessageThroughput"
     },
     {
-      "duration" : 0.1,
+      "duration" : 0.103,
       "identifier" : "bitchatXCTests.PrivateChatE2ETests testSimplePrivateMessageShouldNotBeSentWithoutConnection"
     },
     {
@@ -1582,15 +1582,15 @@
       "identifier" : "bitchatXCTests.PublicChatE2ETests testSimplePublicMessage"
     },
     {
-      "duration" : 0.209,
+      "duration" : 0.212,
       "identifier" : "bitchatXCTests.PublicChatE2ETests testTtlDecrement"
     },
     {
-      "duration" : 0.213,
+      "duration" : 0.212,
       "identifier" : "bitchatXCTests.PublicChatE2ETests testZeroTTLNotRelayed"
     },
     {
-      "duration" : 0,
+      "duration" : 0.001,
       "identifier" : "bitchatXCTests.SubscriptionRateLimitTests testExponentialBackoffCalculation"
     },
     {
@@ -1606,7 +1606,7 @@
       "identifier" : "bitchatXCTests.SubscriptionRateLimitTests testRateLimitingSlowsEnumeration"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0,
       "identifier" : "bitchatXCTests.XChaCha20Poly1305CompatTests testOpenFailsWithTamperedCiphertext"
     },
     {
@@ -1659,5 +1659,5 @@
     }
   ],
   "testPlan" : "bitchatXCTests",
-  "testRunDuration" : 4.742
+  "testRunDuration" : 4.733
 }

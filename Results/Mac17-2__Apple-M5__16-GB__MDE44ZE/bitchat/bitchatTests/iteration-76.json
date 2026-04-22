@@ -14,23 +14,23 @@
       "identifier" : "multiplePeerConnections()"
     },
     {
-      "duration" : 0.533,
+      "duration" : 0.511,
       "identifier" : "sendPublicMessage()"
     },
     {
-      "duration" : 0.532,
+      "duration" : 0.528,
       "identifier" : "sendPrivateMessage()"
     },
     {
-      "duration" : 0.533,
+      "duration" : 0.524,
       "identifier" : "sendMessageWithMentions()"
     },
     {
-      "duration" : 0.531,
+      "duration" : 0.521,
       "identifier" : "simulateIncomingMessage()"
     },
     {
-      "duration" : 0.534,
+      "duration" : 0.517,
       "identifier" : "simulateIncomingPacket()"
     },
     {
@@ -42,11 +42,11 @@
       "identifier" : "startStopServices()"
     },
     {
-      "duration" : 0.532,
+      "duration" : 0.522,
       "identifier" : "messageDeliveryHandler()"
     },
     {
-      "duration" : 0.512,
+      "duration" : 0.517,
       "identifier" : "packetDeliveryHandler()"
     },
     {
@@ -190,11 +190,11 @@
       "identifier" : "decodeFallsBackToContentSizeWhenFileSizeMissing()"
     },
     {
-      "duration" : 0.121,
+      "duration" : 0.119,
       "identifier" : "sendPrivateMessage_mesh_storesAndSends()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.003,
       "identifier" : "handlePrivateMessage_storesMessage()"
     },
     {
@@ -214,7 +214,7 @@
       "identifier" : "isMessageBlocked_filtersBlockedUsers()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "switchLocationChannel_mesh_clearsGeo()"
     },
     {
@@ -254,15 +254,15 @@
       "identifier" : "sendMessage_command_notSentToTransport()"
     },
     {
-      "duration" : 0.202,
+      "duration" : 0.212,
       "identifier" : "didReceiveMessage_callsDelegate()"
     },
     {
-      "duration" : 0.51,
+      "duration" : 0.513,
       "identifier" : "didReceivePublicMessage_addsToTimeline()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "didConnectToPeer_notifiesDelegate()"
     },
     {
@@ -286,19 +286,19 @@
       "identifier" : "sendPrivateMessage_delegatesToTransport()"
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.104,
       "identifier" : "didUpdateBluetoothState_poweredOn_noAlert()"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.107,
       "identifier" : "didUpdateBluetoothState_poweredOff_showsAlert()"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.112,
       "identifier" : "didUpdateBluetoothState_unauthorized_showsAlert()"
     },
     {
-      "duration" : 0.021,
+      "duration" : 0.023,
       "identifier" : "panicClearAllData_delegatesToTransport()"
     },
     {
@@ -330,15 +330,15 @@
       "identifier" : "\"Reassembly from fragments delivers a public message\""
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "\"Duplicate fragment does not break reassembly\""
     },
     {
-      "duration" : 1.103,
+      "duration" : 1.058,
       "identifier" : "\"Max-sized file transfer survives reassembly\""
     },
     {
-      "duration" : 0.532,
+      "duration" : 0.536,
       "identifier" : "\"Invalid fragment header is ignored\""
     },
     {
@@ -370,7 +370,7 @@
       "identifier" : "recordParticipant_specificGeohash()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "recordParticipant_updatesLastSeen()"
     },
     {
@@ -390,7 +390,7 @@
       "identifier" : "getVisiblePeople_usesDisplayNameFromContext()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.015,
       "identifier" : "getVisiblePeople_sortedByLastSeen()"
     },
     {
@@ -398,7 +398,7 @@
       "identifier" : "getVisiblePeople_emptyWhenNoActiveGeohash()"
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.11,
       "identifier" : "participantCount_excludesExpiredEntries()"
     },
     {
@@ -430,7 +430,7 @@
       "identifier" : "geoPerson_equatable()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "createGeohashPresenceEvent_hasCorrectKind()"
     },
     {
@@ -454,7 +454,7 @@
       "identifier" : "createGeohashPresenceEvent_isSigned()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "createGeohashPresenceEvent_differentGeohashes()"
     },
     {
@@ -470,11 +470,11 @@
       "identifier" : "geohashEphemeral_respectsSinceParameter()"
     },
     {
-      "duration" : 0.061,
+      "duration" : 0.06,
       "identifier" : "handleNostrEvent_presenceUpdatesParticipantTracker()"
     },
     {
-      "duration" : 0.055,
+      "duration" : 0.056,
       "identifier" : "handleNostrEvent_presenceDoesNotAddToTimeline()"
     },
     {
@@ -490,7 +490,7 @@
       "identifier" : "subscribeNostrEvent_acceptsPresenceKind()"
     },
     {
-      "duration" : 0.065,
+      "duration" : 0.064,
       "identifier" : "subscribeNostrEvent_presenceForNonActiveGeohash()"
     },
     {
@@ -582,7 +582,7 @@
       "identifier" : "maintenanceEmitsTypedSyncRequests()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.014,
       "identifier" : "handleRequestSyncHonorsTypeFilter()"
     },
     {
@@ -786,11 +786,11 @@
       "identifier" : "fullMeshCommunication()"
     },
     {
-      "duration" : 0.054,
+      "duration" : 0.06,
       "identifier" : "dynamicTopologyChanges()"
     },
     {
-      "duration" : 0.061,
+      "duration" : 0.06,
       "identifier" : "networkPartitionRecovery()"
     },
     {
@@ -802,7 +802,7 @@
       "identifier" : "encryptedAndUnencryptedMix()"
     },
     {
-      "duration" : 0.054,
+      "duration" : 0.057,
       "identifier" : "messageDeliveryUnderChurn()"
     },
     {
@@ -810,7 +810,7 @@
       "identifier" : "peerPresenceTrackingAndReconnection()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "encryptedMessageAfterPeerRestart()"
     },
     {
@@ -1242,7 +1242,7 @@
       "identifier" : "hasVeryLongToken_exactThreshold()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "mimeTypeParsingAndExtensions(mimeString:expectedType:expectedExt:) with 15 test cases"
     },
     {
@@ -1262,7 +1262,7 @@
       "identifier" : "nip17MessageRoundTrip()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.012,
       "identifier" : "giftWrapUsesUniqueEphemeralKeys()"
     },
     {
@@ -1274,7 +1274,7 @@
       "identifier" : "ackRoundTripNIP44V2_Delivered()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "ackRoundTripNIP44V2_ReadReceipt()"
     },
     {
@@ -1282,7 +1282,7 @@
       "identifier" : "\"Concurrent read receipt enqueue does not crash\""
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.1,
       "identifier" : "\"Read queue processes under concurrent load\""
     },
     {
@@ -1322,7 +1322,7 @@
       "identifier" : "dropsInvalidPrefixByte()"
     },
     {
-      "duration" : 0.023,
+      "duration" : 0.022,
       "identifier" : "assemblesCompressedLargeFrame()"
     },
     {
@@ -1659,5 +1659,5 @@
     }
   ],
   "testPlan" : "bitchatTests",
-  "testRunDuration" : 8.104
+  "testRunDuration" : 8.028
 }

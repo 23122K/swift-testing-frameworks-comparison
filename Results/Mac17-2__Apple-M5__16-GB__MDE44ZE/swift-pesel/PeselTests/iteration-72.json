@@ -2,7 +2,7 @@
   "framework" : "Swift Testing",
   "testCases" : [
     {
-      "duration" : 0.03,
+      "duration" : 0.029,
       "identifier" : "expectValidPeselNumber(_:) with 1000 test cases"
     },
     {

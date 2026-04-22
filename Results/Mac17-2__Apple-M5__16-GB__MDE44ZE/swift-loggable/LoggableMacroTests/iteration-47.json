@@ -54,7 +54,7 @@
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.016,
+      "duration" : 0.015,
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -66,11 +66,11 @@
       "identifier" : "functionWithEscapingClosure_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "functionWithAutoclosureArgument_omittableAsStaticParameter_withLevelAnnotation()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithInoutArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -122,7 +122,7 @@
       "identifier" : "function_default_objcAnnotation()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -130,7 +130,7 @@
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "overridingStringFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -166,15 +166,15 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.589
+  "testRunDuration" : 0.591
 }

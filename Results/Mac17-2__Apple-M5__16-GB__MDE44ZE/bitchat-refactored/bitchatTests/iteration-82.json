@@ -14,15 +14,15 @@
       "identifier" : "multiplePeerConnections()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.012,
       "identifier" : "sendPublicMessage()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.012,
       "identifier" : "sendPrivateMessage()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.012,
       "identifier" : "sendMessageWithMentions()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "decodeFallsBackToContentSizeWhenFileSizeMissing()"
     },
     {
-      "duration" : 0.108,
+      "duration" : 0.107,
       "identifier" : "sendPrivateMessage_mesh_storesAndSends()"
     },
     {
@@ -218,7 +218,7 @@
       "identifier" : "switchLocationChannel_mesh_clearsGeo()"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.103,
       "identifier" : "subscribeNostrEvent_addsToTimeline_ifMatchesGeohash()"
     },
     {
@@ -254,15 +254,15 @@
       "identifier" : "sendMessage_command_notSentToTransport()"
     },
     {
-      "duration" : 0.209,
+      "duration" : 0.207,
       "identifier" : "didReceiveMessage_callsDelegate()"
     },
     {
-      "duration" : 0.512,
+      "duration" : 0.504,
       "identifier" : "didReceivePublicMessage_addsToTimeline()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "didConnectToPeer_notifiesDelegate()"
     },
     {
@@ -290,11 +290,11 @@
       "identifier" : "didUpdateBluetoothState_poweredOn_noAlert()"
     },
     {
-      "duration" : 0.108,
+      "duration" : 0.103,
       "identifier" : "didUpdateBluetoothState_poweredOff_showsAlert()"
     },
     {
-      "duration" : 0.106,
+      "duration" : 0.104,
       "identifier" : "didUpdateBluetoothState_unauthorized_showsAlert()"
     },
     {
@@ -326,19 +326,19 @@
       "identifier" : "preservesRequestedWeight()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "\"Reassembly from fragments delivers a public message\""
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "\"Duplicate fragment does not break reassembly\""
     },
     {
-      "duration" : 1.046,
+      "duration" : 1.038,
       "identifier" : "\"Max-sized file transfer survives reassembly\""
     },
     {
-      "duration" : 0.524,
+      "duration" : 0.505,
       "identifier" : "\"Invalid fragment header is ignored\""
     },
     {
@@ -370,7 +370,7 @@
       "identifier" : "recordParticipant_specificGeohash()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.011,
       "identifier" : "recordParticipant_updatesLastSeen()"
     },
     {
@@ -390,7 +390,7 @@
       "identifier" : "getVisiblePeople_usesDisplayNameFromContext()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.012,
       "identifier" : "getVisiblePeople_sortedByLastSeen()"
     },
     {
@@ -398,7 +398,7 @@
       "identifier" : "getVisiblePeople_emptyWhenNoActiveGeohash()"
     },
     {
-      "duration" : 0.106,
+      "duration" : 0.103,
       "identifier" : "participantCount_excludesExpiredEntries()"
     },
     {
@@ -454,7 +454,7 @@
       "identifier" : "createGeohashPresenceEvent_isSigned()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "createGeohashPresenceEvent_differentGeohashes()"
     },
     {
@@ -470,15 +470,15 @@
       "identifier" : "geohashEphemeral_respectsSinceParameter()"
     },
     {
-      "duration" : 0.056,
+      "duration" : 0.057,
       "identifier" : "handleNostrEvent_presenceUpdatesParticipantTracker()"
     },
     {
-      "duration" : 0.059,
+      "duration" : 0.055,
       "identifier" : "handleNostrEvent_presenceDoesNotAddToTimeline()"
     },
     {
-      "duration" : 0.059,
+      "duration" : 0.057,
       "identifier" : "handleNostrEvent_chatMessageUpdatesParticipant()"
     },
     {
@@ -486,11 +486,11 @@
       "identifier" : "presenceEvent_hasDifferentKindThanChat()"
     },
     {
-      "duration" : 0.055,
+      "duration" : 0.06,
       "identifier" : "subscribeNostrEvent_acceptsPresenceKind()"
     },
     {
-      "duration" : 0.063,
+      "duration" : 0.058,
       "identifier" : "subscribeNostrEvent_presenceForNonActiveGeohash()"
     },
     {
@@ -566,7 +566,7 @@
       "identifier" : "objectWillChange_firesOnNonActiveGeohashUpdate()"
     },
     {
-      "duration" : 0.406,
+      "duration" : 0.404,
       "identifier" : "concurrentPacketIntakeAndSyncRequest()"
     },
     {
@@ -582,7 +582,7 @@
       "identifier" : "maintenanceEmitsTypedSyncRequests()"
     },
     {
-      "duration" : 0.015,
+      "duration" : 0.012,
       "identifier" : "handleRequestSyncHonorsTypeFilter()"
     },
     {
@@ -786,11 +786,11 @@
       "identifier" : "fullMeshCommunication()"
     },
     {
-      "duration" : 0.052,
+      "duration" : 0.051,
       "identifier" : "dynamicTopologyChanges()"
     },
     {
-      "duration" : 0.061,
+      "duration" : 0.051,
       "identifier" : "networkPartitionRecovery()"
     },
     {
@@ -802,7 +802,7 @@
       "identifier" : "encryptedAndUnencryptedMix()"
     },
     {
-      "duration" : 0.056,
+      "duration" : 0.048,
       "identifier" : "messageDeliveryUnderChurn()"
     },
     {
@@ -810,7 +810,7 @@
       "identifier" : "peerPresenceTrackingAndReconnection()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.004,
       "identifier" : "encryptedMessageAfterPeerRestart()"
     },
     {
@@ -1258,7 +1258,7 @@
       "identifier" : "octetStreamAlwaysMatches()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "nip17MessageRoundTrip()"
     },
     {
@@ -1274,7 +1274,7 @@
       "identifier" : "ackRoundTripNIP44V2_Delivered()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "ackRoundTripNIP44V2_ReadReceipt()"
     },
     {
@@ -1282,7 +1282,7 @@
       "identifier" : "\"Concurrent read receipt enqueue does not crash\""
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.107,
       "identifier" : "\"Read queue processes under concurrent load\""
     },
     {
@@ -1322,7 +1322,7 @@
       "identifier" : "dropsInvalidPrefixByte()"
     },
     {
-      "duration" : 0.022,
+      "duration" : 0.023,
       "identifier" : "assemblesCompressedLargeFrame()"
     },
     {
@@ -1510,7 +1510,7 @@
       "identifier" : "fileTransfer_shortIDProducesCorrect8ByteRoutingData()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.106,
       "identifier" : "simplePrivateMessageShouldNotBeSentWithoutConnection()"
     },
     {
@@ -1659,5 +1659,5 @@
     }
   ],
   "testPlan" : "bitchatTests",
-  "testRunDuration" : 4.368
+  "testRunDuration" : 4.279
 }

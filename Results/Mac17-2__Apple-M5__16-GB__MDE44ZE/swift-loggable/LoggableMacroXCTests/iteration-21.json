@@ -134,7 +134,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithTupleParameter_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_throwingFunction_default_noAdditionalAnnotations"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.105,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
@@ -242,7 +242,7 @@
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_class_default_openAccessModifier"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_enum_default_filePrivateAccessModifer"
     },
     {
@@ -262,10 +262,10 @@
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_mainActorStruct_withCustomAccessLevel_internalAccessModifier"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_struct_default_privateAccessModifer"
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.602
+  "testRunDuration" : 0.601
 }

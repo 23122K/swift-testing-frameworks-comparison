@@ -78,7 +78,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_intFunctionWithVariadicParameters_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_mutatingFunction_default_withLevelAnnotation"
     },
     {
@@ -122,7 +122,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.013,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations"
     },
     {
@@ -166,15 +166,15 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.109,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_class_withLoggableAsFunction_noAdditionalAnnotations"
     },
     {
@@ -222,7 +222,7 @@
       "identifier" : "LoggableMacroXCTests.OSLoggedMacroTests test_enum_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "LoggableMacroXCTests.OSLoggedMacroTests test_extension_default_noAdditionalAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.601
+  "testRunDuration" : 0.608
 }

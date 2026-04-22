@@ -22,7 +22,7 @@
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
@@ -38,7 +38,7 @@
       "identifier" : "mutatingFunctionWithArgument_taggableAndLevelableAsPrameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -54,7 +54,7 @@
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.016,
+      "duration" : 0.015,
       "identifier" : "throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,19 +166,19 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "class_withLoggableAsInitializer_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.585
+  "testRunDuration" : 0.587
 }

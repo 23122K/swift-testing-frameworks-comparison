@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -174,7 +174,7 @@
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -194,7 +194,7 @@
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.587
+  "testRunDuration" : 0.588
 }

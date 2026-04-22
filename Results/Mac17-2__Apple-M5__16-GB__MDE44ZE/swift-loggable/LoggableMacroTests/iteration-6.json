@@ -22,7 +22,7 @@
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
@@ -38,7 +38,7 @@
       "identifier" : "mutatingFunctionWithArgument_taggableAndLevelableAsPrameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,19 +166,19 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.101,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "class_withLoggableAsInitializer_noAdditionalAnnotations()"
     },
     {
@@ -194,19 +194,19 @@
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.005,
       "identifier" : "function_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.014,
+      "duration" : 0.009,
       "identifier" : "intFunctionWithVariadicParameters_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.585
+  "testRunDuration" : 0.575
 }

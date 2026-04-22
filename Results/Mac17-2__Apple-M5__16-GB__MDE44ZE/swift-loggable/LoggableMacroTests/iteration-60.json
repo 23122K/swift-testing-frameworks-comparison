@@ -18,7 +18,7 @@
       "identifier" : "stringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
@@ -142,7 +142,7 @@
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
@@ -154,7 +154,7 @@
       "identifier" : "staticGenericFunction_default_withDiscardableResultAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithTupleParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,15 +166,15 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -194,7 +194,7 @@
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.003,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
@@ -214,7 +214,7 @@
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "class_withCustomSubsystemAndCategory_noAdditionalAnnotations()"
     },
     {

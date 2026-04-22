@@ -70,7 +70,7 @@
       "identifier" : "functionWithAutoclosureArgument_omittableAsStaticParameter_withLevelAnnotation()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithInoutArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -98,7 +98,7 @@
       "identifier" : "intFunctionWithVariadicParameters_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "functionWithArgument_default_withDiscardableResultAndOmitResultAnnotations()"
     },
     {
@@ -122,7 +122,7 @@
       "identifier" : "function_default_objcAnnotation()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -134,7 +134,7 @@
       "identifier" : "overridingStringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithInoutAndDefaultArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -142,7 +142,7 @@
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
@@ -162,11 +162,11 @@
       "identifier" : "genericFunctionWithGenericClosureParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.103,
+      "duration" : 0.106,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.588
+  "testRunDuration" : 0.585
 }

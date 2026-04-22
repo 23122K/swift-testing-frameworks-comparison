@@ -34,7 +34,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithClosureDefaultValue_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithEscapingClosure_default_noAdditionalAnnotations"
     },
     {
@@ -134,7 +134,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithTupleParameter_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_throwingFunction_default_noAdditionalAnnotations"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.1,
+      "duration" : 0.109,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
@@ -178,7 +178,7 @@
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_class_withLoggableAsFunction_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_class_withLoggableAsInitializer_noAdditionalAnnotations"
     },
     {
@@ -242,7 +242,7 @@
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_class_default_openAccessModifier"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "LoggableMacroXCTests.OSLoggerTests test_enum_default_filePrivateAccessModifer"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.599
+  "testRunDuration" : 0.607
 }

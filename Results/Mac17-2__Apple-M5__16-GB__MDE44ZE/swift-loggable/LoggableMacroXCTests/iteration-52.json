@@ -122,7 +122,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations"
     },
     {
@@ -150,7 +150,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_throwingFunctionWithArguments_omittableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations"
     },
     {
@@ -166,15 +166,15 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.102,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_class_withLoggableAsFunction_noAdditionalAnnotations"
     },
     {
@@ -206,11 +206,11 @@
       "identifier" : "LoggableMacroXCTests.OSLogMacroTests test_functionWithArguments_allTraits_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "LoggableMacroXCTests.OSLogMacroTests test_intFunctionWithVariadicParameters_taggableAsStringLiteralType_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "LoggableMacroXCTests.OSLoggedMacroTests test_actor_default_withOmmitAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.607
+  "testRunDuration" : 0.599
 }

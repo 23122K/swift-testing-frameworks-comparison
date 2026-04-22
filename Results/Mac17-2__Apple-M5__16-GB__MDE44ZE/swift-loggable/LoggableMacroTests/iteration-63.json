@@ -42,7 +42,7 @@
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "throwingFunction_default_withTagAndLevelAnnotations()"
     },
     {
@@ -66,7 +66,7 @@
       "identifier" : "functionWithEscapingClosure_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "functionWithAutoclosureArgument_omittableAsStaticParameter_withLevelAnnotation()"
     },
     {
@@ -102,7 +102,7 @@
       "identifier" : "functionWithArgument_default_withDiscardableResultAndOmitResultAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.008,
       "identifier" : "intClosureFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -134,7 +134,7 @@
       "identifier" : "overridingStringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithInoutAndDefaultArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -154,19 +154,19 @@
       "identifier" : "staticGenericFunction_default_withDiscardableResultAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithTupleParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithGenericClosureParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -214,7 +214,7 @@
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "class_withCustomSubsystemAndCategory_noAdditionalAnnotations()"
     },
     {

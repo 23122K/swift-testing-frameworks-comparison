@@ -14,7 +14,7 @@
       "identifier" : "multiplePeerConnections()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "sendPublicMessage()"
     },
     {
@@ -190,7 +190,7 @@
       "identifier" : "decodeFallsBackToContentSizeWhenFileSizeMissing()"
     },
     {
-      "duration" : 0.11,
+      "duration" : 0.111,
       "identifier" : "sendPrivateMessage_mesh_storesAndSends()"
     },
     {
@@ -218,7 +218,7 @@
       "identifier" : "switchLocationChannel_mesh_clearsGeo()"
     },
     {
-      "duration" : 0.102,
+      "duration" : 0.108,
       "identifier" : "subscribeNostrEvent_addsToTimeline_ifMatchesGeohash()"
     },
     {
@@ -254,19 +254,19 @@
       "identifier" : "sendMessage_command_notSentToTransport()"
     },
     {
-      "duration" : 0.209,
+      "duration" : 0.205,
       "identifier" : "didReceiveMessage_callsDelegate()"
     },
     {
-      "duration" : 0.503,
+      "duration" : 0.508,
       "identifier" : "didReceivePublicMessage_addsToTimeline()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "didConnectToPeer_notifiesDelegate()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "didDisconnectFromPeer_notifiesDelegate()"
     },
     {
@@ -286,7 +286,7 @@
       "identifier" : "sendPrivateMessage_delegatesToTransport()"
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.103,
       "identifier" : "didUpdateBluetoothState_poweredOn_noAlert()"
     },
     {
@@ -294,7 +294,7 @@
       "identifier" : "didUpdateBluetoothState_poweredOff_showsAlert()"
     },
     {
-      "duration" : 0.108,
+      "duration" : 0.107,
       "identifier" : "didUpdateBluetoothState_unauthorized_showsAlert()"
     },
     {
@@ -334,11 +334,11 @@
       "identifier" : "\"Duplicate fragment does not break reassembly\""
     },
     {
-      "duration" : 1.039,
+      "duration" : 1.071,
       "identifier" : "\"Max-sized file transfer survives reassembly\""
     },
     {
-      "duration" : 0.516,
+      "duration" : 0.527,
       "identifier" : "\"Invalid fragment header is ignored\""
     },
     {
@@ -390,7 +390,7 @@
       "identifier" : "getVisiblePeople_usesDisplayNameFromContext()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "getVisiblePeople_sortedByLastSeen()"
     },
     {
@@ -398,7 +398,7 @@
       "identifier" : "getVisiblePeople_emptyWhenNoActiveGeohash()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.101,
       "identifier" : "participantCount_excludesExpiredEntries()"
     },
     {
@@ -470,15 +470,15 @@
       "identifier" : "geohashEphemeral_respectsSinceParameter()"
     },
     {
-      "duration" : 0.056,
+      "duration" : 0.058,
       "identifier" : "handleNostrEvent_presenceUpdatesParticipantTracker()"
     },
     {
-      "duration" : 0.059,
+      "duration" : 0.055,
       "identifier" : "handleNostrEvent_presenceDoesNotAddToTimeline()"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.058,
       "identifier" : "handleNostrEvent_chatMessageUpdatesParticipant()"
     },
     {
@@ -490,7 +490,7 @@
       "identifier" : "subscribeNostrEvent_acceptsPresenceKind()"
     },
     {
-      "duration" : 0.057,
+      "duration" : 0.059,
       "identifier" : "subscribeNostrEvent_presenceForNonActiveGeohash()"
     },
     {
@@ -566,7 +566,7 @@
       "identifier" : "objectWillChange_firesOnNonActiveGeohashUpdate()"
     },
     {
-      "duration" : 0.396,
+      "duration" : 0.404,
       "identifier" : "concurrentPacketIntakeAndSyncRequest()"
     },
     {
@@ -786,11 +786,11 @@
       "identifier" : "fullMeshCommunication()"
     },
     {
-      "duration" : 0.055,
+      "duration" : 0.053,
       "identifier" : "dynamicTopologyChanges()"
     },
     {
-      "duration" : 0.053,
+      "duration" : 0.056,
       "identifier" : "networkPartitionRecovery()"
     },
     {
@@ -798,11 +798,11 @@
       "identifier" : "mixedPublicPrivateMessages()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.004,
       "identifier" : "encryptedAndUnencryptedMix()"
     },
     {
-      "duration" : 0.05,
+      "duration" : 0.052,
       "identifier" : "messageDeliveryUnderChurn()"
     },
     {
@@ -810,7 +810,7 @@
       "identifier" : "peerPresenceTrackingAndReconnection()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.005,
       "identifier" : "encryptedMessageAfterPeerRestart()"
     },
     {
@@ -818,7 +818,7 @@
       "identifier" : "largeScaleNetwork()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.002,
       "identifier" : "highLoadScenario()"
     },
     {
@@ -986,7 +986,7 @@
       "identifier" : "emptyKey_works()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "largeCapacity_works()"
     },
     {
@@ -1262,7 +1262,7 @@
       "identifier" : "nip17MessageRoundTrip()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.014,
       "identifier" : "giftWrapUsesUniqueEphemeralKeys()"
     },
     {
@@ -1270,7 +1270,7 @@
       "identifier" : "decryptionFailsWithWrongRecipient()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "ackRoundTripNIP44V2_Delivered()"
     },
     {
@@ -1282,7 +1282,7 @@
       "identifier" : "\"Concurrent read receipt enqueue does not crash\""
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.105,
       "identifier" : "\"Read queue processes under concurrent load\""
     },
     {
@@ -1322,7 +1322,7 @@
       "identifier" : "dropsInvalidPrefixByte()"
     },
     {
-      "duration" : 0.022,
+      "duration" : 0.023,
       "identifier" : "assemblesCompressedLargeFrame()"
     },
     {
@@ -1530,7 +1530,7 @@
       "identifier" : "privateMessageRelay()"
     },
     {
-      "duration" : 0.001,
+      "duration" : 0.002,
       "identifier" : "privateMessageThroughput()"
     },
     {
@@ -1659,5 +1659,5 @@
     }
   ],
   "testPlan" : "bitchatTests",
-  "testRunDuration" : 4.285
+  "testRunDuration" : 4.351
 }
