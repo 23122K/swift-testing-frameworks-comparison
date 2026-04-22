@@ -22,7 +22,7 @@
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
@@ -74,7 +74,7 @@
       "identifier" : "functionWithInoutArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "staticFunctionWithArgument_omittableAsStringLiteralType_withOmitResultAnnotation()"
     },
     {
@@ -82,7 +82,7 @@
       "identifier" : "rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
@@ -102,11 +102,11 @@
       "identifier" : "functionWithArgument_default_withDiscardableResultAndOmitResultAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "intClosureFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "functionWithAsyncClosureArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -118,7 +118,7 @@
       "identifier" : "genericFunctionWithMultipleConstraints_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "function_default_objcAnnotation()"
     },
     {
@@ -130,11 +130,11 @@
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "overridingStringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "functionWithInoutAndDefaultArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -166,19 +166,19 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.01,
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.009,
       "identifier" : "class_withLoggableAsInitializer_noAdditionalAnnotations()"
     },
     {
@@ -186,7 +186,7 @@
       "identifier" : "class_withLoggableAsFunction_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.586
+  "testRunDuration" : 0.592
 }

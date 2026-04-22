@@ -10,7 +10,7 @@
       "identifier" : "voidFunction_lggableAsInitializer_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.004,
       "identifier" : "voidFunction_loggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
@@ -26,7 +26,7 @@
       "identifier" : "stringFunctionWithArgument_taggableAsStringLiteralType_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "tupleFunctionWithLabeledArguments_default_noAdditionalAnnotations()"
     },
     {
@@ -86,7 +86,7 @@
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.013,
       "identifier" : "genericTupleFunctionWithWhereClauseAndArguments_default_withRedundantTagAnnotation()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.012,
+      "duration" : 0.011,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.109,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
@@ -186,11 +186,11 @@
       "identifier" : "class_withLoggableAsFunction_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.007,
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.002,
+      "duration" : 0.003,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
@@ -198,7 +198,7 @@
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.005,
       "identifier" : "function_default_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.61
+  "testRunDuration" : 0.612
 }

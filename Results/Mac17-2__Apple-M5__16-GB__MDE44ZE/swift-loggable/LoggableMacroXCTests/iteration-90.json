@@ -14,7 +14,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithArgument_default_mainActorAnnotation"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_functionWithArgument_default_withDiscardableResultAndOmitResultAnnotations"
     },
     {
@@ -166,7 +166,7 @@
       "identifier" : "LoggableMacroXCTests.LogMacroTests test_voidFunction_loggableAsStaticParameter_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.104,
+      "duration" : 0.108,
       "identifier" : "LoggableMacroXCTests.LoggableTests test_whenLoggerAttachedToType_expectedToCaptureAllEvent"
     },
     {
@@ -198,7 +198,7 @@
       "identifier" : "LoggableMacroXCTests.LoggedMacroTests test_struct_default_noAdditionalAnnotations"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "LoggableMacroXCTests.OSLogMacroTests test_function_default_noAdditionalAnnotations"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroXCTests",
-  "testRunDuration" : 0.603
+  "testRunDuration" : 0.607
 }

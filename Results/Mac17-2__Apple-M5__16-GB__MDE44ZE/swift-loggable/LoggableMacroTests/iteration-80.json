@@ -18,7 +18,7 @@
       "identifier" : "stringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
@@ -42,15 +42,15 @@
       "identifier" : "mutatingThrowingFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "throwingFunction_default_withTagAndLevelAnnotations()"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "throwingFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.013,
+      "duration" : 0.012,
       "identifier" : "throwingFunctionWithArgument_default_withOmitParameterAnnotation()"
     },
     {
@@ -82,7 +82,7 @@
       "identifier" : "rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
@@ -90,7 +90,7 @@
       "identifier" : "genericTupleFunctionWithWhereClauseAndArguments_default_withRedundantTagAnnotation()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "stringFunctionWithDefaultParameters_default_noAdditionalAnnotations()"
     },
     {
@@ -98,7 +98,7 @@
       "identifier" : "intFunctionWithVariadicParameters_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "functionWithArgument_default_withDiscardableResultAndOmitResultAnnotations()"
     },
     {
@@ -106,7 +106,7 @@
       "identifier" : "intClosureFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "functionWithAsyncClosureArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -158,7 +158,7 @@
       "identifier" : "stringFunctionWithTupleParameter_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithGenericClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.101,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
@@ -194,7 +194,7 @@
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.004,
+      "duration" : 0.003,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.594
+  "testRunDuration" : 0.596
 }

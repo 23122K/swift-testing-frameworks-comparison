@@ -18,7 +18,7 @@
       "identifier" : "stringFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "stringFunctionWithArguments_loggableAndLevelableAsStaticParameters_noAdditionalAnnotations()"
     },
     {
@@ -74,7 +74,7 @@
       "identifier" : "functionWithInoutArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.007,
       "identifier" : "staticFunctionWithArgument_omittableAsStringLiteralType_withOmitResultAnnotation()"
     },
     {
@@ -82,7 +82,7 @@
       "identifier" : "rethrowsFunctionWithClosureArgument_omittableAsStringLiteralType_withRedundatOmitParameterAnnotation()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.009,
       "identifier" : "functionWithArguments_allTraits_noAdditionalAnnotations()"
     },
     {
@@ -90,7 +90,7 @@
       "identifier" : "genericTupleFunctionWithWhereClauseAndArguments_default_withRedundantTagAnnotation()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "stringFunctionWithDefaultParameters_default_noAdditionalAnnotations()"
     },
     {
@@ -122,7 +122,7 @@
       "identifier" : "function_default_objcAnnotation()"
     },
     {
-      "duration" : 0.007,
+      "duration" : 0.006,
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
@@ -142,7 +142,7 @@
       "identifier" : "functionWithOptionalArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.01,
       "identifier" : "genericFunctionWithComplexSignature_default_withOmitSecondParameterAnnotation()"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.107,
+      "duration" : 0.108,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
@@ -194,7 +194,7 @@
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.003,
+      "duration" : 0.004,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
@@ -218,7 +218,7 @@
       "identifier" : "class_withCustomSubsystemAndCategory_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {

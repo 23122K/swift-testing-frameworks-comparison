@@ -70,7 +70,7 @@
       "identifier" : "functionWithAutoclosureArgument_omittableAsStaticParameter_withLevelAnnotation()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.006,
       "identifier" : "functionWithInoutArgument_default_noAdditionalAnnotations()"
     },
     {
@@ -126,7 +126,7 @@
       "identifier" : "optionalIntFunction_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.011,
+      "duration" : 0.012,
       "identifier" : "stringFunctionWithAsyncThrowingClosureParameter_default_noAdditionalAnnotations()"
     },
     {
@@ -166,11 +166,11 @@
       "identifier" : "genericArrayfunctionWithGenericClosureArgument_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.105,
+      "duration" : 0.11,
       "identifier" : "whenLoggerAttachedToType_expectedToCaptureAllEvent()"
     },
     {
-      "duration" : 0.01,
+      "duration" : 0.011,
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
@@ -178,7 +178,7 @@
       "identifier" : "class_withLoggableAsStaticParameter_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.009,
+      "duration" : 0.008,
       "identifier" : "class_withLoggableAsInitializer_noAdditionalAnnotations()"
     },
     {
@@ -186,15 +186,15 @@
       "identifier" : "class_withLoggableAsFunction_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.008,
+      "duration" : 0.006,
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
-      "duration" : 0.005,
+      "duration" : 0.002,
       "identifier" : "enum_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.004,
       "identifier" : "extension_default_noAdditionalAnnotations()"
     },
     {
@@ -214,11 +214,11 @@
       "identifier" : "struct_default_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "class_withCustomSubsystemAndCategory_noAdditionalAnnotations()"
     },
     {
-      "duration" : 0.006,
+      "duration" : 0.005,
       "identifier" : "actor_default_withOmmitAnnotations()"
     },
     {
@@ -267,5 +267,5 @@
     }
   ],
   "testPlan" : "LoggableMacroTests",
-  "testRunDuration" : 0.591
+  "testRunDuration" : 0.588
 }
