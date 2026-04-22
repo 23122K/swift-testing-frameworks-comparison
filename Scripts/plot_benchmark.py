@@ -423,7 +423,7 @@ def plot_histogram(
     s = info["stats"]
 
     fig, ax = plt.subplots(figsize=(6, 4))
-    bins = min(20, max(10, len(arr) // 5))
+    bins = _fd_bins(arr)
     ax.hist(arr, bins=bins, color=color, alpha=0.55, edgecolor="white",
             linewidth=0.5, density=True, label="Histogram")
 
