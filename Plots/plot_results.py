@@ -23,6 +23,9 @@ import sys
 from pathlib import Path
 
 import matplotlib
+
+matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -73,6 +76,21 @@ def _fd_bins(arr: np.ndarray) -> int:
 def _smart_unit(values_s) -> tuple[float, str]:
     """Use ms display unit when all values are below 1 second."""
     return (1000.0, "ms") if max(values_s) < 1.0 else (1.0, "s")
+
+
+def _scheme_units(data: dict) -> dict[str, tuple[float, str]]:
+    """Use one display unit for every plot belonging to the same scheme."""
+    units: dict[str, tuple[float, str]] = {}
+    for scheme, suites in data.items():
+        values = [
+            duration
+            for devices in suites.values()
+            for info in devices.values()
+            for duration in info["durations"]
+        ]
+        if values:
+            units[scheme] = _smart_unit(values)
+    return units
 
 
 def _device_label(device_dir: Path) -> str:
@@ -284,6 +302,8 @@ def plot_histogram(
     info: dict,
     output_dir: Path,
     color: str,
+    scale: float,
+    unit: str,
 ) -> None:
     """
     Histogram + KDE for a single (device, scheme, testSuite) series.
@@ -292,7 +312,6 @@ def plot_histogram(
     Mean and median are annotated as vertical lines.
     """
     durations = info["durations"]
-    scale, unit = _smart_unit(durations)
     arr = np.array(durations) * scale
     s = compute_stats(durations)
 
@@ -342,6 +361,8 @@ def plot_boxplot(
     info: dict,
     output_dir: Path,
     color: str,
+    scale: float,
+    unit: str,
 ) -> None:
     """
     Boxplot with jitter for a single (device, scheme, testSuite) series.
@@ -349,7 +370,6 @@ def plot_boxplot(
     Tukey 1.5 × IQR whiskers. Jitter exposes all 100 individual run durations.
     """
     durations = info["durations"]
-    scale, unit = _smart_unit(durations)
     arr = np.array(durations) * scale
     s = compute_stats(durations)
 
@@ -400,6 +420,8 @@ def plot_timeseries(
     device_data: dict[str, dict],
     device_order: list[str],
     output_dir: Path,
+    scale: float,
+    unit: str,
 ) -> None:
     """
     Time-series for one (scheme, testSuite): one line per device.
@@ -410,9 +432,6 @@ def plot_timeseries(
     present = [d for d in device_order if d in device_data]
     if not present:
         return
-
-    all_dur = [v for d in present for v in device_data[d]["durations"]]
-    scale, unit = _smart_unit(all_dur)
 
     fig, ax = plt.subplots(figsize=(10, 4))
 
@@ -465,6 +484,7 @@ def main() -> None:
 
     print(f"\nLoading results from: {results_dir}")
     data, device_order = load_all(results_dir)
+    scheme_units = _scheme_units(data)
 
     print(f"Devices  ({len(device_order)}): {device_order}")
     print(f"Schemes  ({len(data)}): {sorted(data.keys())}")
@@ -473,6 +493,11 @@ def main() -> None:
 
     validate_iterations(data, device_order)
     print_summary_table(data, device_order)
+
+    print("Plot display units by scheme:")
+    for scheme in sorted(scheme_units):
+        print(f"  {scheme}: {scheme_units[scheme][1]}")
+    print()
 
     print(f"Generating plots → {output_dir}\n")
 
@@ -483,14 +508,16 @@ def main() -> None:
                 if dev not in data[scheme][suite]:
                     continue
                 info = data[scheme][suite][dev]
-                plot_histogram(dev, scheme, suite, info, output_dir, color)
-                plot_boxplot(dev, scheme, suite, info, output_dir, color)
+                scale, unit = scheme_units[scheme]
+                plot_histogram(dev, scheme, suite, info, output_dir, color, scale, unit)
+                plot_boxplot(dev, scheme, suite, info, output_dir, color, scale, unit)
 
     # ── Per-(scheme, suite): cross-device time series ─────────────────────
     print()
     for scheme in sorted(data):
         for suite in sorted(data[scheme]):
-            plot_timeseries(scheme, suite, data[scheme][suite], device_order, output_dir)
+            scale, unit = scheme_units[scheme]
+            plot_timeseries(scheme, suite, data[scheme][suite], device_order, output_dir, scale, unit)
 
     print("\nDone.")
 

@@ -22,6 +22,9 @@ from pathlib import Path
 import re
 
 import matplotlib
+
+matplotlib.use("Agg")
+
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import numpy as np
@@ -215,11 +218,20 @@ def _smart_unit(values_s: list[float]) -> tuple[float, str]:
     return 1.0, "s"
 
 
-def plot_time_series_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
-    """All suites on one axes — combined time series."""
+def _scheme_unit(suites: dict[str, dict]) -> tuple[float, str]:
+    """Use one display unit for all plots in the input scheme directory."""
     flat = [v for s in suites.values() for v in s["durations"]]
-    scale, unit = _smart_unit(flat)
+    return _smart_unit(flat)
 
+
+def plot_time_series_combined(
+    suites: dict[str, dict],
+    output_dir: Path,
+    scheme: str,
+    scale: float,
+    unit: str,
+) -> None:
+    """All suites on one axes — combined time series."""
     fig, ax = plt.subplots(figsize=(10, 4))
     for (name, info), color in zip(suites.items(), PALETTE):
         arr = np.array(info["durations"]) * scale
@@ -239,12 +251,16 @@ def plot_time_series_combined(suites: dict[str, dict], output_dir: Path, scheme:
     print(f"  Saved: {out}")
 
 
-def plot_mean_ci_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
+def plot_mean_ci_combined(
+    suites: dict[str, dict],
+    output_dir: Path,
+    scheme: str,
+    scale: float,
+    unit: str,
+) -> None:
     """All suites as bars with 95% CI — combined mean CI chart."""
     names = list(suites.keys())
     stats_list = [s["stats"] for s in suites.values()]
-    flat = [v for s in suites.values() for v in s["durations"]]
-    scale, unit = _smart_unit(flat)
 
     means = np.array([s["mean"] for s in stats_list]) * scale
     ci_lo = means - np.array([s["ci95_lo"] for s in stats_list]) * scale
@@ -278,10 +294,14 @@ def plot_mean_ci_combined(suites: dict[str, dict], output_dir: Path, scheme: str
     print(f"  Saved: {out}")
 
 
-def plot_histogram_combined(suites: dict[str, dict], output_dir: Path, scheme: str) -> None:
+def plot_histogram_combined(
+    suites: dict[str, dict],
+    output_dir: Path,
+    scheme: str,
+    scale: float,
+    unit: str,
+) -> None:
     """One subplot per suite in a single figure — combined histogram grid."""
-    flat = [v for s in suites.values() for v in s["durations"]]
-    scale, unit = _smart_unit(flat)
     n = len(suites)
     cols = min(n, 2)
     rows = (n + cols - 1) // cols
@@ -322,9 +342,15 @@ def plot_histogram_combined(suites: dict[str, dict], output_dir: Path, scheme: s
     print(f"  Saved: {out}")
 
 
-def plot_time_series(name: str, info: dict, output_dir: Path, color: str) -> None:
+def plot_time_series(
+    name: str,
+    info: dict,
+    output_dir: Path,
+    color: str,
+    scale: float,
+    unit: str,
+) -> None:
     """Run duration per iteration — reveals trends / warm-up effects."""
-    scale, unit = _smart_unit(info["durations"])
     arr = np.array(info["durations"]) * scale
 
     fig, ax = plt.subplots(figsize=(10, 4))
@@ -344,9 +370,15 @@ def plot_time_series(name: str, info: dict, output_dir: Path, color: str) -> Non
     print(f"  Saved: {out}")
 
 
-def plot_mean_ci(name: str, info: dict, output_dir: Path, color: str) -> None:
+def plot_mean_ci(
+    name: str,
+    info: dict,
+    output_dir: Path,
+    color: str,
+    scale: float,
+    unit: str,
+) -> None:
     """Bar chart of mean with 95% CI and std dev annotation."""
-    scale, unit = _smart_unit(info["durations"])
     s = info["stats"]
 
     mean = s["mean"] * scale
@@ -378,9 +410,15 @@ def plot_mean_ci(name: str, info: dict, output_dir: Path, color: str) -> None:
     print(f"  Saved: {out}")
 
 
-def plot_histogram(name: str, info: dict, output_dir: Path, color: str) -> None:
+def plot_histogram(
+    name: str,
+    info: dict,
+    output_dir: Path,
+    color: str,
+    scale: float,
+    unit: str,
+) -> None:
     """Histogram with KDE for distribution shape."""
-    scale, unit = _smart_unit(info["durations"])
     arr = np.array(info["durations"]) * scale
     s = info["stats"]
 
@@ -517,20 +555,22 @@ def main() -> None:
     # Attach stats
     for name, info in suites.items():
         info["stats"] = compute_stats(info["durations"])
+    scale, unit = _scheme_unit(suites)
 
     print_stats_table(suites)
     print_pairwise_tests(suites)
+    print(f"Plot display unit for {suite_dir_name}: {unit}\n")
 
     print(f"Generating plots → {output_dir}")
     # Per-suite individual plots
     for (name, info), color in zip(suites.items(), PALETTE):
-        plot_histogram(name, info, output_dir, color)
-        plot_mean_ci(name, info, output_dir, color)
-        plot_time_series(name, info, output_dir, color)
+        plot_histogram(name, info, output_dir, color, scale, unit)
+        plot_mean_ci(name, info, output_dir, color, scale, unit)
+        plot_time_series(name, info, output_dir, color, scale, unit)
     # Combined plots across all suites
-    plot_histogram_combined(suites, output_dir, suite_dir_name)
-    plot_mean_ci_combined(suites, output_dir, suite_dir_name)
-    plot_time_series_combined(suites, output_dir, suite_dir_name)
+    plot_histogram_combined(suites, output_dir, suite_dir_name, scale, unit)
+    plot_mean_ci_combined(suites, output_dir, suite_dir_name, scale, unit)
+    plot_time_series_combined(suites, output_dir, suite_dir_name, scale, unit)
 
     print("\nDone.")
 

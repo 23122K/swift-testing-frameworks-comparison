@@ -36,6 +36,7 @@ python3 Plots/plot_results.py Results --output-dir /some/other/dir
 **Statistics printed to stdout** before generating plots:
 - Iteration integrity check (expected n=100 per series, flags any anomalies)
 - Descriptive table: mean, median, sample std dev, CV%, 95% CI (Student's t, n−1 df), D'Agostino–Pearson K² normality test p-value
+- Plot display unit per scheme. Every plot for the same scheme uses the same duration unit across Swift Testing and XCTest suites.
 
 ---
 
@@ -63,6 +64,7 @@ python3 Plots/plot_benchmark.py Results/Mac16-11__Apple-M4-Pro__24-GB__MCX44D/bi
 - Mean, median, sample std dev, CV%, min, max
 - D'Agostino–Pearson K² normality test
 - Pairwise Mann–Whitney U test + Welch's t-test between Swift Testing and XCTest suite pairs, with rank-biserial r and Cohen's d effect sizes
+- Plot display unit for the scheme directory. Individual and combined plots use that same unit for every suite.
 
 ## When to regenerate plots
 
