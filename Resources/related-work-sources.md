@@ -40,14 +40,14 @@ Published: 2016
 Publisher: Association for Computing Machinery
 ###  A field study of API learning obstacles
 DOI: https://doi.org/10.1007/s10664-010-9150-8
-Authors: [Martin P. Robillard](https://dl.acm.org/doi/abs/10.1007/s10664-010-9150-8# "Martin P. Robillard"), [Robert Deline](https://dl.acm.org/doi/abs/10.1007/s10664-010-9150-8# "Robert Deline")
+Authors: [Martin P. Robillard](https://dl.acm.org/doi/abs/10.1007/s10664-010-9150-8# "Martin P. Robillard"), [Robert DeLine](https://dl.acm.org/doi/abs/10.1007/s10664-010-9150-8# "Robert DeLine")
 Published: 2011
-Publisher: Kluwer Academic Publishers
+Publisher: Springer
 ### Investigating the readability of test code
 DOI: https://doi.org/10.1007/s10664-023-10390-z
 Authors: [Dietmar Winkler](https://dl.acm.org/doi/abs/10.1007/s10664-023-10390-z# "Dietmar Winkler"),[Pirmin Urbanke](https://dl.acm.org/doi/abs/10.1007/s10664-023-10390-z# "Pirmin Urbanke"),[Rudolf Ramler](https://dl.acm.org/doi/abs/10.1007/s10664-023-10390-z# "Rudolf Ramler")
 Published: 2024
-Publisher: Kluwer Academic Publishers
+Publisher: Springer
 ### Comprehending Test Code: An Empirical Study
 DOI: https://doi.org/10.1109/ICSME.2019.00084
 Authors: [Chak Shun Yu](https://ieeexplore.ieee.org/author/37087112866), [Christoph Treude](https://ieeexplore.ieee.org/author/37315775500), [Maurício Aniche](https://ieeexplore.ieee.org/author/37391773600)
